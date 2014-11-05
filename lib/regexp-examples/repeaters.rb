@@ -5,7 +5,7 @@ module RegexpExamples
     end
 
     def result(min_repeats, max_repeats)
-      group_result = @group.result
+      group_result = @group.result[0 .. MaxGroupResults-1]
       results = []
       min_repeats.upto(max_repeats) do |repeats|
         group_result.each do |result|
