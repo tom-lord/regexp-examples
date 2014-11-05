@@ -34,7 +34,7 @@ module RegexpExamples
     end
     def result
       if @negative
-        CHARS - @chars
+        CharSets::Any - @chars
       else
         @chars
       end
@@ -43,7 +43,7 @@ module RegexpExamples
 
   class DotGroup
     def result
-      CHARS
+      CharSets::Any
     end
   end
 

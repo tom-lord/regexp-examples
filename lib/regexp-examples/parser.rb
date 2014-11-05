@@ -43,13 +43,17 @@ module RegexpExamples
 
     def parse_after_backslash_group
       @current_position += 1
-      case regexp_string[@current_position..-1]
-      when /^(\d+)/
+      case
+      when regexp_string[@current_position..-1] =~ /^(\d+)/
         group = parse_backreference_group($&)
+      when BackslashCharMap.keys.include?(regexp_string[@current_position])
+        group = CharGroup.new(
+          BackslashCharMap[regexp_string[@current_position]])
+        # TODO: There are also a bunch of multi-char matches to watch out for:
+        # http://en.wikibooks.org/wiki/Ruby_Programming/Syntax/Literals
       else
         group = parse_single_char_group( regexp_string[@current_position] )
-        # TODO: What about cases like \n, \(, \^, etc?
-        # SpecialCharsAfterBackslash ?
+        # TODO: What about cases like \A, \z, \Z ?
       end
       group
     end
