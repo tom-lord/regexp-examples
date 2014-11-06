@@ -1,13 +1,19 @@
 describe Regexp, "#examples" do
-  def examples_exist_and_match(*regexps)
+  def self.examples_exist_and_match(*regexps)
     regexps.each do |regexp|
-      expect(regexp.examples).not_to be_empty
-      regexp.examples.each { |example| expect(example).to match(regexp) }
+      it do
+        expect(regexp.examples).not_to be_empty
+        regexp.examples.each { |example| expect(example).to match(/\A(?:#{regexp.source})\z/) }
+        # Note: /\A...\z/ is used, to prevent misleading examples from passing the test.
+        # For example, we don't want things like:
+        # /a*/.examples to include "xyz"
+        # /a|b/.examples to include "bad"
+      end
     end
   end
 
   context 'returns matching strings' do
-    it "for basic repeaters" do
+    context "for basic repeaters" do
       examples_exist_and_match(
         /a/,
         /a*/,
@@ -19,7 +25,7 @@ describe Regexp, "#examples" do
       )
     end
 
-    it "for basic groups" do
+    context "for basic groups" do
       examples_exist_and_match(
         /[a]/,
         /(a)/,
@@ -28,7 +34,7 @@ describe Regexp, "#examples" do
       )
     end
 
-    it "for complex char groups (square brackets)" do
+    context "for complex char groups (square brackets)" do
       examples_exist_and_match(
         /[abc]/,
         /[a-c]/,
@@ -37,7 +43,7 @@ describe Regexp, "#examples" do
       )
     end
 
-    it "for escaped characters" do
+    context "for escaped characters" do
       examples_exist_and_match(
         /\w/,
         /\s/,
@@ -51,7 +57,7 @@ describe Regexp, "#examples" do
       )
     end
 
-    it "for backreferences" do
+    context "for backreferences" do
       examples_exist_and_match(
         /(repeat) \1/,
         /(ref1) (ref2) \1 \2/,
@@ -60,12 +66,13 @@ describe Regexp, "#examples" do
       )
     end
 
-    it "for complex patterns" do
+    context "for complex patterns" do
       # Longer combinations of the above
       examples_exist_and_match(
         /https?:\/\/(www\.)github\.com/,
         /(I(N(C(E(P(T(I(O(N)))))))))*/,
         /[\w]{1}/,
+        /((a?b*c+)) \1/,
         /((a?b*c+)?) \1/
       )
     end
