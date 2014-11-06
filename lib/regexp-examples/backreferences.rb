@@ -1,22 +1,34 @@
 module RegexpExamples
   class BackReferenceTracker
-    @filled_groups = {}
+    @filled_groups = Hash.new { |h, v| h[v] = [] }
     class << self
       attr_accessor :filled_groups
 
-      def add_filled_group(num, group)
-        @filled_groups[num] = group
+      def add_filled_group(group_num, result_num, group)
+        @filled_groups[group_num][result_num] = group
       end
     end
   end
 
   class BackReferenceReplacer
-    def substitute_backreferences(full_example)
-      # TODO: Update this for named capture groups
-      # TODO: Define this magic __X__ pattern as a constant? Maybe?
-      full_example.gsub!(/__(\d+)__/) do |_|
-        BackReferenceTracker.filled_groups[$1.to_i]
+    def find_index_and_backref_ids(partial_examples)
+      index_and_backref_ids = {}
+      partial_examples.each_with_index do |partial_example, index|
+        # TODO: Update this for named capture groups
+        # TODO: Define this magic __X__ pattern as a constant? Maybe?
+        if( partial_example.length == 1 \
+              && partial_example.first =~ /__(\d+)__/ )
+          index_and_backref_ids[index] = $1.to_i
+        end
       end
+      index_and_backref_ids
+    end
+
+    def substitute_backreferences(partial_examples)
+      find_index_and_backref_ids(partial_examples).each do |index, backref_id|
+        partial_examples[index] = BackReferenceTracker.filled_groups[backref_id]
+      end
+      partial_examples
     end
   end
 end

@@ -58,9 +58,11 @@ module RegexpExamples
     # and adds the filled group of each result to
     # itself
     def result
-      strings = @groups.map {|x| x.result}
+      strings = @groups.map {|group| group.result}
       result = RegexpExamples::permutations_of_strings(strings)
-      result.each {|x| BackReferenceTracker.add_filled_group(@group_num, x)}
+      result.each_with_index do |group, index|
+        BackReferenceTracker.add_filled_group(@group_num, index, group)
+      end
       result
     end
   end
