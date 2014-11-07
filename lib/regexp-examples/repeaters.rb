@@ -1,5 +1,6 @@
 module RegexpExamples
   class BaseRepeater
+    attr_reader :group
     def initialize(group)
       @group = group
     end

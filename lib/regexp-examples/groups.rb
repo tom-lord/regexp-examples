@@ -58,9 +58,10 @@ module RegexpExamples
     # and adds the filled group of each result to
     # itself
     def result
-      strings = @groups.map {|group| group.result}
+      strings = @groups.map {|repeater| repeater.result}
+      subgroup_ids = @groups.select{ |repeater| repeater.group.respond_to? :group_id}.map{|repeater| repeater.group.group_id}
       RegexpExamples::permutations_of_strings(strings).map do |result|
-        group_id ? CaptureGroupResult.new(group_id, result) : result
+        group_id ? CaptureGroupResult.new([group_id].concat(subgroup_ids), result) : result
       end
     end
   end

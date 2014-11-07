@@ -1,18 +1,18 @@
 module RegexpExamples
   class CaptureGroupResult < String
-    attr_reader :group_id
-    def initialize(group_id, values)
-      @group_id = group_id
+    attr_reader :group_ids
+    def initialize(group_ids, values)
+      @group_ids = group_ids
       super(values)
     end
 
     # Overridden in order to preserve the @group_id
     # This was bloody hard to debug!!!
     def *(int)
-      self.class.new(group_id, super)
+      self.class.new(group_ids, super)
     end
     def gsub(regex)
-      self.class.new(group_id, super)
+      self.class.new(group_ids, super)
     end
   end
 
@@ -35,8 +35,8 @@ module RegexpExamples
     private
     def find_backref_for(full_example, group_id)
       full_example.detect do |partial_example|
-        partial_example.respond_to?(:group_id) \
-          && partial_example.group_id == group_id
+        partial_example.respond_to?(:group_ids) \
+          && partial_example.group_ids.include?(group_id)
       end.to_s
     end
   end
