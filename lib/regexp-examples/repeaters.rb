@@ -5,11 +5,11 @@ module RegexpExamples
     end
 
     def result(min_repeats, max_repeats)
-      group_result = @group.result[0 .. MaxGroupResults-1]
+      group_results = @group.result[0 .. MaxGroupResults-1]
       results = []
       min_repeats.upto(max_repeats) do |repeats|
-        group_result.each do |result|
-          results << result * repeats
+        group_results.each do |group_result|
+          results << group_result * repeats
         end
       end
       results.uniq

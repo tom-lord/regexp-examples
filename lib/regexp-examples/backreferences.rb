@@ -1,34 +1,44 @@
 module RegexpExamples
-  class BackReferenceTracker
-    @filled_groups = Hash.new { |h, v| h[v] = [] }
-    class << self
-      attr_accessor :filled_groups
+  class CaptureGroupResult < String
+    attr_reader :group_id
+    def initialize(group_id, values)
+      @group_id = group_id
+      super(values)
+    end
 
-      def add_filled_group(group_num, result_num, group)
-        @filled_groups[group_num][result_num] = group
-      end
+    # Overridden in order to preserve the @group_id
+    # This was bloody hard to debug!!!
+    def *(int)
+      self.class.new(group_id, super)
+    end
+    def gsub(regex)
+      self.class.new(group_id, super)
     end
   end
 
   class BackReferenceReplacer
-    def find_index_and_backref_ids(partial_examples)
-      index_and_backref_ids = {}
-      partial_examples.each_with_index do |partial_example, index|
-        # TODO: Update this for named capture groups
-        # TODO: Define this magic __X__ pattern as a constant? Maybe?
-        if( partial_example.length == 1 \
-              && partial_example.first =~ /__(\d+)__/ )
-          index_and_backref_ids[index] = $1.to_i
+    def substitute_backreferences(full_examples)
+      full_examples.map! do |full_example|
+        if full_example.is_a? String
+          [full_example]
+        else
+          full_example.map! do |partial_example|
+            partial_example.gsub(/__(\d+)__/) do |match|
+              find_backref_for(full_example, $1.to_i)
+            end
+          end
         end
       end
-      index_and_backref_ids
+      full_examples
     end
 
-    def substitute_backreferences(partial_examples)
-      find_index_and_backref_ids(partial_examples).each do |index, backref_id|
-        partial_examples[index] = BackReferenceTracker.filled_groups[backref_id]
-      end
-      partial_examples
+    private
+    def find_backref_for(full_example, group_id)
+      full_example.detect do |partial_example|
+        partial_example.respond_to?(:group_id) \
+          && partial_example.group_id == group_id
+      end.to_s
     end
   end
+
 end

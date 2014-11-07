@@ -48,10 +48,10 @@ module RegexpExamples
   end
 
   class MultiGroup
-    attr_reader :group_num
-    def initialize(groups, group_num)
+    attr_reader :group_id
+    def initialize(groups, group_id)
       @groups = groups
-      @group_num = group_num
+      @group_id = group_id
     end
 
     # Generates the result of each contained group
@@ -59,11 +59,9 @@ module RegexpExamples
     # itself
     def result
       strings = @groups.map {|group| group.result}
-      result = RegexpExamples::permutations_of_strings(strings)
-      result.each_with_index do |group, index|
-        BackReferenceTracker.add_filled_group(@group_num, index, group)
+      RegexpExamples::permutations_of_strings(strings).map do |result|
+        group_id ? CaptureGroupResult.new(group_id, result) : result
       end
-      result
     end
   end
 

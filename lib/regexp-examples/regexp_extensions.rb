@@ -5,8 +5,10 @@ module Examples
       RegexpExamples::Parser.new(source)
         .parse
         .map {|repeater| repeater.result}
-    partial_examples = RegexpExamples::BackReferenceReplacer.new.substitute_backreferences(partial_examples)
-    RegexpExamples::permutations_of_strings(partial_examples)
+    full_examples = RegexpExamples::permutations_of_strings(partial_examples.dup, no_join: true)
+    full_examples_with_backrefs = \
+      RegexpExamples::BackReferenceReplacer.new.substitute_backreferences(full_examples)
+    full_examples_with_backrefs.map(&:join)
   end
 end
   include Examples
