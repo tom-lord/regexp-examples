@@ -2,8 +2,9 @@ describe Regexp, "#examples" do
   def self.examples_exist_and_match(*regexps)
     regexps.each do |regexp|
       it do
-        expect(regexp.examples).not_to be_empty
-        regexp.examples.each { |example| expect(example).to match(/\A(?:#{regexp.source})\z/) }
+        regexp_examples = regexp.examples
+        expect(regexp_examples).not_to be_empty
+        regexp_examples.each { |example| expect(example).to match(/\A(?:#{regexp.source})\z/) }
         # Note: /\A...\z/ is used, to prevent misleading examples from passing the test.
         # For example, we don't want things like:
         # /a*/.examples to include "xyz"
