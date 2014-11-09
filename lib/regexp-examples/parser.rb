@@ -93,9 +93,19 @@ module RegexpExamples
     def parse_char_group
       chars = []
       @current_position += 1
-      # TODO: What about the sneaky edge case of /...[]a-z].../ ?
-      until regexp_string[@current_position].chr == ']'
-        chars << regexp_string[@current_position].chr
+      if regexp_string[@current_position] == ']'
+        # Beware of the sneaky edge case:
+        # /[]]/ (match "]")
+        chars << ']'
+        @current_position += 1
+      end
+      until regexp_string[@current_position] == ']' \
+        && !regexp_string[0..@current_position-1].match(/(\\{2})*\\\z/)
+        # Beware of having an ODD number of "\" before the "]", e.g.
+        # /[\]]/ (match "]")
+        # /[\\]/ (match "\")
+        # /[\\\]]/ (match "\" or "]")
+        chars << regexp_string[@current_position]
         @current_position += 1
       end
       CharGroup.new(chars)

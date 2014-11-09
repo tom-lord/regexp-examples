@@ -18,13 +18,17 @@ module RegexpExamples
         @negative = false
       end
 
-      # TODO: Can I make this more legible?
-      # Ranges a-b
+      init_ranges
+      init_backslash_chars
+    end
+
+    def init_ranges
       # save first and last "-" if present
       first = nil
       last = nil
       first = @chars.shift if @chars.first == "-"
       last = @chars.pop if @chars.last == "-"
+      # Replace all instances of e.g. ["a" "-" "z"] with ["a", "b", ..., "z"]
       while i = @chars.index("-")
         @chars[i-1..i+1] = (@chars[i-1]..@chars[i+1]).to_a
       end
@@ -32,6 +36,17 @@ module RegexpExamples
       @chars.unshift(first) if first
       @chars.push(last) if last
     end
+
+    def init_backslash_chars
+      while i = @chars.index("\\")
+        if BackslashCharMap.keys.include?(@chars[i+1])
+          @chars[i..i+1] = BackslashCharMap[@chars[i+1]]
+        else
+          @chars.delete_at(i)
+        end
+      end
+    end
+
     def result
       if @negative
         CharSets::Any - @chars
