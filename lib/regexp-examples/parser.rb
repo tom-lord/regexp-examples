@@ -10,8 +10,9 @@ module RegexpExamples
     def parse
       repeaters = []
       while @current_position < regexp_string.length
-        group = parse_group
+        group = parse_group(repeaters)
         break if group.is_a? MultiGroupEnd
+        repeaters = [] if group.is_a? OrGroup
         @current_position += 1
         repeaters << parse_repeater(group)
       end
@@ -20,7 +21,7 @@ module RegexpExamples
 
     private
 
-    def parse_group
+    def parse_group(repeaters)
       char = regexp_string[@current_position]
       case char
       when '('
@@ -32,7 +33,7 @@ module RegexpExamples
       when '.'
         group = parse_dot_group
       when '|'
-        group = parse_or_group
+        group = parse_or_group(repeaters)
       when '\\'
         group = parse_after_backslash_group
       else
@@ -104,10 +105,10 @@ module RegexpExamples
       DotGroup.new
     end
 
-    def parse_or_group
+    def parse_or_group(left_repeaters)
       @current_position += 1
-      repeaters = parse
-      OrGroup.new(repeaters)
+      right_repeaters = parse
+      OrGroup.new(left_repeaters, right_repeaters)
     end
 
 

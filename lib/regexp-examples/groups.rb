@@ -73,15 +73,14 @@ module RegexpExamples
   end
 
   class OrGroup
-    def initialize(repeaters)
-      @repeaters = repeaters
+    def initialize(left_repeaters, right_repeaters)
+      @repeaters = left_repeaters.concat(right_repeaters)
     end
 
     def result
-      repeaters_results = @repeaters.map do |repeater|
-        repeater.result
+      @repeaters.map do |repeater|
+        RegexpExamples::permutations_of_strings(repeater.result)
       end
-      RegexpExamples::permutations_of_strings(repeaters_results)
     end
   end
 
