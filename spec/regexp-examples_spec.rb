@@ -40,7 +40,15 @@ describe Regexp, "#examples" do
         /[abc]/,
         /[a-c]/,
         /[abc-e]/,
-        /[^a-zA-Z]/
+        /[^a-zA-Z]/,
+        /[\w]/,
+        /[]]/, # TODO: How to suppress annoying warnings on this test?
+        /[\]]/,
+        #/[\\]/, # TODO: This test freezes!!!?!
+        /[\\\]]/,
+        /[\n-\r]/,
+        /[\-]/,
+        /[%-+]/ # This regex is "supposed to" match some surprising things!!!
       )
     end
 

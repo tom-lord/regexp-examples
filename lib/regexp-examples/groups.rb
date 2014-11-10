@@ -18,8 +18,8 @@ module RegexpExamples
         @negative = false
       end
 
-      init_ranges
       init_backslash_chars
+      init_ranges
     end
 
     def init_ranges
