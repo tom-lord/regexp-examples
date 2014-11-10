@@ -100,7 +100,7 @@ module RegexpExamples
         @current_position += 1
       end
       until regexp_string[@current_position] == ']' \
-        && !regexp_string[0..@current_position-1].match(/(\\{2})*\\\z/)
+        && !regexp_string[0..@current_position-1].match(/[^\\](\\{2})*\\\z/)
         # Beware of having an ODD number of "\" before the "]", e.g.
         # /[\]]/ (match "]")
         # /[\\]/ (match "\")

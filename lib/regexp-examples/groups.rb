@@ -38,11 +38,15 @@ module RegexpExamples
     end
 
     def init_backslash_chars
-      while i = @chars.index("\\")
-        if BackslashCharMap.keys.include?(@chars[i+1])
-          @chars[i..i+1] = BackslashCharMap[@chars[i+1]]
-        else
-          @chars.delete_at(i)
+      @chars.each_with_index do |char, i|
+        if char == "\\"
+          if BackslashCharMap.keys.include?(@chars[i+1])
+            @chars[i..i+1] = BackslashCharMap[@chars[i+1]]
+          elsif @chars[i+1] == "\\"
+            @chars.delete_at(i+1)
+          else
+            @chars.delete_at(i)
+          end
         end
       end
     end
