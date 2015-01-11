@@ -44,7 +44,7 @@ describe Regexp, "#examples" do
         /[\w]/,
         /[]]/, # TODO: How to suppress annoying warnings on this test?
         /[\]]/,
-        #/[\\]/, # TODO: This test freezes!!!?!
+        /[\\]/,
         /[\\\]]/,
         /[\n-\r]/,
         /[\-]/,

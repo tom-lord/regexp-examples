@@ -1,4 +1,5 @@
 # regexp-examples
+[![Gem Version](https://badge.fury.io/rb/regexp-examples.svg)](http://badge.fury.io/rb/regexp-examples)
 
 Extends the Regexp class with the method: Regexp#examples
 
