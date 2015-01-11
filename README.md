@@ -31,7 +31,7 @@ or a huge number of possible matches, such as `/.\w/`, then only a subset of the
 * Escaped characters, e.g. `/\n/`, `/\w/`, `/\D/` (and so on...)
 * Capture groups, including named groups and backreferences(!!), e.g. `/(this|that) \1/` `/(?<name>foo) \k<name>/`
 * Non-capture groups, e.g. `/(?:foo)/`
-* '''Arbitrarily complex combinations of all the above!'''
+* **Arbitrarily complex combinations of all the above!**
 
 ## Not-Yet-Supported syntax
 
