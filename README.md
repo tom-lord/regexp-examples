@@ -30,14 +30,14 @@ or a huge number of possible matches, such as `/.\w/`, then only a subset of the
 * Character sets (inluding ranges and negation!), e.g. `/[abc]/`, `/[A-Z0-9]/`, `/[^a-z]/`
 * Escaped characters, e.g. `/\n/`, `/\w/`, `/\D/` (and so on...)
 * Capture groups, and backreferences(!!), e.g. `/(this|that) \1/`
+* Named capture groups, e.g. `(?<name>bar)/`(Warning: Named capture group backreferences not yet implemented!)
+* Non-capture groups, e.g. `/(?:foo)/`
 * Arbitrarily complex combinations of all the above!
 
 ## Not-Yet-Supported syntax
 
 I plan to add the following features to the gem (in order of most -> least likely), but have not yet got round to it:
 
-* Non-capture groups, e.g. `/(?:foo)/`
-* Named capture groups, e.g. `(?<name>bar)/`
 * Throw exceptions if illegal syntax (see below) is used
 * POSIX bracket expressions, e.g. `/[[:alnum:]]/`, `/[[:space:]]/`
 * Options, e.g. `/pattern/i`, `/foo.*bar/m`

@@ -52,6 +52,20 @@ describe Regexp, "#examples" do
       )
     end
 
+    context "for complex multi groups" do
+      examples_exist_and_match(
+        /(normal)/,
+        /(?:nocapture)/,
+        /(?<name>namedgroup)/
+      )
+      # TODO: These are not yet implemented
+      # (expect to raise exception)
+#        /(?=lookahead)/,
+#        /(?!neglookahead)/,
+#        /(?<=lookbehind)/,
+#        /(?<!neglookbehind)/,
+    end
+
     context "for escaped characters" do
       examples_exist_and_match(
         /\w/,
