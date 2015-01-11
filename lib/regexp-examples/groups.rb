@@ -109,13 +109,13 @@ module RegexpExamples
   end
 
   class BackReferenceGroup
-    attr_reader :num
-    def initialize(num)
-      @num = num
+    attr_reader :id
+    def initialize(id)
+      @id = id
     end
 
     def result
-      ["__#{@num}__"]
+      ["__#{@id}__"]
     end
   end
 

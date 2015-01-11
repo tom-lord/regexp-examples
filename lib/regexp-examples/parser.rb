@@ -46,7 +46,11 @@ module RegexpExamples
       @current_position += 1
       case
       when rest_of_string =~ /\A(\d+)/
-        group = parse_backreference_group($&)
+        @current_position += ($1.length - 1) # In case of 10+ backrefs!
+        group = parse_backreference_group($1)
+      when rest_of_string =~ /\Ak<([^>]+)>/ # Named capture group
+        @current_position += ($1.length + 2)
+        group = parse_backreference_group($1)
       when BackslashCharMap.keys.include?(regexp_string[@current_position])
         group = CharGroup.new(
           BackslashCharMap[regexp_string[@current_position]])
@@ -83,7 +87,7 @@ module RegexpExamples
       rest_of_string.match(/\A(\?)?(:|!|=|<(!|=|[^!=][^>]*))?/) do |match|
         case
         when match[1].nil? # e.g. /(normal)/
-          group_id = @num_groups
+          group_id = @num_groups.to_s
         when match[2] == ':' # e.g. /(?:nocapture)/
           @current_position += 2
           group_id = nil
@@ -141,7 +145,7 @@ module RegexpExamples
     end
 
     def parse_backreference_group(match)
-      BackReferenceGroup.new(match.to_i)
+      BackReferenceGroup.new(match)
     end
 
     def parse_star_repeater(group)

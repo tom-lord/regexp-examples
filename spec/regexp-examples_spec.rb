@@ -56,7 +56,8 @@ describe Regexp, "#examples" do
       examples_exist_and_match(
         /(normal)/,
         /(?:nocapture)/,
-        /(?<name>namedgroup)/
+        /(?<name>namedgroup)/,
+        /(?<name>namedgroup) \k<name>/
       )
       # TODO: These are not yet implemented
       # (expect to raise exception)
