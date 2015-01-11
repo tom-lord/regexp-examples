@@ -82,7 +82,9 @@ describe Regexp, "#examples" do
         /(I(N(C(E(P(T(I(O(N)))))))))*/,
         /[\w]{1}/,
         /((a?b*c+)) \1/,
-        /((a?b*c+)?) \1/
+        /((a?b*c+)?) \1/,
+        /a|b|c|d/,
+        /a+|b*|c?/
       )
     end
   end
