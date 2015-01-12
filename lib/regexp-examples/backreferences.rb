@@ -23,8 +23,8 @@ module RegexpExamples
           [full_example]
         else
           full_example.map! do |partial_example|
-            partial_example.gsub(/__(\d+)__/) do |match|
-              find_backref_for(full_example, $1.to_i)
+            partial_example.gsub(/__(\w+)__/) do |match|
+              find_backref_for(full_example, $1)
             end
           end
         end

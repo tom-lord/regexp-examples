@@ -52,6 +52,21 @@ describe Regexp, "#examples" do
       )
     end
 
+    context "for complex multi groups" do
+      examples_exist_and_match(
+        /(normal)/,
+        /(?:nocapture)/,
+        /(?<name>namedgroup)/,
+        /(?<name>namedgroup) \k<name>/
+      )
+      # TODO: These are not yet implemented
+      # (expect to raise exception)
+#        /(?=lookahead)/,
+#        /(?!neglookahead)/,
+#        /(?<=lookbehind)/,
+#        /(?<!neglookbehind)/,
+    end
+
     context "for escaped characters" do
       examples_exist_and_match(
         /\w/,
@@ -82,7 +97,9 @@ describe Regexp, "#examples" do
         /(I(N(C(E(P(T(I(O(N)))))))))*/,
         /[\w]{1}/,
         /((a?b*c+)) \1/,
-        /((a?b*c+)?) \1/
+        /((a?b*c+)?) \1/,
+        /a|b|c|d/,
+        /a+|b*|c?/
       )
     end
   end

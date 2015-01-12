@@ -45,8 +45,12 @@ module RegexpExamples
     def parse_after_backslash_group
       @current_position += 1
       case
-      when regexp_string[@current_position..-1] =~ /^(\d+)/
-        group = parse_backreference_group($&)
+      when rest_of_string =~ /\A(\d+)/
+        @current_position += ($1.length - 1) # In case of 10+ backrefs!
+        group = parse_backreference_group($1)
+      when rest_of_string =~ /\Ak<([^>]+)>/ # Named capture group
+        @current_position += ($1.length + 2)
+        group = parse_backreference_group($1)
       when BackslashCharMap.keys.include?(regexp_string[@current_position])
         group = CharGroup.new(
           BackslashCharMap[regexp_string[@current_position]])
@@ -79,11 +83,25 @@ module RegexpExamples
     def parse_multi_group
       @current_position += 1
       @num_groups += 1
-      this_group_num = @num_groups
+      group_id = nil # init
+      rest_of_string.match(/\A(\?)?(:|!|=|<(!|=|[^!=][^>]*))?/) do |match|
+        case
+        when match[1].nil? # e.g. /(normal)/
+          group_id = @num_groups.to_s
+        when match[2] == ':' # e.g. /(?:nocapture)/
+          @current_position += 2
+          group_id = nil
+        when %w(! =).include?(match[2]) # e.g. /(?=lookahead)/, /(?!neglookahead)/
+          # TODO: Raise exception
+        when %w(! =).include?(match[3]) # e.g. /(?<=lookbehind)/, /(?<!neglookbehind)/
+          # TODO: Raise exception
+        else # e.g. /(?<name>namedgroup)/
+          @current_position += (match[3].length + 3)
+          group_id = match[3]
+        end
+      end
       groups = parse
-      # TODO: Non-capture groups, i.e. /...(?:foo).../
-      # TODO: Named capture groups, i.e. /...(?<name>foo).../
-      MultiGroup.new(groups, this_group_num)
+      MultiGroup.new(groups, group_id)
     end
 
     def parse_multi_end_group
@@ -127,7 +145,7 @@ module RegexpExamples
     end
 
     def parse_backreference_group(match)
-      BackReferenceGroup.new(match.to_i)
+      BackReferenceGroup.new(match)
     end
 
     def parse_star_repeater(group)
@@ -146,7 +164,7 @@ module RegexpExamples
     end
 
     def parse_range_repeater(group)
-      match = regexp_string[@current_position..-1].match(/^\{(\d+)(,)?(\d+)?\}/)
+      match = rest_of_string.match(/\A\{(\d+)(,)?(\d+)?\}/)
       @current_position += match[0].size
       min = match[1].to_i if match[1]
       has_comma = !match[2].nil?
@@ -156,6 +174,10 @@ module RegexpExamples
 
     def parse_one_time_repeater(group)
       OneTimeRepeater.new(group)
+    end
+
+    def rest_of_string
+      regexp_string[@current_position..-1]
     end
   end
 end

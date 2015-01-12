@@ -23,8 +23,34 @@ or a huge number of possible matches, such as `/.\w/`, then only a subset of the
 /what about (backreferences\?) \1/.examples #=> ['what about backreferences? backreferences?']
 ```
 
-The current version is still very much under development, and contains various bugs/missing features...
-However, when completed, this will hopefully work for ALL regular expressions, *except for lookarounds*!
+## Supported syntax
+
+* All forms of repeaters (quantifiers), e.g. `/a*/`, `/a+/`, `/a?/`, `/a{1,4}/`, `/a{3,}/`, `a{,2}`
+* Boolean "Or" groups, e.g. `/a|b|c/`
+* Character sets (inluding ranges and negation!), e.g. `/[abc]/`, `/[A-Z0-9]/`, `/[^a-z]/`
+* Escaped characters, e.g. `/\n/`, `/\w/`, `/\D/` (and so on...)
+* Capture groups, including named groups and backreferences(!!), e.g. `/(this|that) \1/` `/(?<name>foo) \k<name>/`
+* Non-capture groups, e.g. `/(?:foo)/`
+* **Arbitrarily complex combinations of all the above!**
+
+## Not-Yet-Supported syntax
+
+I plan to add the following features to the gem (in order of most -> least likely), but have not yet got round to it:
+
+* Throw exceptions if illegal syntax (see below) is used
+* POSIX bracket expressions, e.g. `/[[:alnum:]]/`, `/[[:space:]]/`
+* Options, e.g. `/pattern/i`, `/foo.*bar/m`
+* Unicode characters, e.g. `/\p{L}/`, `/\p{Arabic}/`
+
+## Impossible features ("illegal syntax")
+
+The following features in the regex language can never be properly implemented into this gem because, put simply, they are not technically "regular"!
+If you'd like to understand this in more detail, there are many good blog posts out on the internet. The [wikipedia entry](http://en.wikipedia.org/wiki/Regular_expression)'s not bad either.
+
+* Lookarounds, e.g. `/foo(?=bar)/`, `/(?<!foo)bar/`
+* Anchors, e.g. `/\bword\b/`, `/line1\n^line2/` (although a special case could perhaps be made to allow `\A`, `^`, `\z` and `$` at the beginning/end of the pattern)
+
+(Note: Backreferences are not really "regular" either, but I got these to work with a bit of hackery!)
 
 ## Installation
 

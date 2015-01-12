@@ -93,24 +93,29 @@ module RegexpExamples
 
   class OrGroup
     def initialize(left_repeaters, right_repeaters)
-      @repeaters = left_repeaters.concat(right_repeaters)
+      @left_repeaters = left_repeaters
+      @right_repeaters = right_repeaters
     end
 
     def result
-      @repeaters.map do |repeater|
-        RegexpExamples::permutations_of_strings(repeater.result)
+      left_result = @left_repeaters.map do |repeater|
+        RegexpExamples::permutations_of_strings([repeater.result])
       end
+      right_result = @right_repeaters.map do |repeater|
+        RegexpExamples::permutations_of_strings([repeater.result])
+      end
+      left_result.concat(right_result).flatten.uniq
     end
   end
 
   class BackReferenceGroup
-    attr_reader :num
-    def initialize(num)
-      @num = num
+    attr_reader :id
+    def initialize(id)
+      @id = id
     end
 
     def result
-      ["__#{@num}__"]
+      ["__#{@id}__"]
     end
   end
 
