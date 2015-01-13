@@ -87,7 +87,8 @@ describe Regexp, "#examples" do
         /(ref1) (ref2) \1 \2/,
         /((ref2)ref1) \1 \2/,
         /((ref1and2)) \1 \2/,
-        /(one)(two)(three)(four)(five)(six)(seven)(eight)(nine)(ten) \10\9\8\7\6\5\4\3\2\1/
+        /(one)(two)(three)(four)(five)(six)(seven)(eight)(nine)(ten) \10\9\8\7\6\5\4\3\2\1/,
+        /(a?(b?(c?(d?(e?)))))/
       )
     end
 
