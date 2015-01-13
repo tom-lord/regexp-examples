@@ -29,8 +29,11 @@ or a huge number of possible matches, such as `/.\w/`, then only a subset of the
 * Boolean "Or" groups, e.g. `/a|b|c/`
 * Character sets (inluding ranges and negation!), e.g. `/[abc]/`, `/[A-Z0-9]/`, `/[^a-z]/`
 * Escaped characters, e.g. `/\n/`, `/\w/`, `/\D/` (and so on...)
-* Capture groups, including named groups and backreferences(!!), e.g. `/(this|that) \1/` `/(?<name>foo) \k<name>/`
 * Non-capture groups, e.g. `/(?:foo)/`
+* Capture groups, e.g. `/(group)/`
+  * Including named groups, e.g. `/?(<name>group)/`
+  * ...And backreferences(!!!), e.g. `/(this|that) \1/` `/(?<name>foo) \k<name>/`
+  * Groups work fine, even if nested! e.g. `/(even(this(works?))) \1 \2 \3/`
 * **Arbitrarily complex combinations of all the above!**
 
 ## Not-Yet-Supported syntax
