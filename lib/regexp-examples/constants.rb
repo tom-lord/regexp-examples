@@ -13,7 +13,8 @@ module RegexpExamples
     Upper = Array('A'..'Z')
     Digit = Array('0'..'9')
     Punct = [33..47, 58..64, 91..96, 123..126].map { |r| r.map { |val| val.chr } }.flatten
-    Any = Lower | Upper | Digit | Punct
+    Hex   = Array('a'..'f') | Array('A'..'F') | Digit
+    Any   = Lower | Upper | Digit | Punct
   end
 
   # Map of special regex characters, to their associated character sets
@@ -24,6 +25,8 @@ module RegexpExamples
     'W' => CharSets::Punct.reject { |val| val == '_' },
     's' => [' ', "\t", "\n", "\r", "\v", "\f"],
     'S' => CharSets::Any - [' ', "\t", "\n", "\r", "\v", "\f"],
+    'h' => CharSets::Hex,
+    'H' => CharSets::Any - CharSets::Hex,
 
     't' => ["\t"], # tab
     'n' => ["\n"], # new line

@@ -72,6 +72,7 @@ describe Regexp, "#examples" do
         /\w/,
         /\s/,
         /\d/,
+        /\h/,
         /\t/,
         /\n/,
         /\f/,
