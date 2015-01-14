@@ -86,9 +86,6 @@ module RegexpExamples
   end
 
   class MultiGroupEnd
-    def result
-      ['']
-    end
   end
 
   class OrGroup
