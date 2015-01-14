@@ -18,11 +18,8 @@ module RegexpExamples
     end
 
     # Overridden in order to preserve the @group_id and @subgroups
+    # Used by BaseGroup (which, in turn, is used by all Group objects)
     def *(int)
-      self.class.new(super.to_s, group_id, subgroups)
-    end
-    # Overridden in order to preserve the @group_id and @subgroups
-    def gsub(regex)
       self.class.new(super.to_s, group_id, subgroups)
     end
   end
