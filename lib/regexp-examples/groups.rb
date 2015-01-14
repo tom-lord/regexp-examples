@@ -4,7 +4,7 @@ module RegexpExamples
       @char = char
     end
     def result
-      [@char]
+      [GroupResult.new(@char)]
     end
   end
 
@@ -52,17 +52,17 @@ module RegexpExamples
     end
 
     def result
-      if @negative
-        CharSets::Any - @chars
-      else
-        @chars
+      (@negative ? (CharSets::Any - @chars) : @chars).map do |result|
+        GroupResult.new(result)
       end
     end
   end
 
   class DotGroup
     def result
-      CharSets::Any
+      CharSets::Any.map do |result|
+        GroupResult.new(result)
+      end
     end
   end
 
@@ -79,8 +79,7 @@ module RegexpExamples
     def result
       strings = @groups.map {|repeater| repeater.result}
       RegexpExamples::permutations_of_strings(strings).map do |result|
-        subgroups = result.respond_to?(:group_id) ? result.all_subgroups : []
-        group_id ? CaptureGroupResult.new(group_id, subgroups, result) : result
+        GroupResult.new(result, group_id)
       end
     end
   end
@@ -101,7 +100,9 @@ module RegexpExamples
       right_result = @right_repeaters.map do |repeater|
         RegexpExamples::permutations_of_strings([repeater.result])
       end
-      left_result.concat(right_result).flatten.uniq
+      left_result.concat(right_result).flatten.uniq.map do |result|
+        GroupResult.new(result)
+      end
     end
   end
 
@@ -112,7 +113,7 @@ module RegexpExamples
     end
 
     def result
-      ["__#{@id}__"]
+      [ GroupResult.new("__#{@id}__") ]
     end
   end
 

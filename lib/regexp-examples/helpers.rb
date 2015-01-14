@@ -11,26 +11,16 @@ module RegexpExamples
     first = arrays_of_strings.shift
     return first if arrays_of_strings.empty?
     first.product( permutations_of_strings(arrays_of_strings, options) ).map do |result|
-      if options[:no_join]
-        result.flatten
-      else
-        join_preserving_capture_groups(result)
-      end
+      join_preserving_capture_groups(result)
     end
   end
 
   def self.join_preserving_capture_groups(result)
     result.flatten!
     subgroups = result
-      .select { |partial| partial.respond_to? :group_id }
       .map(&:all_subgroups)
       .flatten
-
-    if subgroups.empty?
-      result.join
-    else
-      CaptureGroupResult.new(nil, subgroups, result.join)
-    end
+    GroupResult.new(result.join, nil, subgroups)
   end
 end
 
