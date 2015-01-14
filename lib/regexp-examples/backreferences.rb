@@ -8,7 +8,7 @@ module RegexpExamples
     end
 
     def all_subgroups
-      [self, subgroups].flatten
+      [self, subgroups].flatten.reject { |subgroup| subgroup.group_id.nil? }
     end
 
     # Overridden in order to preserve the @group_id and @subgroups
