@@ -41,19 +41,6 @@
         null,
         null,
         null,
-        null,
-        1,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        null,
-        0,
-        null,
-        null,
-        null,
         null
       ],
       "/home/tom/regexp-examples/lib/regexp-examples/parser.rb": [
@@ -672,6 +659,6 @@
         null
       ]
     },
-    "timestamp": 1421231019
+    "timestamp": 1421233920
   }
 }
