@@ -1,4 +1,4 @@
-describe Regexp, "#examples" do
+RSpec.describe Regexp, "#examples" do
   def self.examples_exist_and_match(*regexps)
     regexps.each do |regexp|
       it do
