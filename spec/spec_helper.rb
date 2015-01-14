@@ -1,5 +1,12 @@
 require 'simplecov'
-SimpleCov.start
+SimpleCov.start do
+  require 'simplecov-badge'
+  SimpleCov::Formatter::BadgeFormatter.strength_foreground = true
+  SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
+    SimpleCov::Formatter::HTMLFormatter,
+    SimpleCov::Formatter::BadgeFormatter,
+  ]
+end
 
 require './lib/regexp-examples.rb'
 require 'pry'
