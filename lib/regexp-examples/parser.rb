@@ -164,7 +164,7 @@ module RegexpExamples
     end
 
     def parse_range_repeater(group)
-      match = rest_of_string.match(/\A\{(\d+)(,)?(\d+)?\}/)
+      match = rest_of_string.match(/\A\{(\d+)?(,)?(\d+)?\}/)
       @current_position += match[0].size
       min = match[1].to_i if match[1]
       has_comma = !match[2].nil?

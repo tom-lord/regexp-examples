@@ -60,7 +60,7 @@ module RegexpExamples
   class RangeRepeater < BaseRepeater
     def initialize(group, min, has_comma, max)
       super(group)
-      @min = min
+      @min = min || 0
       if max
         @max = max
       elsif has_comma
