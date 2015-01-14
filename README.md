@@ -1,6 +1,6 @@
 # regexp-examples
 [![Gem Version](https://badge.fury.io/rb/regexp-examples.svg)](http://badge.fury.io/rb/regexp-examples)
-![Build Status](https://travis-ci.org/tom-lord/regexp-examples.svg?branch=master)
+[![Build Status](https://travis-ci.org/tom-lord/regexp-examples.svg?branch=master)](https://travis-ci.org/tom-lord/regexp-examples/builds)
 ![Code Coverage](coverage/coverage-badge.png)
 
 Extends the Regexp class with the method: Regexp#examples
@@ -33,19 +33,23 @@ or a huge number of possible matches, such as `/.\w/`, then only a subset of the
 * Escaped characters, e.g. `/\n/`, `/\w/`, `/\D/` (and so on...)
 * Non-capture groups, e.g. `/(?:foo)/`
 * Capture groups, e.g. `/(group)/`
-  * Including named groups, e.g. `/?(<name>group)/`
+  * Including named groups, e.g. `/(?<name>group)/`
   * ...And backreferences(!!!), e.g. `/(this|that) \1/` `/(?<name>foo) \k<name>/`
   * Groups work fine, even if nested! e.g. `/(even(this(works?))) \1 \2 \3/`
 * **Arbitrarily complex combinations of all the above!**
 
 ## Not-Yet-Supported syntax
 
-I plan to add the following features to the gem (in order of most -> least likely), but have not yet got round to it:
+I plan to add the following features to the gem, but have not yet got round to it:
 
 * Throw exceptions if illegal syntax (see below) is used
 * POSIX bracket expressions, e.g. `/[[:alnum:]]/`, `/[[:space:]]/`
 * Options, e.g. `/pattern/i`, `/foo.*bar/m`
-* Unicode characters, e.g. `/\p{L}/`, `/\p{Arabic}/`
+* Escape sequences, e.g. `/\xa1/`
+* Unicode characters, e.g. `/\u06E9/`
+* Named properties, e.g. `/\p{L}/` ("Letter"), `/\p{Arabic}/` ("Arabic character"), `/\p{^Ll}/` ("Not a lowercase letter")
+* Control characters, e.g. `/\cA/` ... `/\cZ/`
+* Subexpression calls, e.g. `/(?<name> ... \g<name>* )/` (Note: These could get _really_ ugly to implement, and may even be impossible, so I highly doubt it's worth the effort!)
 
 ## Impossible features ("illegal syntax")
 
