@@ -1,4 +1,32 @@
 module RegexpExamples
+  # All Group#result methods return an array of GroupResult objects
+  # The key objective here is to keep track of all capture groups, in order
+  # to fill in backreferences
+  class GroupResult < String
+    attr_reader :group_id, :subgroups
+    def initialize(result, group_id = nil, subgroups = [])
+      @group_id = group_id
+      @subgroups = subgroups
+      if result.respond_to?(:group_id)
+        @subgroups = result.all_subgroups
+      end
+      super(result)
+    end
+
+    def all_subgroups
+      [self, subgroups].flatten.reject { |subgroup| subgroup.group_id.nil? }
+    end
+
+    # Overridden in order to preserve the @group_id and @subgroups
+    def *(int)
+      self.class.new(super.to_s, group_id, subgroups)
+    end
+    # Overridden in order to preserve the @group_id and @subgroups
+    def gsub(regex)
+      self.class.new(super.to_s, group_id, subgroups)
+    end
+  end
+
   class SingleCharGroup
     def initialize(char)
       @char = char
