@@ -70,9 +70,13 @@ RSpec.describe Regexp, "#examples" do
     context "for escaped characters" do
       examples_exist_and_match(
         /\w/,
+        /\W/,
         /\s/,
+        /\S/,
         /\d/,
+        /\D/,
         /\h/,
+        /\H/,
         /\t/,
         /\n/,
         /\f/,
