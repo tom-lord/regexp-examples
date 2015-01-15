@@ -92,9 +92,9 @@ module RegexpExamples
           @current_position += 2
           group_id = nil
         when %w(! =).include?(match[2]) # e.g. /(?=lookahead)/, /(?!neglookahead)/
-          # TODO: Raise exception
+          raise IllegalSyntaxError, "Lookaheads are not regular; cannot generate examples"
         when %w(! =).include?(match[3]) # e.g. /(?<=lookbehind)/, /(?<!neglookbehind)/
-          # TODO: Raise exception
+          raise IllegalSyntaxError, "Lookbehinds are not regular; cannot generate examples"
         else # e.g. /(?<name>namedgroup)/
           @current_position += (match[3].length + 3)
           group_id = match[3]
