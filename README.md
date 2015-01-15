@@ -42,7 +42,7 @@ or a huge number of possible matches, such as `/.\w/`, then only a subset of the
 
 I plan to add the following features to the gem, but have not yet got round to it:
 
-* Throw exceptions if illegal syntax (see below) is used
+* Throw exceptions if illegal syntax (see below) is used. This is currently only partially implemented (for lookarounds only).
 * POSIX bracket expressions, e.g. `/[[:alnum:]]/`, `/[[:space:]]/`
 * Options, e.g. `/pattern/i`, `/foo.*bar/m`
 * Escape sequences, e.g. `/\xa1/`
