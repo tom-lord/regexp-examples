@@ -121,5 +121,16 @@ RSpec.describe Regexp, "#examples" do
         /(?<!neglookbehind)/
       )
     end
+
+    context "for control characters" do
+      examples_exist_and_match(
+        /\ca/,
+        /\cZ/,
+        /\c9/,
+        /\c[/,
+        /\c#/,
+        /\c?/
+      )
+    end
   end
 end
