@@ -66,6 +66,19 @@ Using any of the following will raise a RegexpExamples::IllegalSyntax exception:
 
 (Note: Backreferences are not really "regular" either, but I got these to work with a bit of hackery!)
 
+## Known Bugs
+
+Parsing character sets in regular expressions is extremely complicated. For example, just consider all the different edge cases that this gem _DOES_ work for:
+```ruby
+/[abc]/, /[A-Z0-9]/, /[^a-z]/, /[\w\s\b]/, [^\S], [-a-d], [\[\]], []\\\\\[]
+```
+(Yes, that last one really is valid syntax, and the gem geneates examples correctly!)
+
+However, there are a few obscure bugs that have yet to be resolved:
+
+* Certain (weird!) patterns will cause the gem to freeze, such as: `/[,-.]/.examples` - I know the exact cause, but am yet to fix it.
+* Various (weirder!) legal patterns do not get parsed correctly, such as `/[[wtf]]/.examples` - To solve this, I'll probably have to dig deep into the Ruby source code and imitate the actual Regex parser more closely.
+
 ## Installation
 
 Add this line to your application's Gemfile:
