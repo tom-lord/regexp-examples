@@ -36,7 +36,7 @@ or a huge number of possible matches, such as `/.\w/`, then only a subset of the
   * Including named groups, e.g. `/(?<name>group)/`
   * ...And backreferences(!!!), e.g. `/(this|that) \1/` `/(?<name>foo) \k<name>/`
   * Groups work fine, even if nested! e.g. `/(even(this(works?))) \1 \2 \3/`
-* Control characters, e.g. `/\ca/`, `/\cZ/`, `/\c9/`
+* Control characters, e.g. `/\ca/`, `/\cZ/`, `/\C-9/`
 * **Arbitrarily complex combinations of all the above!**
 
 ## Not-Yet-Supported syntax
