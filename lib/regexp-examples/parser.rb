@@ -65,6 +65,11 @@ module RegexpExamples
         @current_position += $1.length
         sequence = $1.match(/\h{1,4}/)[0] # Strip off "{" and "}"
         group = parse_single_char_group( parse_unicode_sequence(sequence) )
+      when rest_of_string =~ /\Ap\{([^}]+)\}/ # Named properties
+        @current_position += ($1.length + 2)
+        raise UnsupportedSyntaxError, "Named properties ({\\p#{$1}}) are not yet supported"
+      when rest_of_string =~ /\Ag/ # Subexpression call
+        raise UnsupportedSyntaxError, "Subexpression calls (\g) are not yet supported"
       else
         group = parse_single_char_group( regexp_string[@current_position] )
         # TODO: What about cases like \A, \z, \Z ?

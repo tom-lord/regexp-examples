@@ -21,6 +21,14 @@ RSpec.describe Regexp, "#examples" do
     end
   end
 
+  def self.examples_raise_unsupported_syntax_error(*regexps)
+    regexps.each do |regexp|
+      it do
+        expect{regexp.examples}.to raise_error RegexpExamples::UnsupportedSyntaxError
+      end
+    end
+  end
+
   context 'returns matching strings' do
     context "for basic repeaters" do
       examples_exist_and_match(
@@ -119,6 +127,15 @@ RSpec.describe Regexp, "#examples" do
         /(?!neglookahead)/,
         /(?<=lookbehind)/,
         /(?<!neglookbehind)/
+      )
+    end
+
+    context "for unsupported syntax" do
+      examples_raise_unsupported_syntax_error(
+        /\p{L}/,
+        /\p{Arabic}/,
+        /\p{^Ll}/,
+        /(?<name> ... \g<name>*)/
       )
     end
 
