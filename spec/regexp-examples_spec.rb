@@ -129,7 +129,9 @@ RSpec.describe Regexp, "#examples" do
         /\c9/,
         /\c[/,
         /\c#/,
-        /\c?/
+        /\c?/,
+        /\C-a/,
+        /\C-&/
       )
     end
   end
