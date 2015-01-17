@@ -13,6 +13,14 @@ RSpec.describe Regexp, "#examples" do
     end
   end
 
+  def self.examples_raise_illegal_syntax_error(*regexps)
+    regexps.each do |regexp|
+      it do
+        expect{regexp.examples}.to raise_error RegexpExamples::IllegalSyntaxError
+      end
+    end
+  end
+
   context 'returns matching strings' do
     context "for basic repeaters" do
       examples_exist_and_match(
@@ -60,12 +68,6 @@ RSpec.describe Regexp, "#examples" do
         /(?<name>namedgroup)/,
         /(?<name>namedgroup) \k<name>/
       )
-      # TODO: These are not yet implemented
-      # (expect to raise exception)
-#        /(?=lookahead)/,
-#        /(?!neglookahead)/,
-#        /(?<=lookbehind)/,
-#        /(?<!neglookbehind)/,
     end
 
     context "for escaped characters" do
@@ -108,6 +110,26 @@ RSpec.describe Regexp, "#examples" do
         /((a?b*c+)?) \1/,
         /a|b|c|d/,
         /a+|b*|c?/
+      )
+    end
+
+    context "for illegal syntax" do
+      examples_raise_illegal_syntax_error(
+        /(?=lookahead)/,
+        /(?!neglookahead)/,
+        /(?<=lookbehind)/,
+        /(?<!neglookbehind)/
+      )
+    end
+
+    context "for control characters" do
+      examples_exist_and_match(
+        /\ca/,
+        /\cZ/,
+        /\c9/,
+        /\c[/,
+        /\c#/,
+        /\c?/
       )
     end
   end

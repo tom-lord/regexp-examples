@@ -54,6 +54,9 @@ module RegexpExamples
       when BackslashCharMap.keys.include?(regexp_string[@current_position])
         group = CharGroup.new(
           BackslashCharMap[regexp_string[@current_position]])
+      when rest_of_string =~ /\Ac(.)/ # Control character
+        @current_position += 1
+        group = parse_single_char_group( parse_control_character($1) )
         # TODO: There are also a bunch of multi-char matches to watch out for:
         # http://en.wikibooks.org/wiki/Ruby_Programming/Syntax/Literals
       else
@@ -92,9 +95,9 @@ module RegexpExamples
           @current_position += 2
           group_id = nil
         when %w(! =).include?(match[2]) # e.g. /(?=lookahead)/, /(?!neglookahead)/
-          # TODO: Raise exception
+          raise IllegalSyntaxError, "Lookaheads are not regular; cannot generate examples"
         when %w(! =).include?(match[3]) # e.g. /(?<=lookbehind)/, /(?<!neglookbehind)/
-          # TODO: Raise exception
+          raise IllegalSyntaxError, "Lookbehinds are not regular; cannot generate examples"
         else # e.g. /(?<name>namedgroup)/
           @current_position += (match[3].length + 3)
           group_id = match[3]
@@ -146,6 +149,11 @@ module RegexpExamples
 
     def parse_backreference_group(match)
       BackReferenceGroup.new(match)
+    end
+
+    def parse_control_character(char)
+      # TODO: Is there a better way of doing this? I.e. not just brute-force
+      (0..255).detect { |x| x.chr =~ Regexp.new("\\c#{char}") }.chr
     end
 
     def parse_star_repeater(group)
