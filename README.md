@@ -47,7 +47,7 @@ or a huge number of possible matches, such as `/.\w/`, then only a subset of the
 
 * Options, e.g. `/pattern/i`, `/foo.*bar/m` - Using options will currently just be ignored, e.g. `/test/i.examples` will NOT include `"TEST"`
 
-Using any of the following will raise an RegexpExamples::UnsupportedSyntax exception (until such time as they are implemented!):
+Using any of the following will raise a RegexpExamples::UnsupportedSyntax exception (until such time as they are implemented!):
 
 * POSIX bracket expressions, e.g. `/[[:alnum:]]/`, `/[[:space:]]/`
 * Named properties, e.g. `/\p{L}/` ("Letter"), `/\p{Arabic}/` ("Arabic character"), `/\p{^Ll}/` ("Not a lowercase letter")
@@ -58,7 +58,7 @@ Using any of the following will raise an RegexpExamples::UnsupportedSyntax excep
 The following features in the regex language can never be properly implemented into this gem because, put simply, they are not technically "regular"!
 If you'd like to understand this in more detail, there are many good blog posts out on the internet. The [wikipedia entry](http://en.wikipedia.org/wiki/Regular_expression)'s not bad either.
 
-Using any of the following will raise an RegexpExamples::IllegalSyntax exception:
+Using any of the following will raise a RegexpExamples::IllegalSyntax exception:
 
 * Lookarounds, e.g. `/foo(?=bar)/`, `/foo(?!bar)/`, `/(?<=foo)bar/`, `/(?<!foo)bar/`
 * [Anchors](http://ruby-doc.org/core-2.2.0/Regexp.html#class-Regexp-label-Anchors) (`\b`, `\B`, `\G`, `^`, `\A`, `$`, `\z`, `\Z`), e.g. `/\bword\b/`, `/line1\n^line2/`
