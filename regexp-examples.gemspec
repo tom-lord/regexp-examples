@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.date             = '2014-11-04'
   s.summary          = "Extends the Regexp class with '#examples'"
   s.description      =
-    'Regexp#examples returns a list of strings what are matched by the regex'
+    'Regexp#examples returns a list of strings that are matched by the regex'
   s.authors          = ['Tom Lord']
   s.email            = 'lord.thom@gmail.com'
   s.files            = `git ls-files -z`.split("\x0")
