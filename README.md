@@ -45,11 +45,11 @@ or a huge number of possible matches, such as `/.\w/`, then only a subset of the
 
 ## Not-Yet-Supported syntax
 
-I plan to add the following features to the gem, but have not yet got round to it:
+* Options, e.g. `/pattern/i`, `/foo.*bar/m` - Using options will currently just be ignored, e.g. `/test/i.examples` will NOT include `"TEST"`
 
-* Throw exceptions if illegal syntax (see below) is used. This is currently only partially implemented (for lookarounds only).
+Using any of the following will raise an RegexpExamples::UnsupportedSyntax exception (until such time as they are implemented!):
+
 * POSIX bracket expressions, e.g. `/[[:alnum:]]/`, `/[[:space:]]/`
-* Options, e.g. `/pattern/i`, `/foo.*bar/m`
 * Named properties, e.g. `/\p{L}/` ("Letter"), `/\p{Arabic}/` ("Arabic character"), `/\p{^Ll}/` ("Not a lowercase letter")
 * Subexpression calls, e.g. `/(?<name> ... \g<name>* )/` (Note: These could get _really_ ugly to implement, and may even be impossible, so I highly doubt it's worth the effort!)
 
@@ -58,8 +58,11 @@ I plan to add the following features to the gem, but have not yet got round to i
 The following features in the regex language can never be properly implemented into this gem because, put simply, they are not technically "regular"!
 If you'd like to understand this in more detail, there are many good blog posts out on the internet. The [wikipedia entry](http://en.wikipedia.org/wiki/Regular_expression)'s not bad either.
 
-* Lookarounds, e.g. `/foo(?=bar)/`, `/(?<!foo)bar/`
-* Anchors, e.g. `/\bword\b/`, `/line1\n^line2/` (although a special case could perhaps be made to allow `\A`, `^`, `\z` and `$` at the beginning/end of the pattern)
+Using any of the following will raise an RegexpExamples::IllegalSyntax exception:
+
+* Lookarounds, e.g. `/foo(?=bar)/`, `/foo(?!bar)/`, `/(?<=foo)bar/`, `/(?<!foo)bar/`
+* [Anchors](http://ruby-doc.org/core-2.2.0/Regexp.html#class-Regexp-label-Anchors) (`\b`, `\B`, `\G`, `^`, `\A`, `$`, `\z`, `\Z`), e.g. `/\bword\b/`, `/line1\n^line2/`
+  * However, a special case has been made to allow `^` and `\A` at the start of a pattern; and to allow `$`, `\z` and `\Z` at the end of pattern. In such cases, the characters are effectively just ignored.
 
 (Note: Backreferences are not really "regular" either, but I got these to work with a bit of hackery!)
 
