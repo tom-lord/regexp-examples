@@ -22,6 +22,7 @@ or a huge number of possible matches, such as `/.\w/`, then only a subset of the
 /https?:\/\/(www\.)?github\.com/.examples #=> ['http://github.com',
   # 'http://www.github.com', 'https://github.com', 'https://www.github.com']
 /(I(N(C(E(P(T(I(O(N)))))))))*/.examples #=> ["", "INCEPTION", "INCEPTIONINCEPTION"]
+/\x74\x68\x69\x73/.examples #=> ["this"]
 /what about (backreferences\?) \1/.examples #=> ['what about backreferences? backreferences?']
 ```
 
