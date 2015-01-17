@@ -76,6 +76,7 @@ Parsing character sets in regular expressions is extremely complicated. For exam
 
 However, there are a few obscure bugs that have yet to be resolved:
 
+* Empty character groups, such as `/[^\w\W].examples` or `/[^\D0-9]/.examples` do not work properly. Not yet investigated the cause.
 * Certain (weird!) patterns will cause the gem to freeze, such as: `/[,-.]/.examples` - I know the exact cause, but am yet to fix it.
 * Various (weirder!) legal patterns do not get parsed correctly, such as `/[[wtf]]/.examples` - To solve this, I'll probably have to dig deep into the Ruby source code and imitate the actual Regex parser more closely.
 
