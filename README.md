@@ -40,7 +40,7 @@ or a huge number of possible matches, such as `/.\w/`, then only a subset of the
   * Groups work fine, even if nested! e.g. `/(even(this(works?))) \1 \2 \3/`
 * Control characters, e.g. `/\ca/`, `/\cZ/`, `/\C-9/`
 * Escape sequences, e.g. `/\x42/`, `/\x3D/`, `/\5word/`, `/#{"\x80".force_encoding("ASCII-8BIT")}/`
-* Unicode characters, e.g. `/\u0123/`, `/\uabcd/`
+* Unicode characters, e.g. `/\u0123/`, `/\uabcd/`, `/\u{789}/`
 * **Arbitrarily complex combinations of all the above!**
 
 ## Not-Yet-Supported syntax

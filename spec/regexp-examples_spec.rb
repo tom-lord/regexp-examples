@@ -147,7 +147,8 @@ RSpec.describe Regexp, "#examples" do
     context "for unicode sequences" do
       examples_exist_and_match(
       /\u6829/,
-      /\uabcd/
+      /\uabcd/,
+      /\u{42}word/
       )
     end
 

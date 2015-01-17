@@ -61,9 +61,10 @@ module RegexpExamples
       when rest_of_string =~ /\Ax(\h{1,2})/ # Escape sequence
         @current_position += $1.length
         group = parse_single_char_group( parse_escape_sequence($1) )
-      when rest_of_string =~ /\Au(\h{4})/ # Unicode sequence
-        @current_position += 4
-        group = parse_single_char_group( parse_unicode_sequence($1) )
+      when rest_of_string =~ /\Au(\h{4}|\{\h{1,4}\})/ # Unicode sequence
+        @current_position += $1.length
+        sequence = $1.match(/\h{1,4}/)[0] # Strip off "{" and "}"
+        group = parse_single_char_group( parse_unicode_sequence(sequence) )
       else
         group = parse_single_char_group( regexp_string[@current_position] )
         # TODO: What about cases like \A, \z, \Z ?
@@ -166,7 +167,7 @@ module RegexpExamples
     end
 
     def parse_unicode_sequence(match)
-      eval "?\\u#{match}"
+      eval "?\\u{#{match}}"
     end
 
     def parse_star_repeater(group)
