@@ -1,5 +1,5 @@
 language: ruby
 rvm:
-  - 2.0.0
-  - 2.1.0
+  - 2.0.0-p598
+  - 2.1.5
   - ruby-head
