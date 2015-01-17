@@ -134,5 +134,13 @@ RSpec.describe Regexp, "#examples" do
         /\C-&/
       )
     end
+
+    context "for escape sequences "
+    examples_exist_and_match(
+      /\x42/,
+      /\x1D/,
+      /\x3word/,
+      /#{"\x80".force_encoding("ASCII-8BIT")}/
+    )
   end
 end

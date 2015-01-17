@@ -37,6 +37,7 @@ or a huge number of possible matches, such as `/.\w/`, then only a subset of the
   * ...And backreferences(!!!), e.g. `/(this|that) \1/` `/(?<name>foo) \k<name>/`
   * Groups work fine, even if nested! e.g. `/(even(this(works?))) \1 \2 \3/`
 * Control characters, e.g. `/\ca/`, `/\cZ/`, `/\C-9/`
+* Escape sequences, e.g. `/\x42/`, `/\x3D/`, `/\5word/`, `/#{"\x80".force_encoding("ASCII-8BIT")}/`
 * **Arbitrarily complex combinations of all the above!**
 
 ## Not-Yet-Supported syntax
@@ -46,7 +47,6 @@ I plan to add the following features to the gem, but have not yet got round to i
 * Throw exceptions if illegal syntax (see below) is used. This is currently only partially implemented (for lookarounds only).
 * POSIX bracket expressions, e.g. `/[[:alnum:]]/`, `/[[:space:]]/`
 * Options, e.g. `/pattern/i`, `/foo.*bar/m`
-* Escape sequences, e.g. `/\xa1/`
 * Unicode characters, e.g. `/\u06E9/`
 * Named properties, e.g. `/\p{L}/` ("Letter"), `/\p{Arabic}/` ("Arabic character"), `/\p{^Ll}/` ("Not a lowercase letter")
 * Subexpression calls, e.g. `/(?<name> ... \g<name>* )/` (Note: These could get _really_ ugly to implement, and may even be impossible, so I highly doubt it's worth the effort!)
