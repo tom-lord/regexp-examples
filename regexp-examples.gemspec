@@ -3,7 +3,6 @@ require File.expand_path("../lib/regexp-examples/version", __FILE__)
 Gem::Specification.new do |s|
   s.name             = 'regexp-examples'
   s.version          = RegexpExamples::VERSION
-  s.date             = '2014-11-04'
   s.summary          = "Extends the Regexp class with '#examples'"
   s.description      =
     'Regexp#examples returns a list of strings that are matched by the regex'
