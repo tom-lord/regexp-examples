@@ -93,7 +93,8 @@ RSpec.describe Regexp, "#examples" do
         /\f/,
         /\a/,
         /\v/,
-        /\e/
+        /\e/,
+        /[\b]/
       )
     end
 

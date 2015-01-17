@@ -67,6 +67,8 @@ module RegexpExamples
         if char == "\\"
           if BackslashCharMap.keys.include?(@chars[i+1])
             @chars[i..i+1] = BackslashCharMap[@chars[i+1]]
+          elsif @chars[i+1] == 'b'
+            @chars[i..i+1] = "\b"
           elsif @chars[i+1] == "\\"
             @chars.delete_at(i+1)
           else
