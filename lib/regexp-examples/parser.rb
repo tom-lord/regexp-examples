@@ -36,6 +36,18 @@ module RegexpExamples
         group = parse_or_group(repeaters)
       when '\\'
         group = parse_after_backslash_group
+      when '^', 'A'
+        if @current_position == 0
+          group = parse_single_char_group('') # Ignore the "illegal" character
+        else
+          raise IllegalSyntaxError, "Anchors cannot be supported, as they are not regular"
+        end
+      when '$', 'z', 'Z'
+        if @current_position == (regexp_string.length - 1)
+          group = parse_single_char_group('') # Ignore the "illegal" character
+        else
+          raise IllegalSyntaxError, "Anchors cannot be supported, as they are not regular"
+        end
       else
         group = parse_single_char_group(char)
       end
@@ -55,7 +67,6 @@ module RegexpExamples
         group = CharGroup.new(
           BackslashCharMap[regexp_string[@current_position]])
       when rest_of_string =~ /\A(c|C-)(.)/ # Control character
-        # http://en.wikibooks.org/wiki/Ruby_Programming/Syntax/Literals
         @current_position += $1.length
         group = parse_single_char_group( parse_control_character($2) )
       when rest_of_string =~ /\Ax(\h{1,2})/ # Escape sequence
@@ -69,7 +80,22 @@ module RegexpExamples
         @current_position += ($1.length + 2)
         raise UnsupportedSyntaxError, "Named properties ({\\p#{$1}}) are not yet supported"
       when rest_of_string =~ /\Ag/ # Subexpression call
+        # TODO: Should this be IllegalSyntaxError ?
         raise UnsupportedSyntaxError, "Subexpression calls (\g) are not yet supported"
+      when rest_of_string =~ /\A[GbB]/ # Anchors
+        raise IllegalSyntaxError, "Anchors cannot be supported, as they are not regular"
+      when rest_of_string =~ /\AA/ # Start of string
+        if @current_position == 1
+          group = parse_single_char_group('') # Ignore the "illegal" character
+        else
+          raise IllegalSyntaxError, "Anchors cannot be supported, as they are not regular"
+        end
+      when rest_of_string =~ /\A[zZ]/ # End of string
+        if @current_position == (regexp_string.length - 1)
+          group = parse_single_char_group('') # Ignore the "illegal" character
+        else
+          raise IllegalSyntaxError, "Anchors cannot be supported, as they are not regular"
+        end
       else
         group = parse_single_char_group( regexp_string[@current_position] )
         # TODO: What about cases like \A, \z, \Z ?
@@ -123,6 +149,9 @@ module RegexpExamples
     end
 
     def parse_char_group
+      if rest_of_string =~ /\A\[\[:[^:]+:\]\]/
+        raise UnsupportedSyntaxError, "POSIX bracket expressions are not yet implemented"
+      end
       chars = []
       @current_position += 1
       if regexp_string[@current_position] == ']'

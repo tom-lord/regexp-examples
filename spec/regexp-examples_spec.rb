@@ -126,7 +126,25 @@ RSpec.describe Regexp, "#examples" do
         /(?=lookahead)/,
         /(?!neglookahead)/,
         /(?<=lookbehind)/,
-        /(?<!neglookbehind)/
+        /(?<!neglookbehind)/,
+        /\bword-boundary/,
+        /no\Bn-word-boundary/,
+        /\Glast-match/,
+        /start-of\A-string/,
+        /start-of^-line/,
+        /end-of\Z-string/,
+        /end-of\z-string/,
+        /end-of$-line/
+      )
+    end
+
+    context "ignore start/end anchors if at start/end" do
+      examples_exist_and_match(
+        /\Astart/,
+        /^start/,
+        /end$/,
+        /end\z/,
+        /end\Z/
       )
     end
 
@@ -135,7 +153,8 @@ RSpec.describe Regexp, "#examples" do
         /\p{L}/,
         /\p{Arabic}/,
         /\p{^Ll}/,
-        /(?<name> ... \g<name>*)/
+        /(?<name> ... \g<name>*)/,
+        /[[:space:]]/
       )
     end
 
