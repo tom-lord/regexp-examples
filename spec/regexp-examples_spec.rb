@@ -135,12 +135,21 @@ RSpec.describe Regexp, "#examples" do
       )
     end
 
-    context "for escape sequences "
-    examples_exist_and_match(
-      /\x42/,
-      /\x1D/,
-      /\x3word/,
-      /#{"\x80".force_encoding("ASCII-8BIT")}/
-    )
+    context "for escape sequences" do
+      examples_exist_and_match(
+        /\x42/,
+        /\x1D/,
+        /\x3word/,
+        /#{"\x80".force_encoding("ASCII-8BIT")}/
+      )
+    end
+
+    context "for unicode sequences" do
+      examples_exist_and_match(
+      /\u6829/,
+      /\uabcd/
+      )
+    end
+
   end
 end
