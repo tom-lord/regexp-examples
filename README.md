@@ -31,7 +31,7 @@ or a huge number of possible matches, such as `/.\w/`, then only a subset of the
 
 * All forms of repeaters (quantifiers), e.g. `/a*/`, `/a+/`, `/a?/`, `/a{1,4}/`, `/a{3,}/`, `a{,2}`
 * Boolean "Or" groups, e.g. `/a|b|c/`
-* Character sets (inluding ranges and negation!), e.g. `/[abc]/`, `/[A-Z0-9]/`, `/[^a-z]/`
+* Character sets (inluding ranges and negation!), e.g. `/[abc]/`, `/[A-Z0-9]/`, `/[^a-z]/`, `/[\w\s\b]/`
 * Escaped characters, e.g. `/\n/`, `/\w/`, `/\D/` (and so on...)
 * Non-capture groups, e.g. `/(?:foo)/`
 * Capture groups, e.g. `/(group)/`
