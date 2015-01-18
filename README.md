@@ -29,7 +29,7 @@ or a huge number of possible matches, such as `/.\w/`, then only a subset of the
 
 ## Supported syntax
 
-* All forms of repeaters (quantifiers), e.g. `/a*/`, `/a+/`, `/a?/`, `/a{1,4}/`, `/a{3,}/`, `a{,2}`
+* All forms of repeaters (quantifiers), e.g. `/a*/`, `/a+/`, `/a?/`, `/a{1,4}/`, `/a{3,}/`, `/a{,2}/`
 * Boolean "Or" groups, e.g. `/a|b|c/`
 * Character sets (inluding ranges and negation!), e.g. `/[abc]/`, `/[A-Z0-9]/`, `/[^a-z]/`, `/[\w\s\b]/`
 * Escaped characters, e.g. `/\n/`, `/\w/`, `/\D/` (and so on...)
@@ -77,8 +77,7 @@ Parsing character sets in regular expressions is extremely complicated. For exam
 However, there are a few obscure bugs that have yet to be resolved:
 
 * Empty character groups, such as `/[^\w\W].examples` or `/[^\D0-9]/.examples` do not work properly. Not yet investigated the cause.
-* Certain (weird!) patterns will cause the gem to freeze, such as: `/[,-.]/.examples` - I know the exact cause, but am yet to fix it.
-* Various (weirder!) legal patterns do not get parsed correctly, such as `/[[wtf]]/.examples` - To solve this, I'll probably have to dig deep into the Ruby source code and imitate the actual Regex parser more closely.
+* Various (weird!) legal patterns do not get parsed correctly, such as `/[[wtf]]/.examples` - To solve this, I'll probably have to dig deep into the Ruby source code and imitate the actual Regex parser more closely.
 
 ## Installation
 

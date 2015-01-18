@@ -65,7 +65,8 @@ RSpec.describe Regexp, "#examples" do
         /[\\\]]/,
         /[\n-\r]/,
         /[\-]/,
-        /[%-+]/ # This regex is "supposed to" match some surprising things!!!
+        /[%-+]/, # This regex is "supposed to" match some surprising things!!!
+        /['-.]/ # Test to ensure no "infinite loop" on character set expansion
       )
     end
 

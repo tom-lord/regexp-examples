@@ -9,14 +9,13 @@ module RegexpExamples
   MaxGroupResults = 5
 
   module CharSets
-    Lower = Array('a'..'z')
-    Upper = Array('A'..'Z')
-    Digit = Array('0'..'9')
-    # 45.chr = "-". Need to make sure this is at the START of the array, or things break
-    # This is because of the /[a-z]/ regex syntax, and how it's being parsed
-    Punct = [45..45, 33..44, 46..47, 58..64, 91..96, 123..126].map { |r| r.map { |val| val.chr } }.flatten
-    Hex   = Array('a'..'f') | Array('A'..'F') | Digit
-    Any   = Lower | Upper | Digit | Punct
+    Lower      = Array('a'..'z')
+    Upper      = Array('A'..'Z')
+    Digit      = Array('0'..'9')
+    Punct      = [33..47, 58..64, 91..96, 123..126].map { |r| r.map { |val| val.chr } }.flatten
+    Hex        = Array('a'..'f') | Array('A'..'F') | Digit
+    Whitespace = [' ', "\t", "\n", "\r", "\v", "\f"]
+    Any        = Lower | Upper | Digit | Punct
   end
 
   # Map of special regex characters, to their associated character sets
@@ -25,8 +24,8 @@ module RegexpExamples
     'D' => CharSets::Lower | CharSets::Upper | CharSets::Punct,
     'w' => CharSets::Lower | CharSets::Upper | CharSets::Digit | ['_'],
     'W' => CharSets::Punct.reject { |val| val == '_' },
-    's' => [' ', "\t", "\n", "\r", "\v", "\f"],
-    'S' => CharSets::Any - [' ', "\t", "\n", "\r", "\v", "\f"],
+    's' => CharSets::Whitespace,
+    'S' => CharSets::Any - CharSets::Whitespace,
     'h' => CharSets::Hex,
     'H' => CharSets::Any - CharSets::Hex,
 

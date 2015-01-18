@@ -55,6 +55,9 @@ module RegexpExamples
       last = @chars.pop if @chars.last == "-"
       # Replace all instances of e.g. ["a" "-" "z"] with ["a", "b", ..., "z"]
       while i = @chars.index("-")
+        # Prevent infinite loops from expanding [",", "-", "."] to itself
+        # (Since ",".ord = 44, "-".ord = 45, ".".ord = 46)
+        break if (@chars[i-1] == ',' && @chars[i+1] == '.')
         @chars[i-1..i+1] = (@chars[i-1]..@chars[i+1]).to_a
       end
       # restore them back

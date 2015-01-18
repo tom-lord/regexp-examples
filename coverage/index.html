@@ -14,7 +14,7 @@
       <img src="./assets/0.8.0/loading.gif" alt="loading"/>
     </div>
     <div id="wrapper" style="display:none;">
-      <div class="timestamp">Generated <abbr class="timeago" title="2015-01-17T19:44:01+00:00">2015-01-17T19:44:01+00:00</abbr></div>
+      <div class="timestamp">Generated <abbr class="timeago" title="2015-01-18T16:58:22+00:00">2015-01-18T16:58:22+00:00</abbr></div>
       <ul class="group_tabs"></ul>
 
       <div id="content">
@@ -25,15 +25,15 @@
      covered at
      <span class="covered_strength">
        <span class="green">
-         76.73
+         76.43
        </span>
     </span> hits/line)
   </h2>
   <a name="AllFiles"></a>
   <div>
     <b>10</b> files in total.
-    <b>344</b> relevant lines. 
-    <span class="green"><b>344</b> lines covered</span> and
+    <b>346</b> relevant lines. 
+    <span class="green"><b>346</b> lines covered</span> and
     <span class="red"><b>0</b> lines missed </span>
   </div>
   <table class="file_list">
@@ -73,11 +73,11 @@
       <tr>
         <td class="strong"><a href="#63a4d8bce3d583c95db1448751ea1a5d89880a5c" class="src_link" title="lib/regexp-examples/constants.rb">lib/regexp-examples/constants.rb</a></td>
         <td class="green strong">100.0 %</td>
-        <td>42</td>
-        <td>12</td>
-        <td>12</td>
+        <td>41</td>
+        <td>13</td>
+        <td>13</td>
         <td>0</td>
-        <td>6.8</td>
+        <td>6.2</td>
       </tr>
       
       <tr>
@@ -93,11 +93,11 @@
       <tr>
         <td class="strong"><a href="#a6c87537a3f20f2e6e7fc1c61e4c6c791987b6f8" class="src_link" title="lib/regexp-examples/groups.rb">lib/regexp-examples/groups.rb</a></td>
         <td class="green strong">100.0 %</td>
-        <td>147</td>
-        <td>78</td>
-        <td>78</td>
+        <td>150</td>
+        <td>79</td>
+        <td>79</td>
         <td>0</td>
-        <td>154.9</td>
+        <td>153.6</td>
       </tr>
       
       <tr>
@@ -345,8 +345,8 @@
     <h3>lib/regexp-examples/constants.rb</h3>
     <h4><span class="green">100.0 %</span> covered</h4>
     <div>
-      <b>12</b> relevant lines. 
-      <span class="green"><b>12</b> lines covered</span> and
+      <b>13</b> relevant lines. 
+      <span class="green"><b>13</b> lines covered</span> and
       <span class="red"><b>0</b> lines missed.</span>
     </div>
   </div>
@@ -423,184 +423,178 @@
         <li class="covered" data-hits="1" data-linenumber="12">
           <span class="hits">1</span>
           
-          <code class="ruby">    Lower = Array(&#39;a&#39;..&#39;z&#39;)</code>
+          <code class="ruby">    Lower      = Array(&#39;a&#39;..&#39;z&#39;)</code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="13">
           <span class="hits">1</span>
           
-          <code class="ruby">    Upper = Array(&#39;A&#39;..&#39;Z&#39;)</code>
+          <code class="ruby">    Upper      = Array(&#39;A&#39;..&#39;Z&#39;)</code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="14">
           <span class="hits">1</span>
           
-          <code class="ruby">    Digit = Array(&#39;0&#39;..&#39;9&#39;)</code>
+          <code class="ruby">    Digit      = Array(&#39;0&#39;..&#39;9&#39;)</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="15">
+        <li class="covered" data-hits="37" data-linenumber="15">
+          <span class="hits">37</span>
           
-          
-          <code class="ruby">    # 45.chr = &quot;-&quot;. Need to make sure this is at the START of the array, or things break</code>
+          <code class="ruby">    Punct      = [33..47, 58..64, 91..96, 123..126].map { |r| r.map { |val| val.chr } }.flatten</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="16">
+        <li class="covered" data-hits="1" data-linenumber="16">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">    # This is because of the /[a-z]/ regex syntax, and how it&#39;s being parsed</code>
+          <code class="ruby">    Hex        = Array(&#39;a&#39;..&#39;f&#39;) | Array(&#39;A&#39;..&#39;F&#39;) | Digit</code>
         </li>
       
-        <li class="covered" data-hits="39" data-linenumber="17">
-          <span class="hits">39</span>
+        <li class="covered" data-hits="1" data-linenumber="17">
+          <span class="hits">1</span>
           
-          <code class="ruby">    Punct = [45..45, 33..44, 46..47, 58..64, 91..96, 123..126].map { |r| r.map { |val| val.chr } }.flatten</code>
+          <code class="ruby">    Whitespace = [&#39; &#39;, &quot;\t&quot;, &quot;\n&quot;, &quot;\r&quot;, &quot;\v&quot;, &quot;\f&quot;]</code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="18">
           <span class="hits">1</span>
           
-          <code class="ruby">    Hex   = Array(&#39;a&#39;..&#39;f&#39;) | Array(&#39;A&#39;..&#39;F&#39;) | Digit</code>
+          <code class="ruby">    Any        = Lower | Upper | Digit | Punct</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="19">
-          <span class="hits">1</span>
-          
-          <code class="ruby">    Any   = Lower | Upper | Digit | Punct</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="20">
+        <li class="never" data-hits="" data-linenumber="19">
           
           
           <code class="ruby">  end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="21">
+        <li class="never" data-hits="" data-linenumber="20">
           
           
           <code class="ruby"></code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="22">
+        <li class="never" data-hits="" data-linenumber="21">
           
           
           <code class="ruby">  # Map of special regex characters, to their associated character sets</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="23">
+        <li class="covered" data-hits="1" data-linenumber="22">
           <span class="hits">1</span>
           
           <code class="ruby">  BackslashCharMap = {</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="24">
+        <li class="never" data-hits="" data-linenumber="23">
           
           
           <code class="ruby">    &#39;d&#39; =&gt; CharSets::Digit,</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="25">
+        <li class="never" data-hits="" data-linenumber="24">
           
           
           <code class="ruby">    &#39;D&#39; =&gt; CharSets::Lower | CharSets::Upper | CharSets::Punct,</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="26">
+        <li class="never" data-hits="" data-linenumber="25">
           
           
           <code class="ruby">    &#39;w&#39; =&gt; CharSets::Lower | CharSets::Upper | CharSets::Digit | [&#39;_&#39;],</code>
         </li>
       
-        <li class="covered" data-hits="32" data-linenumber="27">
+        <li class="covered" data-hits="32" data-linenumber="26">
           <span class="hits">32</span>
           
           <code class="ruby">    &#39;W&#39; =&gt; CharSets::Punct.reject { |val| val == &#39;_&#39; },</code>
         </li>
       
+        <li class="never" data-hits="" data-linenumber="27">
+          
+          
+          <code class="ruby">    &#39;s&#39; =&gt; CharSets::Whitespace,</code>
+        </li>
+      
         <li class="never" data-hits="" data-linenumber="28">
           
           
-          <code class="ruby">    &#39;s&#39; =&gt; [&#39; &#39;, &quot;\t&quot;, &quot;\n&quot;, &quot;\r&quot;, &quot;\v&quot;, &quot;\f&quot;],</code>
+          <code class="ruby">    &#39;S&#39; =&gt; CharSets::Any - CharSets::Whitespace,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="29">
           
           
-          <code class="ruby">    &#39;S&#39; =&gt; CharSets::Any - [&#39; &#39;, &quot;\t&quot;, &quot;\n&quot;, &quot;\r&quot;, &quot;\v&quot;, &quot;\f&quot;],</code>
+          <code class="ruby">    &#39;h&#39; =&gt; CharSets::Hex,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="30">
           
           
-          <code class="ruby">    &#39;h&#39; =&gt; CharSets::Hex,</code>
+          <code class="ruby">    &#39;H&#39; =&gt; CharSets::Any - CharSets::Hex,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="31">
           
           
-          <code class="ruby">    &#39;H&#39; =&gt; CharSets::Any - CharSets::Hex,</code>
+          <code class="ruby"></code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="32">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">    &#39;t&#39; =&gt; [&quot;\t&quot;], # tab</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="33">
           
           
-          <code class="ruby">    &#39;t&#39; =&gt; [&quot;\t&quot;], # tab</code>
+          <code class="ruby">    &#39;n&#39; =&gt; [&quot;\n&quot;], # new line</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="34">
           
           
-          <code class="ruby">    &#39;n&#39; =&gt; [&quot;\n&quot;], # new line</code>
+          <code class="ruby">    &#39;r&#39; =&gt; [&quot;\r&quot;], # carriage return</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="35">
           
           
-          <code class="ruby">    &#39;r&#39; =&gt; [&quot;\r&quot;], # carriage return</code>
+          <code class="ruby">    &#39;f&#39; =&gt; [&quot;\f&quot;], # form feed</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="36">
           
           
-          <code class="ruby">    &#39;f&#39; =&gt; [&quot;\f&quot;], # form feed</code>
+          <code class="ruby">    &#39;a&#39; =&gt; [&quot;\a&quot;], # alarm</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="37">
           
           
-          <code class="ruby">    &#39;a&#39; =&gt; [&quot;\a&quot;], # alarm</code>
+          <code class="ruby">    &#39;v&#39; =&gt; [&quot;\v&quot;], # vertical tab</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="38">
           
           
-          <code class="ruby">    &#39;v&#39; =&gt; [&quot;\v&quot;], # vertical tab</code>
+          <code class="ruby">    &#39;e&#39; =&gt; [&quot;\e&quot;], # escape</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="39">
           
           
-          <code class="ruby">    &#39;e&#39; =&gt; [&quot;\e&quot;], # escape</code>
+          <code class="ruby">  }</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="40">
           
           
-          <code class="ruby">  }</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="41">
-          
-          
           <code class="ruby">end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="42">
+        <li class="never" data-hits="" data-linenumber="41">
           
           
           <code class="ruby"></code>
@@ -663,8 +657,8 @@
     <h3>lib/regexp-examples/groups.rb</h3>
     <h4><span class="green">100.0 %</span> covered</h4>
     <div>
-      <b>78</b> relevant lines. 
-      <span class="green"><b>78</b> lines covered</span> and
+      <b>79</b> relevant lines. 
+      <span class="green"><b>79</b> lines covered</span> and
       <span class="red"><b>0</b> lines missed.</span>
     </div>
   </div>
@@ -714,20 +708,20 @@
           <code class="ruby">    def initialize(result, group_id = nil, subgroups = [])</code>
         </li>
       
-        <li class="covered" data-hits="1760" data-linenumber="8">
-          <span class="hits">1760</span>
+        <li class="covered" data-hits="1769" data-linenumber="8">
+          <span class="hits">1769</span>
           
           <code class="ruby">      @group_id = group_id</code>
         </li>
       
-        <li class="covered" data-hits="1760" data-linenumber="9">
-          <span class="hits">1760</span>
+        <li class="covered" data-hits="1769" data-linenumber="9">
+          <span class="hits">1769</span>
           
           <code class="ruby">      @subgroups = subgroups</code>
         </li>
       
-        <li class="covered" data-hits="1760" data-linenumber="10">
-          <span class="hits">1760</span>
+        <li class="covered" data-hits="1769" data-linenumber="10">
+          <span class="hits">1769</span>
           
           <code class="ruby">      if result.respond_to?(:group_id)</code>
         </li>
@@ -744,8 +738,8 @@
           <code class="ruby">      end</code>
         </li>
       
-        <li class="covered" data-hits="1760" data-linenumber="13">
-          <span class="hits">1760</span>
+        <li class="covered" data-hits="1769" data-linenumber="13">
+          <span class="hits">1769</span>
           
           <code class="ruby">      super(result)</code>
         </li>
@@ -1014,346 +1008,346 @@
           <code class="ruby">      while i = @chars.index(&quot;-&quot;)</code>
         </li>
       
-        <li class="covered" data-hits="9" data-linenumber="58">
-          <span class="hits">9</span>
+        <li class="never" data-hits="" data-linenumber="58">
           
-          <code class="ruby">        @chars[i-1..i+1] = (@chars[i-1]..@chars[i+1]).to_a</code>
+          
+          <code class="ruby">        # Prevent infinite loops from expanding [&quot;,&quot;, &quot;-&quot;, &quot;.&quot;] to itself</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="59">
           
           
+          <code class="ruby">        # (Since &quot;,&quot;.ord = 44, &quot;-&quot;.ord = 45, &quot;.&quot;.ord = 46)</code>
+        </li>
+      
+        <li class="covered" data-hits="10" data-linenumber="60">
+          <span class="hits">10</span>
+          
+          <code class="ruby">        break if (@chars[i-1] == &#39;,&#39; &amp;&amp; @chars[i+1] == &#39;.&#39;)</code>
+        </li>
+      
+        <li class="covered" data-hits="6" data-linenumber="61">
+          <span class="hits">6</span>
+          
+          <code class="ruby">        @chars[i-1..i+1] = (@chars[i-1]..@chars[i+1]).to_a</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="62">
+          
+          
           <code class="ruby">      end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="60">
-          
-          
-          <code class="ruby">      # restore them back</code>
-        </li>
-      
-        <li class="covered" data-hits="29" data-linenumber="61">
-          <span class="hits">29</span>
-          
-          <code class="ruby">      @chars.unshift(first) if first</code>
-        </li>
-      
-        <li class="covered" data-hits="29" data-linenumber="62">
-          <span class="hits">29</span>
-          
-          <code class="ruby">      @chars.push(last) if last</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="63">
           
           
+          <code class="ruby">      # restore them back</code>
+        </li>
+      
+        <li class="covered" data-hits="29" data-linenumber="64">
+          <span class="hits">29</span>
+          
+          <code class="ruby">      @chars.unshift(first) if first</code>
+        </li>
+      
+        <li class="covered" data-hits="29" data-linenumber="65">
+          <span class="hits">29</span>
+          
+          <code class="ruby">      @chars.push(last) if last</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="66">
+          
+          
           <code class="ruby">    end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="64">
+        <li class="never" data-hits="" data-linenumber="67">
           
           
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="65">
+        <li class="covered" data-hits="1" data-linenumber="68">
           <span class="hits">1</span>
           
           <code class="ruby">    def init_backslash_chars</code>
         </li>
       
-        <li class="covered" data-hits="29" data-linenumber="66">
+        <li class="covered" data-hits="29" data-linenumber="69">
           <span class="hits">29</span>
           
           <code class="ruby">      @chars.each_with_index do |char, i|</code>
         </li>
       
-        <li class="covered" data-hits="541" data-linenumber="67">
+        <li class="covered" data-hits="541" data-linenumber="70">
           <span class="hits">541</span>
           
           <code class="ruby">        if char == &quot;\\&quot;</code>
         </li>
       
-        <li class="covered" data-hits="14" data-linenumber="68">
+        <li class="covered" data-hits="14" data-linenumber="71">
           <span class="hits">14</span>
           
           <code class="ruby">          if BackslashCharMap.keys.include?(@chars[i+1])</code>
         </li>
       
-        <li class="covered" data-hits="4" data-linenumber="69">
+        <li class="covered" data-hits="4" data-linenumber="72">
           <span class="hits">4</span>
           
           <code class="ruby">            @chars[i..i+1] = BackslashCharMap[@chars[i+1]]</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="70">
+        <li class="never" data-hits="" data-linenumber="73">
           
           
           <code class="ruby">          elsif @chars[i+1] == &#39;b&#39;</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="71">
+        <li class="covered" data-hits="1" data-linenumber="74">
           <span class="hits">1</span>
           
           <code class="ruby">            @chars[i..i+1] = &quot;\b&quot;</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="72">
+        <li class="never" data-hits="" data-linenumber="75">
           
           
           <code class="ruby">          elsif @chars[i+1] == &quot;\\&quot;</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="73">
+        <li class="covered" data-hits="2" data-linenumber="76">
           <span class="hits">2</span>
           
           <code class="ruby">            @chars.delete_at(i+1)</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="74">
+        <li class="never" data-hits="" data-linenumber="77">
           
           
           <code class="ruby">          else</code>
         </li>
       
-        <li class="covered" data-hits="7" data-linenumber="75">
+        <li class="covered" data-hits="7" data-linenumber="78">
           <span class="hits">7</span>
           
           <code class="ruby">            @chars.delete_at(i)</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="76">
+        <li class="never" data-hits="" data-linenumber="79">
           
           
           <code class="ruby">          end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="77">
+        <li class="never" data-hits="" data-linenumber="80">
           
           
           <code class="ruby">        end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="78">
+        <li class="never" data-hits="" data-linenumber="81">
           
           
           <code class="ruby">      end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="79">
+        <li class="never" data-hits="" data-linenumber="82">
           
           
           <code class="ruby">    end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="80">
+        <li class="never" data-hits="" data-linenumber="83">
           
           
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="81">
+        <li class="covered" data-hits="1" data-linenumber="84">
           <span class="hits">1</span>
           
           <code class="ruby">    def result</code>
         </li>
       
-        <li class="covered" data-hits="29" data-linenumber="82">
+        <li class="covered" data-hits="29" data-linenumber="85">
           <span class="hits">29</span>
           
           <code class="ruby">      (@negative ? (CharSets::Any - @chars) : @chars).map do |result|</code>
         </li>
       
-        <li class="covered" data-hits="573" data-linenumber="83">
-          <span class="hits">573</span>
+        <li class="covered" data-hits="582" data-linenumber="86">
+          <span class="hits">582</span>
           
           <code class="ruby">        GroupResult.new(result)</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="84">
-          
-          
-          <code class="ruby">      end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="85">
-          
-          
-          <code class="ruby">    end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="86">
-          
-          
-          <code class="ruby">  end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="87">
           
           
+          <code class="ruby">      end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="88">
+          
+          
+          <code class="ruby">    end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="89">
+          
+          
+          <code class="ruby">  end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="90">
+          
+          
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="88">
+        <li class="covered" data-hits="1" data-linenumber="91">
           <span class="hits">1</span>
           
           <code class="ruby">  class DotGroup</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="89">
+        <li class="covered" data-hits="1" data-linenumber="92">
           <span class="hits">1</span>
           
           <code class="ruby">    def result</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="90">
+        <li class="covered" data-hits="1" data-linenumber="93">
           <span class="hits">1</span>
           
           <code class="ruby">      CharSets::Any.map do |result|</code>
         </li>
       
-        <li class="covered" data-hits="94" data-linenumber="91">
+        <li class="covered" data-hits="94" data-linenumber="94">
           <span class="hits">94</span>
           
           <code class="ruby">        GroupResult.new(result)</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="92">
+        <li class="never" data-hits="" data-linenumber="95">
           
           
           <code class="ruby">      end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="93">
+        <li class="never" data-hits="" data-linenumber="96">
           
           
           <code class="ruby">    end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="94">
+        <li class="never" data-hits="" data-linenumber="97">
           
           
           <code class="ruby">  end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="95">
+        <li class="never" data-hits="" data-linenumber="98">
           
           
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="96">
+        <li class="covered" data-hits="1" data-linenumber="99">
           <span class="hits">1</span>
           
           <code class="ruby">  class MultiGroup</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="97">
+        <li class="covered" data-hits="1" data-linenumber="100">
           <span class="hits">1</span>
           
           <code class="ruby">    attr_reader :group_id</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="98">
+        <li class="covered" data-hits="1" data-linenumber="101">
           <span class="hits">1</span>
           
           <code class="ruby">    def initialize(groups, group_id)</code>
         </li>
       
-        <li class="covered" data-hits="41" data-linenumber="99">
+        <li class="covered" data-hits="41" data-linenumber="102">
           <span class="hits">41</span>
           
           <code class="ruby">      @groups = groups</code>
         </li>
       
-        <li class="covered" data-hits="41" data-linenumber="100">
+        <li class="covered" data-hits="41" data-linenumber="103">
           <span class="hits">41</span>
           
           <code class="ruby">      @group_id = group_id</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="101">
-          
-          
-          <code class="ruby">    end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="102">
-          
-          
-          <code class="ruby"></code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="103">
-          
-          
-          <code class="ruby">    # Generates the result of each contained group</code>
-        </li>
-      
         <li class="never" data-hits="" data-linenumber="104">
           
           
-          <code class="ruby">    # and adds the filled group of each result to</code>
+          <code class="ruby">    end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="105">
           
           
+          <code class="ruby"></code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="106">
+          
+          
+          <code class="ruby">    # Generates the result of each contained group</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="107">
+          
+          
+          <code class="ruby">    # and adds the filled group of each result to</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="108">
+          
+          
           <code class="ruby">    # itself</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="106">
+        <li class="covered" data-hits="1" data-linenumber="109">
           <span class="hits">1</span>
           
           <code class="ruby">    def result</code>
         </li>
       
-        <li class="covered" data-hits="186" data-linenumber="107">
+        <li class="covered" data-hits="186" data-linenumber="110">
           <span class="hits">186</span>
           
           <code class="ruby">      strings = @groups.map {|repeater| repeater.result}</code>
         </li>
       
-        <li class="covered" data-hits="41" data-linenumber="108">
+        <li class="covered" data-hits="41" data-linenumber="111">
           <span class="hits">41</span>
           
           <code class="ruby">      RegexpExamples::permutations_of_strings(strings).map do |result|</code>
         </li>
       
-        <li class="covered" data-hits="101" data-linenumber="109">
+        <li class="covered" data-hits="101" data-linenumber="112">
           <span class="hits">101</span>
           
           <code class="ruby">        GroupResult.new(result, group_id)</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="110">
+        <li class="never" data-hits="" data-linenumber="113">
           
           
           <code class="ruby">      end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="111">
+        <li class="never" data-hits="" data-linenumber="114">
           
           
           <code class="ruby">    end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="112">
-          
-          
-          <code class="ruby">  end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="113">
-          
-          
-          <code class="ruby"></code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="114">
-          <span class="hits">1</span>
-          
-          <code class="ruby">  class MultiGroupEnd</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="115">
@@ -1371,67 +1365,67 @@
         <li class="covered" data-hits="1" data-linenumber="117">
           <span class="hits">1</span>
           
-          <code class="ruby">  class OrGroup</code>
+          <code class="ruby">  class MultiGroupEnd</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="118">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="118">
           
-          <code class="ruby">    def initialize(left_repeaters, right_repeaters)</code>
+          
+          <code class="ruby">  end</code>
         </li>
       
-        <li class="covered" data-hits="6" data-linenumber="119">
-          <span class="hits">6</span>
-          
-          <code class="ruby">      @left_repeaters = left_repeaters</code>
-        </li>
-      
-        <li class="covered" data-hits="6" data-linenumber="120">
-          <span class="hits">6</span>
-          
-          <code class="ruby">      @right_repeaters = right_repeaters</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="121">
-          
-          
-          <code class="ruby">    end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="122">
+        <li class="never" data-hits="" data-linenumber="119">
           
           
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="123">
+        <li class="covered" data-hits="1" data-linenumber="120">
+          <span class="hits">1</span>
+          
+          <code class="ruby">  class OrGroup</code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="121">
+          <span class="hits">1</span>
+          
+          <code class="ruby">    def initialize(left_repeaters, right_repeaters)</code>
+        </li>
+      
+        <li class="covered" data-hits="6" data-linenumber="122">
+          <span class="hits">6</span>
+          
+          <code class="ruby">      @left_repeaters = left_repeaters</code>
+        </li>
+      
+        <li class="covered" data-hits="6" data-linenumber="123">
+          <span class="hits">6</span>
+          
+          <code class="ruby">      @right_repeaters = right_repeaters</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="124">
+          
+          
+          <code class="ruby">    end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="125">
+          
+          
+          <code class="ruby"></code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="126">
           <span class="hits">1</span>
           
           <code class="ruby">    def result</code>
         </li>
       
-        <li class="covered" data-hits="6" data-linenumber="124">
-          <span class="hits">6</span>
-          
-          <code class="ruby">      left_result = @left_repeaters.map do |repeater|</code>
-        </li>
-      
-        <li class="covered" data-hits="6" data-linenumber="125">
-          <span class="hits">6</span>
-          
-          <code class="ruby">        RegexpExamples::permutations_of_strings([repeater.result])</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="126">
-          
-          
-          <code class="ruby">      end</code>
-        </li>
-      
         <li class="covered" data-hits="6" data-linenumber="127">
           <span class="hits">6</span>
           
-          <code class="ruby">      right_result = @right_repeaters.map do |repeater|</code>
+          <code class="ruby">      left_result = @left_repeaters.map do |repeater|</code>
         </li>
       
         <li class="covered" data-hits="6" data-linenumber="128">
@@ -1449,13 +1443,13 @@
         <li class="covered" data-hits="6" data-linenumber="130">
           <span class="hits">6</span>
           
-          <code class="ruby">      left_result.concat(right_result).flatten.uniq.map do |result|</code>
+          <code class="ruby">      right_result = @right_repeaters.map do |repeater|</code>
         </li>
       
-        <li class="covered" data-hits="21" data-linenumber="131">
-          <span class="hits">21</span>
+        <li class="covered" data-hits="6" data-linenumber="131">
+          <span class="hits">6</span>
           
-          <code class="ruby">        GroupResult.new(result)</code>
+          <code class="ruby">        RegexpExamples::permutations_of_strings([repeater.result])</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="132">
@@ -1464,91 +1458,109 @@
           <code class="ruby">      end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="133">
+        <li class="covered" data-hits="6" data-linenumber="133">
+          <span class="hits">6</span>
           
-          
-          <code class="ruby">    end</code>
+          <code class="ruby">      left_result.concat(right_result).flatten.uniq.map do |result|</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="134">
+        <li class="covered" data-hits="21" data-linenumber="134">
+          <span class="hits">21</span>
           
-          
-          <code class="ruby">  end</code>
+          <code class="ruby">        GroupResult.new(result)</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="135">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">      end</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="136">
-          <span class="hits">1</span>
-          
-          <code class="ruby">  class BackReferenceGroup</code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="137">
-          <span class="hits">1</span>
-          
-          <code class="ruby">    attr_reader :id</code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="138">
-          <span class="hits">1</span>
-          
-          <code class="ruby">    def initialize(id)</code>
-        </li>
-      
-        <li class="covered" data-hits="20" data-linenumber="139">
-          <span class="hits">20</span>
-          
-          <code class="ruby">      @id = id</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="140">
+        <li class="never" data-hits="" data-linenumber="136">
           
           
           <code class="ruby">    end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="141">
-          
-          
-          <code class="ruby"></code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="142">
-          <span class="hits">1</span>
-          
-          <code class="ruby">    def result</code>
-        </li>
-      
-        <li class="covered" data-hits="20" data-linenumber="143">
-          <span class="hits">20</span>
-          
-          <code class="ruby">      [ GroupResult.new(&quot;__#{@id}__&quot;) ]</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="144">
-          
-          
-          <code class="ruby">    end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="145">
+        <li class="never" data-hits="" data-linenumber="137">
           
           
           <code class="ruby">  end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="146">
+        <li class="never" data-hits="" data-linenumber="138">
           
           
           <code class="ruby"></code>
         </li>
       
+        <li class="covered" data-hits="1" data-linenumber="139">
+          <span class="hits">1</span>
+          
+          <code class="ruby">  class BackReferenceGroup</code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="140">
+          <span class="hits">1</span>
+          
+          <code class="ruby">    attr_reader :id</code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="141">
+          <span class="hits">1</span>
+          
+          <code class="ruby">    def initialize(id)</code>
+        </li>
+      
+        <li class="covered" data-hits="20" data-linenumber="142">
+          <span class="hits">20</span>
+          
+          <code class="ruby">      @id = id</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="143">
+          
+          
+          <code class="ruby">    end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="144">
+          
+          
+          <code class="ruby"></code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="145">
+          <span class="hits">1</span>
+          
+          <code class="ruby">    def result</code>
+        </li>
+      
+        <li class="covered" data-hits="20" data-linenumber="146">
+          <span class="hits">20</span>
+          
+          <code class="ruby">      [ GroupResult.new(&quot;__#{@id}__&quot;) ]</code>
+        </li>
+      
         <li class="never" data-hits="" data-linenumber="147">
+          
+          
+          <code class="ruby">    end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="148">
+          
+          
+          <code class="ruby">  end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="149">
+          
+          
+          <code class="ruby"></code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="150">
           
           
           <code class="ruby">end</code>
