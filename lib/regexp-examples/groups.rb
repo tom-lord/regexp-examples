@@ -53,7 +53,7 @@ module RegexpExamples
       last = nil
       first = @chars.shift if @chars.first == "-"
       last = @chars.pop if @chars.last == "-"
-      # Replace all instances of e.g. ["a" "-" "z"] with ["a", "b", ..., "z"]
+      # Replace all instances of e.g. ["a", "-", "z"] with ["a", "b", ..., "z"]
       while i = @chars.index("-")
         # Prevent infinite loops from expanding [",", "-", "."] to itself
         # (Since ",".ord = 44, "-".ord = 45, ".".ord = 46)
