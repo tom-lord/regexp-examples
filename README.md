@@ -82,7 +82,7 @@ However, there are a few obscure bugs that have yet to be resolved:
 Also:
 
 * Not all examples are shown for repeated groups, e.g. `/[ab]{2}/.examples` does not contain `"ab"` or `"ba"`. This is due to a flaw in the current parser design, and will be fixed in the next major release.
-* Mixing cature groups, or groups and backreferences does not work properly, e.g. `/(a|b)\1/.examples`. This is actually due to the same flaw as above, and will be fixed soon(-ish, probably).
+* Mixing capture groups, 'or' groups, and backreferences does not work properly, e.g. `/(a|b)\1/.examples`. This is actually due to the same flaw as above, and will be fixed soon(-ish, probably).
 
 ## Installation
 
