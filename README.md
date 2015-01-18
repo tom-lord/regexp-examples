@@ -79,6 +79,11 @@ However, there are a few obscure bugs that have yet to be resolved:
 * Empty character groups, such as `/[^\w\W].examples` or `/[^\D0-9]/.examples` do not work properly. Not yet investigated the cause.
 * Various (weird!) legal patterns do not get parsed correctly, such as `/[[wtf]]/.examples` - To solve this, I'll probably have to dig deep into the Ruby source code and imitate the actual Regex parser more closely.
 
+Also:
+
+* Not all examples are shown for repeated groups, e.g. `/[ab]{2}/.examples` does not contain `"ab"` or `"ba"`. This is due to a flaw in the current parser design, and will be fixed in the next major release.
+* Mixing cature groups, or groups and backreferences does not work properly, e.g. `/(a|b)\1/.examples`. This is actually due to the same flaw as above, and will be fixed soon(-ish, probably).
+
 ## Installation
 
 Add this line to your application's Gemfile:
