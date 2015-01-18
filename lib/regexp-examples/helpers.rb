@@ -7,10 +7,10 @@ module RegexpExamples
   # For example:
   # permutations_of_strings [ ['a'], ['b'], ['c', 'd', 'e'] ] #=> ['acb', 'abd', 'abe']
   # permutations_of_strings [ ['a', 'b'], ['c', 'd'] ] #=> [ 'ac', 'ad', 'bc', 'bd' ]
-  def self.permutations_of_strings(arrays_of_strings, options={})
+  def self.permutations_of_strings(arrays_of_strings)
     first = arrays_of_strings.shift
     return first if arrays_of_strings.empty?
-    first.product( permutations_of_strings(arrays_of_strings, options) ).map do |result|
+    first.product( permutations_of_strings(arrays_of_strings) ).map do |result|
       join_preserving_capture_groups(result)
     end
   end

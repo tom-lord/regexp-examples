@@ -33,7 +33,7 @@ module RegexpExamples
     end
 
     def result
-      super(0, TIMES)
+      super(0, MaxRepeaterVariance)
     end
   end
 
@@ -43,7 +43,7 @@ module RegexpExamples
     end
 
     def result
-      super(1, TIMES)
+      super(1, MaxRepeaterVariance + 1)
     end
   end
 
@@ -62,16 +62,22 @@ module RegexpExamples
       super(group)
       @min = min || 0
       if max
-        @max = max
+        # Prevent huge number of results in case of e.g. /.{1,100}/.examples
+        @max = smallest(max, @min + MaxRepeaterVariance)
       elsif has_comma
-        @max = min + TIMES
+        @max = @min + MaxRepeaterVariance
       else
-        @max = min
+        @max = @min
       end
     end
 
     def result
       super(@min, @max)
+    end
+
+    private
+    def smallest(x, y)
+      (x < y) ? x : y
     end
   end
 end

@@ -14,7 +14,7 @@
       <img src="./assets/0.8.0/loading.gif" alt="loading"/>
     </div>
     <div id="wrapper" style="display:none;">
-      <div class="timestamp">Generated <abbr class="timeago" title="2015-01-18T16:58:22+00:00">2015-01-18T16:58:22+00:00</abbr></div>
+      <div class="timestamp">Generated <abbr class="timeago" title="2015-01-18T18:12:19+00:00">2015-01-18T18:12:19+00:00</abbr></div>
       <ul class="group_tabs"></ul>
 
       <div id="content">
@@ -25,15 +25,15 @@
      covered at
      <span class="covered_strength">
        <span class="green">
-         76.43
+         77.2
        </span>
     </span> hits/line)
   </h2>
   <a name="AllFiles"></a>
   <div>
     <b>10</b> files in total.
-    <b>346</b> relevant lines. 
-    <span class="green"><b>346</b> lines covered</span> and
+    <b>349</b> relevant lines. 
+    <span class="green"><b>349</b> lines covered</span> and
     <span class="red"><b>0</b> lines missed </span>
   </div>
   <table class="file_list">
@@ -67,13 +67,13 @@
         <td>11</td>
         <td>11</td>
         <td>0</td>
-        <td>50.6</td>
+        <td>51.8</td>
       </tr>
       
       <tr>
         <td class="strong"><a href="#63a4d8bce3d583c95db1448751ea1a5d89880a5c" class="src_link" title="lib/regexp-examples/constants.rb">lib/regexp-examples/constants.rb</a></td>
         <td class="green strong">100.0 %</td>
-        <td>41</td>
+        <td>47</td>
         <td>13</td>
         <td>13</td>
         <td>0</td>
@@ -97,7 +97,7 @@
         <td>79</td>
         <td>79</td>
         <td>0</td>
-        <td>153.6</td>
+        <td>158.0</td>
       </tr>
       
       <tr>
@@ -107,7 +107,7 @@
         <td>10</td>
         <td>10</td>
         <td>0</td>
-        <td>189.0</td>
+        <td>196.4</td>
       </tr>
       
       <tr>
@@ -117,7 +117,7 @@
         <td>135</td>
         <td>135</td>
         <td>0</td>
-        <td>56.4</td>
+        <td>56.6</td>
       </tr>
       
       <tr>
@@ -127,27 +127,27 @@
         <td>8</td>
         <td>8</td>
         <td>0</td>
-        <td>51.5</td>
+        <td>52.0</td>
       </tr>
       
       <tr>
         <td class="strong"><a href="#0688fc9c3b085e9a6444775c61767c9c5742fb69" class="src_link" title="lib/regexp-examples/repeaters.rb">lib/regexp-examples/repeaters.rb</a></td>
         <td class="green strong">100.0 %</td>
-        <td>78</td>
-        <td>43</td>
-        <td>43</td>
+        <td>84</td>
+        <td>46</td>
+        <td>46</td>
         <td>0</td>
-        <td>73.8</td>
+        <td>69.5</td>
       </tr>
       
       <tr>
         <td class="strong"><a href="#953f94f8f5f8bad7e1fa800f942a74b781f8fa1c" class="src_link" title="spec/regexp-examples_spec.rb">spec/regexp-examples_spec.rb</a></td>
         <td class="green strong">100.0 %</td>
-        <td>193</td>
+        <td>194</td>
         <td>42</td>
         <td>42</td>
         <td>0</td>
-        <td>13.6</td>
+        <td>13.8</td>
       </tr>
       
     </tbody>
@@ -228,14 +228,14 @@
           <code class="ruby">    def substitute_backreferences(full_examples)</code>
         </li>
       
-        <li class="covered" data-hits="76" data-linenumber="4">
-          <span class="hits">76</span>
+        <li class="covered" data-hits="77" data-linenumber="4">
+          <span class="hits">77</span>
           
           <code class="ruby">      full_examples.map do |full_example|</code>
         </li>
       
-        <li class="covered" data-hits="172" data-linenumber="5">
-          <span class="hits">172</span>
+        <li class="covered" data-hits="178" data-linenumber="5">
+          <span class="hits">178</span>
           
           <code class="ruby">        while full_example.match(/__(\w+?)__/)</code>
         </li>
@@ -252,8 +252,8 @@
           <code class="ruby">        end</code>
         </li>
       
-        <li class="covered" data-hits="172" data-linenumber="8">
-          <span class="hits">172</span>
+        <li class="covered" data-hits="178" data-linenumber="8">
+          <span class="hits">178</span>
           
           <code class="ruby">        full_example</code>
         </li>
@@ -363,49 +363,49 @@
         <li class="never" data-hits="" data-linenumber="2">
           
           
-          <code class="ruby">  # Number of times to repeat for Star and Plus repeaters</code>
+          <code class="ruby">  # The maximum variance for any given repeater, to prevent a huge/infinite number of</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="3">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="3">
           
-          <code class="ruby">  TIMES = 2</code>
+          
+          <code class="ruby">  # exampls from being listed. For example, if MaxRepeaterVariance = 2 then:</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="4">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">  # .* is equivalent to .{0,2}</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="5">
           
           
-          <code class="ruby">  # Maximum number of characters returned from a char set, to reduce output spam</code>
+          <code class="ruby">  # .+ is equivalent to .{1,3}</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="6">
           
           
-          <code class="ruby">  # For example:</code>
+          <code class="ruby">  # .{2,} is equivalent to .{2,4}</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="7">
           
           
-          <code class="ruby">  # If MaxGroupResults = 5, then</code>
+          <code class="ruby">  # .{,3} is equivalent to .{0,2}</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="8">
           
           
-          <code class="ruby">  # \d = [0, 1, 2, 3, 4]</code>
+          <code class="ruby">  # .{3,8} is equivalent to .{3,5}</code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="9">
           <span class="hits">1</span>
           
-          <code class="ruby">  MaxGroupResults = 5</code>
+          <code class="ruby">  MaxRepeaterVariance = 2</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="10">
@@ -414,187 +414,223 @@
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="11">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="11">
           
-          <code class="ruby">  module CharSets</code>
+          
+          <code class="ruby">  # Maximum number of characters returned from a char set, to reduce output spam</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="12">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="12">
           
-          <code class="ruby">    Lower      = Array(&#39;a&#39;..&#39;z&#39;)</code>
+          
+          <code class="ruby">  # For example:</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="13">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="13">
           
-          <code class="ruby">    Upper      = Array(&#39;A&#39;..&#39;Z&#39;)</code>
+          
+          <code class="ruby">  # If MaxGroupResults = 5, then</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="14">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="14">
           
-          <code class="ruby">    Digit      = Array(&#39;0&#39;..&#39;9&#39;)</code>
+          
+          <code class="ruby">  # \d = [0, 1, 2, 3, 4]</code>
         </li>
       
-        <li class="covered" data-hits="37" data-linenumber="15">
-          <span class="hits">37</span>
-          
-          <code class="ruby">    Punct      = [33..47, 58..64, 91..96, 123..126].map { |r| r.map { |val| val.chr } }.flatten</code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="16">
+        <li class="covered" data-hits="1" data-linenumber="15">
           <span class="hits">1</span>
           
-          <code class="ruby">    Hex        = Array(&#39;a&#39;..&#39;f&#39;) | Array(&#39;A&#39;..&#39;F&#39;) | Digit</code>
+          <code class="ruby">  MaxGroupResults = 5</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="16">
+          
+          
+          <code class="ruby"></code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="17">
           <span class="hits">1</span>
           
-          <code class="ruby">    Whitespace = [&#39; &#39;, &quot;\t&quot;, &quot;\n&quot;, &quot;\r&quot;, &quot;\v&quot;, &quot;\f&quot;]</code>
+          <code class="ruby">  module CharSets</code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="18">
           <span class="hits">1</span>
           
-          <code class="ruby">    Any        = Lower | Upper | Digit | Punct</code>
+          <code class="ruby">    Lower      = Array(&#39;a&#39;..&#39;z&#39;)</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="19">
+        <li class="covered" data-hits="1" data-linenumber="19">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">  end</code>
+          <code class="ruby">    Upper      = Array(&#39;A&#39;..&#39;Z&#39;)</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="20">
+        <li class="covered" data-hits="1" data-linenumber="20">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby"></code>
+          <code class="ruby">    Digit      = Array(&#39;0&#39;..&#39;9&#39;)</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="21">
+        <li class="covered" data-hits="37" data-linenumber="21">
+          <span class="hits">37</span>
           
-          
-          <code class="ruby">  # Map of special regex characters, to their associated character sets</code>
+          <code class="ruby">    Punct      = [33..47, 58..64, 91..96, 123..126].map { |r| r.map { |val| val.chr } }.flatten</code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="22">
           <span class="hits">1</span>
           
-          <code class="ruby">  BackslashCharMap = {</code>
+          <code class="ruby">    Hex        = Array(&#39;a&#39;..&#39;f&#39;) | Array(&#39;A&#39;..&#39;F&#39;) | Digit</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="23">
+        <li class="covered" data-hits="1" data-linenumber="23">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">    &#39;d&#39; =&gt; CharSets::Digit,</code>
+          <code class="ruby">    Whitespace = [&#39; &#39;, &quot;\t&quot;, &quot;\n&quot;, &quot;\r&quot;, &quot;\v&quot;, &quot;\f&quot;]</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="24">
+        <li class="covered" data-hits="1" data-linenumber="24">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">    &#39;D&#39; =&gt; CharSets::Lower | CharSets::Upper | CharSets::Punct,</code>
+          <code class="ruby">    Any        = Lower | Upper | Digit | Punct</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="25">
           
           
-          <code class="ruby">    &#39;w&#39; =&gt; CharSets::Lower | CharSets::Upper | CharSets::Digit | [&#39;_&#39;],</code>
+          <code class="ruby">  end</code>
         </li>
       
-        <li class="covered" data-hits="32" data-linenumber="26">
-          <span class="hits">32</span>
-          
-          <code class="ruby">    &#39;W&#39; =&gt; CharSets::Punct.reject { |val| val == &#39;_&#39; },</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="27">
-          
-          
-          <code class="ruby">    &#39;s&#39; =&gt; CharSets::Whitespace,</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="28">
-          
-          
-          <code class="ruby">    &#39;S&#39; =&gt; CharSets::Any - CharSets::Whitespace,</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="29">
-          
-          
-          <code class="ruby">    &#39;h&#39; =&gt; CharSets::Hex,</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="30">
-          
-          
-          <code class="ruby">    &#39;H&#39; =&gt; CharSets::Any - CharSets::Hex,</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="31">
+        <li class="never" data-hits="" data-linenumber="26">
           
           
           <code class="ruby"></code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="32">
+        <li class="never" data-hits="" data-linenumber="27">
           
           
-          <code class="ruby">    &#39;t&#39; =&gt; [&quot;\t&quot;], # tab</code>
+          <code class="ruby">  # Map of special regex characters, to their associated character sets</code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="28">
+          <span class="hits">1</span>
+          
+          <code class="ruby">  BackslashCharMap = {</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="29">
+          
+          
+          <code class="ruby">    &#39;d&#39; =&gt; CharSets::Digit,</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="30">
+          
+          
+          <code class="ruby">    &#39;D&#39; =&gt; CharSets::Lower | CharSets::Upper | CharSets::Punct,</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="31">
+          
+          
+          <code class="ruby">    &#39;w&#39; =&gt; CharSets::Lower | CharSets::Upper | CharSets::Digit | [&#39;_&#39;],</code>
+        </li>
+      
+        <li class="covered" data-hits="32" data-linenumber="32">
+          <span class="hits">32</span>
+          
+          <code class="ruby">    &#39;W&#39; =&gt; CharSets::Punct.reject { |val| val == &#39;_&#39; },</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="33">
           
           
-          <code class="ruby">    &#39;n&#39; =&gt; [&quot;\n&quot;], # new line</code>
+          <code class="ruby">    &#39;s&#39; =&gt; CharSets::Whitespace,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="34">
           
           
-          <code class="ruby">    &#39;r&#39; =&gt; [&quot;\r&quot;], # carriage return</code>
+          <code class="ruby">    &#39;S&#39; =&gt; CharSets::Any - CharSets::Whitespace,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="35">
           
           
-          <code class="ruby">    &#39;f&#39; =&gt; [&quot;\f&quot;], # form feed</code>
+          <code class="ruby">    &#39;h&#39; =&gt; CharSets::Hex,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="36">
           
           
-          <code class="ruby">    &#39;a&#39; =&gt; [&quot;\a&quot;], # alarm</code>
+          <code class="ruby">    &#39;H&#39; =&gt; CharSets::Any - CharSets::Hex,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="37">
           
           
-          <code class="ruby">    &#39;v&#39; =&gt; [&quot;\v&quot;], # vertical tab</code>
+          <code class="ruby"></code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="38">
           
           
-          <code class="ruby">    &#39;e&#39; =&gt; [&quot;\e&quot;], # escape</code>
+          <code class="ruby">    &#39;t&#39; =&gt; [&quot;\t&quot;], # tab</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="39">
           
           
-          <code class="ruby">  }</code>
+          <code class="ruby">    &#39;n&#39; =&gt; [&quot;\n&quot;], # new line</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="40">
           
           
-          <code class="ruby">end</code>
+          <code class="ruby">    &#39;r&#39; =&gt; [&quot;\r&quot;], # carriage return</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="41">
+          
+          
+          <code class="ruby">    &#39;f&#39; =&gt; [&quot;\f&quot;], # form feed</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="42">
+          
+          
+          <code class="ruby">    &#39;a&#39; =&gt; [&quot;\a&quot;], # alarm</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="43">
+          
+          
+          <code class="ruby">    &#39;v&#39; =&gt; [&quot;\v&quot;], # vertical tab</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="44">
+          
+          
+          <code class="ruby">    &#39;e&#39; =&gt; [&quot;\e&quot;], # escape</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="45">
+          
+          
+          <code class="ruby">  }</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="46">
+          
+          
+          <code class="ruby">end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="47">
           
           
           <code class="ruby"></code>
@@ -708,26 +744,26 @@
           <code class="ruby">    def initialize(result, group_id = nil, subgroups = [])</code>
         </li>
       
-        <li class="covered" data-hits="1769" data-linenumber="8">
-          <span class="hits">1769</span>
+        <li class="covered" data-hits="1817" data-linenumber="8">
+          <span class="hits">1817</span>
           
           <code class="ruby">      @group_id = group_id</code>
         </li>
       
-        <li class="covered" data-hits="1769" data-linenumber="9">
-          <span class="hits">1769</span>
+        <li class="covered" data-hits="1817" data-linenumber="9">
+          <span class="hits">1817</span>
           
           <code class="ruby">      @subgroups = subgroups</code>
         </li>
       
-        <li class="covered" data-hits="1769" data-linenumber="10">
-          <span class="hits">1769</span>
+        <li class="covered" data-hits="1817" data-linenumber="10">
+          <span class="hits">1817</span>
           
           <code class="ruby">      if result.respond_to?(:group_id)</code>
         </li>
       
-        <li class="covered" data-hits="122" data-linenumber="11">
-          <span class="hits">122</span>
+        <li class="covered" data-hits="135" data-linenumber="11">
+          <span class="hits">135</span>
           
           <code class="ruby">        @subgroups = result.all_subgroups</code>
         </li>
@@ -738,8 +774,8 @@
           <code class="ruby">      end</code>
         </li>
       
-        <li class="covered" data-hits="1769" data-linenumber="13">
-          <span class="hits">1769</span>
+        <li class="covered" data-hits="1817" data-linenumber="13">
+          <span class="hits">1817</span>
           
           <code class="ruby">      super(result)</code>
         </li>
@@ -762,8 +798,8 @@
           <code class="ruby">    def all_subgroups</code>
         </li>
       
-        <li class="covered" data-hits="1775" data-linenumber="17">
-          <span class="hits">1775</span>
+        <li class="covered" data-hits="1873" data-linenumber="17">
+          <span class="hits">1873</span>
           
           <code class="ruby">      [self, subgroups].flatten.reject { |subgroup| subgroup.group_id.nil? }</code>
         </li>
@@ -798,8 +834,8 @@
           <code class="ruby">    def *(int)</code>
         </li>
       
-        <li class="covered" data-hits="464" data-linenumber="23">
-          <span class="hits">464</span>
+        <li class="covered" data-hits="473" data-linenumber="23">
+          <span class="hits">473</span>
           
           <code class="ruby">      self.class.new(super.to_s, group_id, subgroups)</code>
         </li>
@@ -888,14 +924,14 @@
           <code class="ruby">    def initialize(chars)</code>
         </li>
       
-        <li class="covered" data-hits="29" data-linenumber="38">
-          <span class="hits">29</span>
+        <li class="covered" data-hits="30" data-linenumber="38">
+          <span class="hits">30</span>
           
           <code class="ruby">      @chars = chars</code>
         </li>
       
-        <li class="covered" data-hits="29" data-linenumber="39">
-          <span class="hits">29</span>
+        <li class="covered" data-hits="30" data-linenumber="39">
+          <span class="hits">30</span>
           
           <code class="ruby">      if chars[0] == &quot;^&quot;</code>
         </li>
@@ -918,8 +954,8 @@
           <code class="ruby">      else</code>
         </li>
       
-        <li class="covered" data-hits="28" data-linenumber="43">
-          <span class="hits">28</span>
+        <li class="covered" data-hits="29" data-linenumber="43">
+          <span class="hits">29</span>
           
           <code class="ruby">        @negative = false</code>
         </li>
@@ -936,14 +972,14 @@
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="29" data-linenumber="46">
-          <span class="hits">29</span>
+        <li class="covered" data-hits="30" data-linenumber="46">
+          <span class="hits">30</span>
           
           <code class="ruby">      init_backslash_chars</code>
         </li>
       
-        <li class="covered" data-hits="29" data-linenumber="47">
-          <span class="hits">29</span>
+        <li class="covered" data-hits="30" data-linenumber="47">
+          <span class="hits">30</span>
           
           <code class="ruby">      init_ranges</code>
         </li>
@@ -972,26 +1008,26 @@
           <code class="ruby">      # save first and last &quot;-&quot; if present</code>
         </li>
       
-        <li class="covered" data-hits="29" data-linenumber="52">
-          <span class="hits">29</span>
+        <li class="covered" data-hits="30" data-linenumber="52">
+          <span class="hits">30</span>
           
           <code class="ruby">      first = nil</code>
         </li>
       
-        <li class="covered" data-hits="29" data-linenumber="53">
-          <span class="hits">29</span>
+        <li class="covered" data-hits="30" data-linenumber="53">
+          <span class="hits">30</span>
           
           <code class="ruby">      last = nil</code>
         </li>
       
-        <li class="covered" data-hits="29" data-linenumber="54">
-          <span class="hits">29</span>
+        <li class="covered" data-hits="30" data-linenumber="54">
+          <span class="hits">30</span>
           
           <code class="ruby">      first = @chars.shift if @chars.first == &quot;-&quot;</code>
         </li>
       
-        <li class="covered" data-hits="29" data-linenumber="55">
-          <span class="hits">29</span>
+        <li class="covered" data-hits="30" data-linenumber="55">
+          <span class="hits">30</span>
           
           <code class="ruby">      last = @chars.pop if @chars.last == &quot;-&quot;</code>
         </li>
@@ -1002,8 +1038,8 @@
           <code class="ruby">      # Replace all instances of e.g. [&quot;a&quot; &quot;-&quot; &quot;z&quot;] with [&quot;a&quot;, &quot;b&quot;, ..., &quot;z&quot;]</code>
         </li>
       
-        <li class="covered" data-hits="29" data-linenumber="57">
-          <span class="hits">29</span>
+        <li class="covered" data-hits="30" data-linenumber="57">
+          <span class="hits">30</span>
           
           <code class="ruby">      while i = @chars.index(&quot;-&quot;)</code>
         </li>
@@ -1020,14 +1056,14 @@
           <code class="ruby">        # (Since &quot;,&quot;.ord = 44, &quot;-&quot;.ord = 45, &quot;.&quot;.ord = 46)</code>
         </li>
       
-        <li class="covered" data-hits="10" data-linenumber="60">
-          <span class="hits">10</span>
+        <li class="covered" data-hits="12" data-linenumber="60">
+          <span class="hits">12</span>
           
           <code class="ruby">        break if (@chars[i-1] == &#39;,&#39; &amp;&amp; @chars[i+1] == &#39;.&#39;)</code>
         </li>
       
-        <li class="covered" data-hits="6" data-linenumber="61">
-          <span class="hits">6</span>
+        <li class="covered" data-hits="7" data-linenumber="61">
+          <span class="hits">7</span>
           
           <code class="ruby">        @chars[i-1..i+1] = (@chars[i-1]..@chars[i+1]).to_a</code>
         </li>
@@ -1044,14 +1080,14 @@
           <code class="ruby">      # restore them back</code>
         </li>
       
-        <li class="covered" data-hits="29" data-linenumber="64">
-          <span class="hits">29</span>
+        <li class="covered" data-hits="30" data-linenumber="64">
+          <span class="hits">30</span>
           
           <code class="ruby">      @chars.unshift(first) if first</code>
         </li>
       
-        <li class="covered" data-hits="29" data-linenumber="65">
-          <span class="hits">29</span>
+        <li class="covered" data-hits="30" data-linenumber="65">
+          <span class="hits">30</span>
           
           <code class="ruby">      @chars.push(last) if last</code>
         </li>
@@ -1074,14 +1110,14 @@
           <code class="ruby">    def init_backslash_chars</code>
         </li>
       
-        <li class="covered" data-hits="29" data-linenumber="69">
-          <span class="hits">29</span>
+        <li class="covered" data-hits="30" data-linenumber="69">
+          <span class="hits">30</span>
           
           <code class="ruby">      @chars.each_with_index do |char, i|</code>
         </li>
       
-        <li class="covered" data-hits="541" data-linenumber="70">
-          <span class="hits">541</span>
+        <li class="covered" data-hits="544" data-linenumber="70">
+          <span class="hits">544</span>
           
           <code class="ruby">        if char == &quot;\\&quot;</code>
         </li>
@@ -1170,14 +1206,14 @@
           <code class="ruby">    def result</code>
         </li>
       
-        <li class="covered" data-hits="29" data-linenumber="85">
-          <span class="hits">29</span>
+        <li class="covered" data-hits="30" data-linenumber="85">
+          <span class="hits">30</span>
           
           <code class="ruby">      (@negative ? (CharSets::Any - @chars) : @chars).map do |result|</code>
         </li>
       
-        <li class="covered" data-hits="582" data-linenumber="86">
-          <span class="hits">582</span>
+        <li class="covered" data-hits="590" data-linenumber="86">
+          <span class="hits">590</span>
           
           <code class="ruby">        GroupResult.new(result)</code>
         </li>
@@ -1332,8 +1368,8 @@
           <code class="ruby">      RegexpExamples::permutations_of_strings(strings).map do |result|</code>
         </li>
       
-        <li class="covered" data-hits="101" data-linenumber="112">
-          <span class="hits">101</span>
+        <li class="covered" data-hits="113" data-linenumber="112">
+          <span class="hits">113</span>
           
           <code class="ruby">        GroupResult.new(result, group_id)</code>
         </li>
@@ -1464,8 +1500,8 @@
           <code class="ruby">      left_result.concat(right_result).flatten.uniq.map do |result|</code>
         </li>
       
-        <li class="covered" data-hits="21" data-linenumber="134">
-          <span class="hits">21</span>
+        <li class="covered" data-hits="22" data-linenumber="134">
+          <span class="hits">22</span>
           
           <code class="ruby">        GroupResult.new(result)</code>
         </li>
@@ -1641,17 +1677,17 @@
         <li class="covered" data-hits="1" data-linenumber="10">
           <span class="hits">1</span>
           
-          <code class="ruby">  def self.permutations_of_strings(arrays_of_strings, options={})</code>
+          <code class="ruby">  def self.permutations_of_strings(arrays_of_strings)</code>
         </li>
       
-        <li class="covered" data-hits="320" data-linenumber="11">
-          <span class="hits">320</span>
+        <li class="covered" data-hits="321" data-linenumber="11">
+          <span class="hits">321</span>
           
           <code class="ruby">    first = arrays_of_strings.shift</code>
         </li>
       
-        <li class="covered" data-hits="320" data-linenumber="12">
-          <span class="hits">320</span>
+        <li class="covered" data-hits="321" data-linenumber="12">
+          <span class="hits">321</span>
           
           <code class="ruby">    return first if arrays_of_strings.empty?</code>
         </li>
@@ -1659,11 +1695,11 @@
         <li class="covered" data-hits="191" data-linenumber="13">
           <span class="hits">191</span>
           
-          <code class="ruby">    first.product( permutations_of_strings(arrays_of_strings, options) ).map do |result|</code>
+          <code class="ruby">    first.product( permutations_of_strings(arrays_of_strings) ).map do |result|</code>
         </li>
       
-        <li class="covered" data-hits="264" data-linenumber="14">
-          <span class="hits">264</span>
+        <li class="covered" data-hits="282" data-linenumber="14">
+          <span class="hits">282</span>
           
           <code class="ruby">      join_preserving_capture_groups(result)</code>
         </li>
@@ -1692,14 +1728,14 @@
           <code class="ruby">  def self.join_preserving_capture_groups(result)</code>
         </li>
       
-        <li class="covered" data-hits="264" data-linenumber="19">
-          <span class="hits">264</span>
+        <li class="covered" data-hits="282" data-linenumber="19">
+          <span class="hits">282</span>
           
           <code class="ruby">    result.flatten!</code>
         </li>
       
-        <li class="covered" data-hits="264" data-linenumber="20">
-          <span class="hits">264</span>
+        <li class="covered" data-hits="282" data-linenumber="20">
+          <span class="hits">282</span>
           
           <code class="ruby">    subgroups = result</code>
         </li>
@@ -1716,8 +1752,8 @@
           <code class="ruby">      .flatten</code>
         </li>
       
-        <li class="covered" data-hits="264" data-linenumber="23">
-          <span class="hits">264</span>
+        <li class="covered" data-hits="282" data-linenumber="23">
+          <span class="hits">282</span>
           
           <code class="ruby">    GroupResult.new(result.join, nil, subgroups)</code>
         </li>
@@ -1782,20 +1818,20 @@
           <code class="ruby">    def initialize(regexp_string)</code>
         </li>
       
-        <li class="covered" data-hits="93" data-linenumber="5">
-          <span class="hits">93</span>
+        <li class="covered" data-hits="94" data-linenumber="5">
+          <span class="hits">94</span>
           
           <code class="ruby">      @regexp_string = regexp_string</code>
         </li>
       
-        <li class="covered" data-hits="93" data-linenumber="6">
-          <span class="hits">93</span>
+        <li class="covered" data-hits="94" data-linenumber="6">
+          <span class="hits">94</span>
           
           <code class="ruby">      @num_groups = 0</code>
         </li>
       
-        <li class="covered" data-hits="93" data-linenumber="7">
-          <span class="hits">93</span>
+        <li class="covered" data-hits="94" data-linenumber="7">
+          <span class="hits">94</span>
           
           <code class="ruby">      @current_position = 0</code>
         </li>
@@ -1818,44 +1854,44 @@
           <code class="ruby">    def parse</code>
         </li>
       
-        <li class="covered" data-hits="141" data-linenumber="11">
-          <span class="hits">141</span>
+        <li class="covered" data-hits="142" data-linenumber="11">
+          <span class="hits">142</span>
           
           <code class="ruby">      repeaters = []</code>
         </li>
       
-        <li class="covered" data-hits="141" data-linenumber="12">
-          <span class="hits">141</span>
+        <li class="covered" data-hits="142" data-linenumber="12">
+          <span class="hits">142</span>
           
           <code class="ruby">      while @current_position &lt; regexp_string.length</code>
         </li>
       
-        <li class="covered" data-hits="420" data-linenumber="13">
-          <span class="hits">420</span>
+        <li class="covered" data-hits="421" data-linenumber="13">
+          <span class="hits">421</span>
           
           <code class="ruby">        group = parse_group(repeaters)</code>
         </li>
       
-        <li class="covered" data-hits="402" data-linenumber="14">
-          <span class="hits">402</span>
+        <li class="covered" data-hits="403" data-linenumber="14">
+          <span class="hits">403</span>
           
           <code class="ruby">        break if group.is_a? MultiGroupEnd</code>
         </li>
       
-        <li class="covered" data-hits="361" data-linenumber="15">
-          <span class="hits">361</span>
+        <li class="covered" data-hits="362" data-linenumber="15">
+          <span class="hits">362</span>
           
           <code class="ruby">        repeaters = [] if group.is_a? OrGroup</code>
         </li>
       
-        <li class="covered" data-hits="361" data-linenumber="16">
-          <span class="hits">361</span>
+        <li class="covered" data-hits="362" data-linenumber="16">
+          <span class="hits">362</span>
           
           <code class="ruby">        @current_position += 1</code>
         </li>
       
-        <li class="covered" data-hits="361" data-linenumber="17">
-          <span class="hits">361</span>
+        <li class="covered" data-hits="362" data-linenumber="17">
+          <span class="hits">362</span>
           
           <code class="ruby">        repeaters &lt;&lt; parse_repeater(group)</code>
         </li>
@@ -1866,8 +1902,8 @@
           <code class="ruby">      end</code>
         </li>
       
-        <li class="covered" data-hits="123" data-linenumber="19">
-          <span class="hits">123</span>
+        <li class="covered" data-hits="124" data-linenumber="19">
+          <span class="hits">124</span>
           
           <code class="ruby">      repeaters</code>
         </li>
@@ -1902,14 +1938,14 @@
           <code class="ruby">    def parse_group(repeaters)</code>
         </li>
       
-        <li class="covered" data-hits="420" data-linenumber="25">
-          <span class="hits">420</span>
+        <li class="covered" data-hits="421" data-linenumber="25">
+          <span class="hits">421</span>
           
           <code class="ruby">      char = regexp_string[@current_position]</code>
         </li>
       
-        <li class="covered" data-hits="420" data-linenumber="26">
-          <span class="hits">420</span>
+        <li class="covered" data-hits="421" data-linenumber="26">
+          <span class="hits">421</span>
           
           <code class="ruby">      case char</code>
         </li>
@@ -1944,8 +1980,8 @@
           <code class="ruby">      when &#39;[&#39;</code>
         </li>
       
-        <li class="covered" data-hits="16" data-linenumber="32">
-          <span class="hits">16</span>
+        <li class="covered" data-hits="17" data-linenumber="32">
+          <span class="hits">17</span>
           
           <code class="ruby">        group = parse_char_group</code>
         </li>
@@ -2076,8 +2112,8 @@
           <code class="ruby">      end</code>
         </li>
       
-        <li class="covered" data-hits="402" data-linenumber="54">
-          <span class="hits">402</span>
+        <li class="covered" data-hits="403" data-linenumber="54">
+          <span class="hits">403</span>
           
           <code class="ruby">      group</code>
         </li>
@@ -2394,14 +2430,14 @@
           <code class="ruby">    def parse_repeater(group)</code>
         </li>
       
-        <li class="covered" data-hits="361" data-linenumber="107">
-          <span class="hits">361</span>
+        <li class="covered" data-hits="362" data-linenumber="107">
+          <span class="hits">362</span>
           
           <code class="ruby">      char = regexp_string[@current_position]</code>
         </li>
       
-        <li class="covered" data-hits="361" data-linenumber="108">
-          <span class="hits">361</span>
+        <li class="covered" data-hits="362" data-linenumber="108">
+          <span class="hits">362</span>
           
           <code class="ruby">      case char</code>
         </li>
@@ -2460,8 +2496,8 @@
           <code class="ruby">      else</code>
         </li>
       
-        <li class="covered" data-hits="336" data-linenumber="118">
-          <span class="hits">336</span>
+        <li class="covered" data-hits="337" data-linenumber="118">
+          <span class="hits">337</span>
           
           <code class="ruby">        repeater = parse_one_time_repeater(group)</code>
         </li>
@@ -2472,8 +2508,8 @@
           <code class="ruby">      end</code>
         </li>
       
-        <li class="covered" data-hits="361" data-linenumber="120">
-          <span class="hits">361</span>
+        <li class="covered" data-hits="362" data-linenumber="120">
+          <span class="hits">362</span>
           
           <code class="ruby">      repeater</code>
         </li>
@@ -2664,8 +2700,8 @@
           <code class="ruby">    def parse_char_group</code>
         </li>
       
-        <li class="covered" data-hits="16" data-linenumber="152">
-          <span class="hits">16</span>
+        <li class="covered" data-hits="17" data-linenumber="152">
+          <span class="hits">17</span>
           
           <code class="ruby">      if rest_of_string =~ /\A\[\[:[^:]+:\]\]/</code>
         </li>
@@ -2682,20 +2718,20 @@
           <code class="ruby">      end</code>
         </li>
       
-        <li class="covered" data-hits="15" data-linenumber="155">
-          <span class="hits">15</span>
+        <li class="covered" data-hits="16" data-linenumber="155">
+          <span class="hits">16</span>
           
           <code class="ruby">      chars = []</code>
         </li>
       
-        <li class="covered" data-hits="15" data-linenumber="156">
-          <span class="hits">15</span>
+        <li class="covered" data-hits="16" data-linenumber="156">
+          <span class="hits">16</span>
           
           <code class="ruby">      @current_position += 1</code>
         </li>
       
-        <li class="covered" data-hits="15" data-linenumber="157">
-          <span class="hits">15</span>
+        <li class="covered" data-hits="16" data-linenumber="157">
+          <span class="hits">16</span>
           
           <code class="ruby">      if regexp_string[@current_position] == &#39;]&#39;</code>
         </li>
@@ -2736,8 +2772,8 @@
           <code class="ruby">      until regexp_string[@current_position] == &#39;]&#39; \</code>
         </li>
       
-        <li class="covered" data-hits="15" data-linenumber="164">
-          <span class="hits">15</span>
+        <li class="covered" data-hits="16" data-linenumber="164">
+          <span class="hits">16</span>
           
           <code class="ruby">        &amp;&amp; !regexp_string[0..@current_position-1].match(/[^\\](\\{2})*\\\z/)</code>
         </li>
@@ -2766,14 +2802,14 @@
           <code class="ruby">        # /[\\\]]/ (match &quot;\&quot; or &quot;]&quot;)</code>
         </li>
       
-        <li class="covered" data-hits="43" data-linenumber="169">
-          <span class="hits">43</span>
+        <li class="covered" data-hits="46" data-linenumber="169">
+          <span class="hits">46</span>
           
           <code class="ruby">        chars &lt;&lt; regexp_string[@current_position]</code>
         </li>
       
-        <li class="covered" data-hits="43" data-linenumber="170">
-          <span class="hits">43</span>
+        <li class="covered" data-hits="46" data-linenumber="170">
+          <span class="hits">46</span>
           
           <code class="ruby">        @current_position += 1</code>
         </li>
@@ -2784,8 +2820,8 @@
           <code class="ruby">      end</code>
         </li>
       
-        <li class="covered" data-hits="15" data-linenumber="172">
-          <span class="hits">15</span>
+        <li class="covered" data-hits="16" data-linenumber="172">
+          <span class="hits">16</span>
           
           <code class="ruby">      CharGroup.new(chars)</code>
         </li>
@@ -3144,8 +3180,8 @@
           <code class="ruby">    def parse_one_time_repeater(group)</code>
         </li>
       
-        <li class="covered" data-hits="336" data-linenumber="232">
-          <span class="hits">336</span>
+        <li class="covered" data-hits="337" data-linenumber="232">
+          <span class="hits">337</span>
           
           <code class="ruby">      OneTimeRepeater.new(group)</code>
         </li>
@@ -3168,8 +3204,8 @@
           <code class="ruby">    def rest_of_string</code>
         </li>
       
-        <li class="covered" data-hits="294" data-linenumber="236">
-          <span class="hits">294</span>
+        <li class="covered" data-hits="295" data-linenumber="236">
+          <span class="hits">295</span>
           
           <code class="ruby">      regexp_string[@current_position..-1]</code>
         </li>
@@ -3234,8 +3270,8 @@
           <code class="ruby">    def examples</code>
         </li>
       
-        <li class="covered" data-hits="93" data-linenumber="4">
-          <span class="hits">93</span>
+        <li class="covered" data-hits="94" data-linenumber="4">
+          <span class="hits">94</span>
           
           <code class="ruby">      partial_examples =</code>
         </li>
@@ -3252,20 +3288,20 @@
           <code class="ruby">          .parse</code>
         </li>
       
-        <li class="covered" data-hits="163" data-linenumber="7">
-          <span class="hits">163</span>
+        <li class="covered" data-hits="164" data-linenumber="7">
+          <span class="hits">164</span>
           
           <code class="ruby">          .map {|repeater| repeater.result}</code>
         </li>
       
-        <li class="covered" data-hits="76" data-linenumber="8">
-          <span class="hits">76</span>
+        <li class="covered" data-hits="77" data-linenumber="8">
+          <span class="hits">77</span>
           
           <code class="ruby">      full_examples = RegexpExamples::permutations_of_strings(partial_examples)</code>
         </li>
       
-        <li class="covered" data-hits="76" data-linenumber="9">
-          <span class="hits">76</span>
+        <li class="covered" data-hits="77" data-linenumber="9">
+          <span class="hits">77</span>
           
           <code class="ruby">      RegexpExamples::BackReferenceReplacer.new.substitute_backreferences(full_examples)</code>
         </li>
@@ -3309,8 +3345,8 @@
     <h3>lib/regexp-examples/repeaters.rb</h3>
     <h4><span class="green">100.0 %</span> covered</h4>
     <div>
-      <b>43</b> relevant lines. 
-      <span class="green"><b>43</b> lines covered</span> and
+      <b>46</b> relevant lines. 
+      <span class="green"><b>46</b> lines covered</span> and
       <span class="red"><b>0</b> lines missed.</span>
     </div>
   </div>
@@ -3342,8 +3378,8 @@
           <code class="ruby">    def initialize(group)</code>
         </li>
       
-        <li class="covered" data-hits="361" data-linenumber="5">
-          <span class="hits">361</span>
+        <li class="covered" data-hits="362" data-linenumber="5">
+          <span class="hits">362</span>
           
           <code class="ruby">      @group = group</code>
         </li>
@@ -3366,32 +3402,32 @@
           <code class="ruby">    def result(min_repeats, max_repeats)</code>
         </li>
       
-        <li class="covered" data-hits="320" data-linenumber="9">
-          <span class="hits">320</span>
+        <li class="covered" data-hits="321" data-linenumber="9">
+          <span class="hits">321</span>
           
           <code class="ruby">      group_results = @group.result[0 .. MaxGroupResults-1]</code>
         </li>
       
-        <li class="covered" data-hits="320" data-linenumber="10">
-          <span class="hits">320</span>
+        <li class="covered" data-hits="321" data-linenumber="10">
+          <span class="hits">321</span>
           
           <code class="ruby">      results = []</code>
         </li>
       
-        <li class="covered" data-hits="320" data-linenumber="11">
-          <span class="hits">320</span>
+        <li class="covered" data-hits="321" data-linenumber="11">
+          <span class="hits">321</span>
           
           <code class="ruby">      min_repeats.upto(max_repeats) do |repeats|</code>
         </li>
       
-        <li class="covered" data-hits="350" data-linenumber="12">
-          <span class="hits">350</span>
+        <li class="covered" data-hits="355" data-linenumber="12">
+          <span class="hits">355</span>
           
           <code class="ruby">        group_results.each do |group_result|</code>
         </li>
       
-        <li class="covered" data-hits="464" data-linenumber="13">
-          <span class="hits">464</span>
+        <li class="covered" data-hits="473" data-linenumber="13">
+          <span class="hits">473</span>
           
           <code class="ruby">          results &lt;&lt; group_result * repeats</code>
         </li>
@@ -3408,8 +3444,8 @@
           <code class="ruby">      end</code>
         </li>
       
-        <li class="covered" data-hits="320" data-linenumber="16">
-          <span class="hits">320</span>
+        <li class="covered" data-hits="321" data-linenumber="16">
+          <span class="hits">321</span>
           
           <code class="ruby">      results.uniq</code>
         </li>
@@ -3444,8 +3480,8 @@
           <code class="ruby">    def initialize(group)</code>
         </li>
       
-        <li class="covered" data-hits="336" data-linenumber="22">
-          <span class="hits">336</span>
+        <li class="covered" data-hits="337" data-linenumber="22">
+          <span class="hits">337</span>
           
           <code class="ruby">      super</code>
         </li>
@@ -3468,8 +3504,8 @@
           <code class="ruby">    def result</code>
         </li>
       
-        <li class="covered" data-hits="295" data-linenumber="26">
-          <span class="hits">295</span>
+        <li class="covered" data-hits="296" data-linenumber="26">
+          <span class="hits">296</span>
           
           <code class="ruby">      super(1, 1)</code>
         </li>
@@ -3531,7 +3567,7 @@
         <li class="covered" data-hits="5" data-linenumber="36">
           <span class="hits">5</span>
           
-          <code class="ruby">      super(0, TIMES)</code>
+          <code class="ruby">      super(0, MaxRepeaterVariance)</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="37">
@@ -3591,7 +3627,7 @@
         <li class="covered" data-hits="4" data-linenumber="46">
           <span class="hits">4</span>
           
-          <code class="ruby">      super(1, TIMES)</code>
+          <code class="ruby">      super(1, MaxRepeaterVariance + 1)</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="47">
@@ -3702,85 +3738,121 @@
           <code class="ruby">      if max</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="65">
-          <span class="hits">2</span>
+        <li class="never" data-hits="" data-linenumber="65">
           
-          <code class="ruby">        @max = max</code>
+          
+          <code class="ruby">        # Prevent huge number of results in case of e.g. /.{1,100}/.examples</code>
         </li>
       
-        <li class="covered" data-hits="3" data-linenumber="66">
+        <li class="covered" data-hits="2" data-linenumber="66">
+          <span class="hits">2</span>
+          
+          <code class="ruby">        @max = smallest(max, @min + MaxRepeaterVariance)</code>
+        </li>
+      
+        <li class="covered" data-hits="3" data-linenumber="67">
           <span class="hits">3</span>
           
           <code class="ruby">      elsif has_comma</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="67">
+        <li class="covered" data-hits="1" data-linenumber="68">
           <span class="hits">1</span>
           
-          <code class="ruby">        @max = min + TIMES</code>
+          <code class="ruby">        @max = @min + MaxRepeaterVariance</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="68">
+        <li class="never" data-hits="" data-linenumber="69">
           
           
           <code class="ruby">      else</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="69">
+        <li class="covered" data-hits="2" data-linenumber="70">
           <span class="hits">2</span>
           
-          <code class="ruby">        @max = min</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="70">
-          
-          
-          <code class="ruby">      end</code>
+          <code class="ruby">        @max = @min</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="71">
           
           
-          <code class="ruby">    end</code>
+          <code class="ruby">      end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="72">
           
           
+          <code class="ruby">    end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="73">
+          
+          
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="73">
+        <li class="covered" data-hits="1" data-linenumber="74">
           <span class="hits">1</span>
           
           <code class="ruby">    def result</code>
         </li>
       
-        <li class="covered" data-hits="5" data-linenumber="74">
+        <li class="covered" data-hits="5" data-linenumber="75">
           <span class="hits">5</span>
           
           <code class="ruby">      super(@min, @max)</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="75">
+        <li class="never" data-hits="" data-linenumber="76">
           
           
           <code class="ruby">    end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="76">
+        <li class="never" data-hits="" data-linenumber="77">
+          
+          
+          <code class="ruby"></code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="78">
+          <span class="hits">1</span>
+          
+          <code class="ruby">    private</code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="79">
+          <span class="hits">1</span>
+          
+          <code class="ruby">    def smallest(x, y)</code>
+        </li>
+      
+        <li class="covered" data-hits="2" data-linenumber="80">
+          <span class="hits">2</span>
+          
+          <code class="ruby">      (x &lt; y) ? x : y</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="81">
+          
+          
+          <code class="ruby">    end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="82">
           
           
           <code class="ruby">  end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="77">
+        <li class="never" data-hits="" data-linenumber="83">
           
           
           <code class="ruby">end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="78">
+        <li class="never" data-hits="" data-linenumber="84">
           
           
           <code class="ruby"></code>
@@ -3822,26 +3894,26 @@
           <code class="ruby">    regexps.each do |regexp|</code>
         </li>
       
-        <li class="covered" data-hits="76" data-linenumber="4">
-          <span class="hits">76</span>
+        <li class="covered" data-hits="77" data-linenumber="4">
+          <span class="hits">77</span>
           
           <code class="ruby">      it do</code>
         </li>
       
-        <li class="covered" data-hits="76" data-linenumber="5">
-          <span class="hits">76</span>
+        <li class="covered" data-hits="77" data-linenumber="5">
+          <span class="hits">77</span>
           
           <code class="ruby">        regexp_examples = regexp.examples</code>
         </li>
       
-        <li class="covered" data-hits="76" data-linenumber="6">
-          <span class="hits">76</span>
+        <li class="covered" data-hits="77" data-linenumber="6">
+          <span class="hits">77</span>
           
           <code class="ruby">        expect(regexp_examples).not_to be_empty</code>
         </li>
       
-        <li class="covered" data-hits="248" data-linenumber="7">
-          <span class="hits">248</span>
+        <li class="covered" data-hits="255" data-linenumber="7">
+          <span class="hits">255</span>
           
           <code class="ruby">        regexp_examples.each { |example| expect(example).to match(/\A(?:#{regexp.source})\z/) }</code>
         </li>
@@ -4209,754 +4281,760 @@
         <li class="never" data-hits="" data-linenumber="68">
           
           
-          <code class="ruby">        /[%-+]/ # This regex is &quot;supposed to&quot; match some surprising things!!!</code>
+          <code class="ruby">        /[%-+]/, # This regex is &quot;supposed to&quot; match some surprising things!!!</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="69">
           
           
-          <code class="ruby">      )</code>
+          <code class="ruby">        /[&#39;-.]/ # Test to ensure no &quot;infinite loop&quot; on character set expansion</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="70">
           
           
-          <code class="ruby">    end</code>
+          <code class="ruby">      )</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="71">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">    end</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="72">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="72">
           
-          <code class="ruby">    context &quot;for complex multi groups&quot; do</code>
+          
+          <code class="ruby"></code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="73">
           <span class="hits">1</span>
           
-          <code class="ruby">      examples_exist_and_match(</code>
+          <code class="ruby">    context &quot;for complex multi groups&quot; do</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="74">
+        <li class="covered" data-hits="1" data-linenumber="74">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">        /(normal)/,</code>
+          <code class="ruby">      examples_exist_and_match(</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="75">
           
           
-          <code class="ruby">        /(?:nocapture)/,</code>
+          <code class="ruby">        /(normal)/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="76">
           
           
-          <code class="ruby">        /(?&lt;name&gt;namedgroup)/,</code>
+          <code class="ruby">        /(?:nocapture)/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="77">
           
           
-          <code class="ruby">        /(?&lt;name&gt;namedgroup) \k&lt;name&gt;/</code>
+          <code class="ruby">        /(?&lt;name&gt;namedgroup)/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="78">
           
           
-          <code class="ruby">      )</code>
+          <code class="ruby">        /(?&lt;name&gt;namedgroup) \k&lt;name&gt;/</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="79">
           
           
-          <code class="ruby">    end</code>
+          <code class="ruby">      )</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="80">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">    end</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="81">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="81">
           
-          <code class="ruby">    context &quot;for escaped characters&quot; do</code>
+          
+          <code class="ruby"></code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="82">
           <span class="hits">1</span>
           
-          <code class="ruby">      examples_exist_and_match(</code>
+          <code class="ruby">    context &quot;for escaped characters&quot; do</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="83">
+        <li class="covered" data-hits="1" data-linenumber="83">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">        /\w/,</code>
+          <code class="ruby">      examples_exist_and_match(</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="84">
           
           
-          <code class="ruby">        /\W/,</code>
+          <code class="ruby">        /\w/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="85">
           
           
-          <code class="ruby">        /\s/,</code>
+          <code class="ruby">        /\W/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="86">
           
           
-          <code class="ruby">        /\S/,</code>
+          <code class="ruby">        /\s/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="87">
           
           
-          <code class="ruby">        /\d/,</code>
+          <code class="ruby">        /\S/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="88">
           
           
-          <code class="ruby">        /\D/,</code>
+          <code class="ruby">        /\d/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="89">
           
           
-          <code class="ruby">        /\h/,</code>
+          <code class="ruby">        /\D/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="90">
           
           
-          <code class="ruby">        /\H/,</code>
+          <code class="ruby">        /\h/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="91">
           
           
-          <code class="ruby">        /\t/,</code>
+          <code class="ruby">        /\H/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="92">
           
           
-          <code class="ruby">        /\n/,</code>
+          <code class="ruby">        /\t/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="93">
           
           
-          <code class="ruby">        /\f/,</code>
+          <code class="ruby">        /\n/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="94">
           
           
-          <code class="ruby">        /\a/,</code>
+          <code class="ruby">        /\f/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="95">
           
           
-          <code class="ruby">        /\v/,</code>
+          <code class="ruby">        /\a/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="96">
           
           
-          <code class="ruby">        /\e/,</code>
+          <code class="ruby">        /\v/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="97">
           
           
-          <code class="ruby">        /[\b]/</code>
+          <code class="ruby">        /\e/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="98">
           
           
-          <code class="ruby">      )</code>
+          <code class="ruby">        /[\b]/</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="99">
           
           
-          <code class="ruby">    end</code>
+          <code class="ruby">      )</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="100">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">    end</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="101">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="101">
           
-          <code class="ruby">    context &quot;for backreferences&quot; do</code>
+          
+          <code class="ruby"></code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="102">
           <span class="hits">1</span>
           
-          <code class="ruby">      examples_exist_and_match(</code>
+          <code class="ruby">    context &quot;for backreferences&quot; do</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="103">
+        <li class="covered" data-hits="1" data-linenumber="103">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">        /(repeat) \1/,</code>
+          <code class="ruby">      examples_exist_and_match(</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="104">
           
           
-          <code class="ruby">        /(ref1) (ref2) \1 \2/,</code>
+          <code class="ruby">        /(repeat) \1/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="105">
           
           
-          <code class="ruby">        /((ref2)ref1) \1 \2/,</code>
+          <code class="ruby">        /(ref1) (ref2) \1 \2/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="106">
           
           
-          <code class="ruby">        /((ref1and2)) \1 \2/,</code>
+          <code class="ruby">        /((ref2)ref1) \1 \2/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="107">
           
           
-          <code class="ruby">        /(one)(two)(three)(four)(five)(six)(seven)(eight)(nine)(ten) \10\9\8\7\6\5\4\3\2\1/,</code>
+          <code class="ruby">        /((ref1and2)) \1 \2/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="108">
           
           
-          <code class="ruby">        /(a?(b?(c?(d?(e?)))))/</code>
+          <code class="ruby">        /(one)(two)(three)(four)(five)(six)(seven)(eight)(nine)(ten) \10\9\8\7\6\5\4\3\2\1/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="109">
           
           
-          <code class="ruby">      )</code>
+          <code class="ruby">        /(a?(b?(c?(d?(e?)))))/</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="110">
           
           
-          <code class="ruby">    end</code>
+          <code class="ruby">      )</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="111">
           
           
+          <code class="ruby">    end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="112">
+          
+          
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="112">
+        <li class="covered" data-hits="1" data-linenumber="113">
           <span class="hits">1</span>
           
           <code class="ruby">    context &quot;for complex patterns&quot; do</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="113">
+        <li class="never" data-hits="" data-linenumber="114">
           
           
           <code class="ruby">      # Longer combinations of the above</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="114">
+        <li class="covered" data-hits="1" data-linenumber="115">
           <span class="hits">1</span>
           
           <code class="ruby">      examples_exist_and_match(</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="115">
-          
-          
-          <code class="ruby">        /https?:\/\/(www\.)github\.com/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="116">
           
           
-          <code class="ruby">        /(I(N(C(E(P(T(I(O(N)))))))))*/,</code>
+          <code class="ruby">        /https?:\/\/(www\.)github\.com/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="117">
           
           
-          <code class="ruby">        /[\w]{1}/,</code>
+          <code class="ruby">        /(I(N(C(E(P(T(I(O(N)))))))))*/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="118">
           
           
-          <code class="ruby">        /((a?b*c+)) \1/,</code>
+          <code class="ruby">        /[\w]{1}/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="119">
           
           
-          <code class="ruby">        /((a?b*c+)?) \1/,</code>
+          <code class="ruby">        /((a?b*c+)) \1/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="120">
           
           
-          <code class="ruby">        /a|b|c|d/,</code>
+          <code class="ruby">        /((a?b*c+)?) \1/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="121">
           
           
-          <code class="ruby">        /a+|b*|c?/</code>
+          <code class="ruby">        /a|b|c|d/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="122">
           
           
-          <code class="ruby">      )</code>
+          <code class="ruby">        /a+|b*|c?/</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="123">
           
           
-          <code class="ruby">    end</code>
+          <code class="ruby">      )</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="124">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">    end</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="125">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="125">
           
-          <code class="ruby">    context &quot;for illegal syntax&quot; do</code>
+          
+          <code class="ruby"></code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="126">
           <span class="hits">1</span>
           
-          <code class="ruby">      examples_raise_illegal_syntax_error(</code>
+          <code class="ruby">    context &quot;for illegal syntax&quot; do</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="127">
+        <li class="covered" data-hits="1" data-linenumber="127">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">        /(?=lookahead)/,</code>
+          <code class="ruby">      examples_raise_illegal_syntax_error(</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="128">
           
           
-          <code class="ruby">        /(?!neglookahead)/,</code>
+          <code class="ruby">        /(?=lookahead)/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="129">
           
           
-          <code class="ruby">        /(?&lt;=lookbehind)/,</code>
+          <code class="ruby">        /(?!neglookahead)/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="130">
           
           
-          <code class="ruby">        /(?&lt;!neglookbehind)/,</code>
+          <code class="ruby">        /(?&lt;=lookbehind)/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="131">
           
           
-          <code class="ruby">        /\bword-boundary/,</code>
+          <code class="ruby">        /(?&lt;!neglookbehind)/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="132">
           
           
-          <code class="ruby">        /no\Bn-word-boundary/,</code>
+          <code class="ruby">        /\bword-boundary/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="133">
           
           
-          <code class="ruby">        /\Glast-match/,</code>
+          <code class="ruby">        /no\Bn-word-boundary/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="134">
           
           
-          <code class="ruby">        /start-of\A-string/,</code>
+          <code class="ruby">        /\Glast-match/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="135">
           
           
-          <code class="ruby">        /start-of^-line/,</code>
+          <code class="ruby">        /start-of\A-string/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="136">
           
           
-          <code class="ruby">        /end-of\Z-string/,</code>
+          <code class="ruby">        /start-of^-line/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="137">
           
           
-          <code class="ruby">        /end-of\z-string/,</code>
+          <code class="ruby">        /end-of\Z-string/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="138">
           
           
-          <code class="ruby">        /end-of$-line/</code>
+          <code class="ruby">        /end-of\z-string/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="139">
           
           
-          <code class="ruby">      )</code>
+          <code class="ruby">        /end-of$-line/</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="140">
           
           
-          <code class="ruby">    end</code>
+          <code class="ruby">      )</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="141">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">    end</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="142">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="142">
           
-          <code class="ruby">    context &quot;ignore start/end anchors if at start/end&quot; do</code>
+          
+          <code class="ruby"></code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="143">
           <span class="hits">1</span>
           
-          <code class="ruby">      examples_exist_and_match(</code>
+          <code class="ruby">    context &quot;ignore start/end anchors if at start/end&quot; do</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="144">
+        <li class="covered" data-hits="1" data-linenumber="144">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">        /\Astart/,</code>
+          <code class="ruby">      examples_exist_and_match(</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="145">
           
           
-          <code class="ruby">        /^start/,</code>
+          <code class="ruby">        /\Astart/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="146">
           
           
-          <code class="ruby">        /end$/,</code>
+          <code class="ruby">        /^start/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="147">
           
           
-          <code class="ruby">        /end\z/,</code>
+          <code class="ruby">        /end$/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="148">
           
           
-          <code class="ruby">        /end\Z/</code>
+          <code class="ruby">        /end\z/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="149">
           
           
-          <code class="ruby">      )</code>
+          <code class="ruby">        /end\Z/</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="150">
           
           
-          <code class="ruby">    end</code>
+          <code class="ruby">      )</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="151">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">    end</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="152">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="152">
           
-          <code class="ruby">    context &quot;for unsupported syntax&quot; do</code>
+          
+          <code class="ruby"></code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="153">
           <span class="hits">1</span>
           
-          <code class="ruby">      examples_raise_unsupported_syntax_error(</code>
+          <code class="ruby">    context &quot;for unsupported syntax&quot; do</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="154">
+        <li class="covered" data-hits="1" data-linenumber="154">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">        /\p{L}/,</code>
+          <code class="ruby">      examples_raise_unsupported_syntax_error(</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="155">
           
           
-          <code class="ruby">        /\p{Arabic}/,</code>
+          <code class="ruby">        /\p{L}/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="156">
           
           
-          <code class="ruby">        /\p{^Ll}/,</code>
+          <code class="ruby">        /\p{Arabic}/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="157">
           
           
-          <code class="ruby">        /(?&lt;name&gt; ... \g&lt;name&gt;*)/,</code>
+          <code class="ruby">        /\p{^Ll}/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="158">
           
           
-          <code class="ruby">        /[[:space:]]/</code>
+          <code class="ruby">        /(?&lt;name&gt; ... \g&lt;name&gt;*)/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="159">
           
           
-          <code class="ruby">      )</code>
+          <code class="ruby">        /[[:space:]]/</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="160">
           
           
-          <code class="ruby">    end</code>
+          <code class="ruby">      )</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="161">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">    end</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="162">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="162">
           
-          <code class="ruby">    context &quot;for control characters&quot; do</code>
+          
+          <code class="ruby"></code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="163">
           <span class="hits">1</span>
           
-          <code class="ruby">      examples_exist_and_match(</code>
+          <code class="ruby">    context &quot;for control characters&quot; do</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="164">
+        <li class="covered" data-hits="1" data-linenumber="164">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">        /\ca/,</code>
+          <code class="ruby">      examples_exist_and_match(</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="165">
           
           
-          <code class="ruby">        /\cZ/,</code>
+          <code class="ruby">        /\ca/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="166">
           
           
-          <code class="ruby">        /\c9/,</code>
+          <code class="ruby">        /\cZ/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="167">
           
           
-          <code class="ruby">        /\c[/,</code>
+          <code class="ruby">        /\c9/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="168">
           
           
-          <code class="ruby">        /\c#/,</code>
+          <code class="ruby">        /\c[/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="169">
           
           
-          <code class="ruby">        /\c?/,</code>
+          <code class="ruby">        /\c#/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="170">
           
           
-          <code class="ruby">        /\C-a/,</code>
+          <code class="ruby">        /\c?/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="171">
           
           
-          <code class="ruby">        /\C-&amp;/</code>
+          <code class="ruby">        /\C-a/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="172">
           
           
-          <code class="ruby">      )</code>
+          <code class="ruby">        /\C-&amp;/</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="173">
           
           
-          <code class="ruby">    end</code>
+          <code class="ruby">      )</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="174">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">    end</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="175">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="175">
           
-          <code class="ruby">    context &quot;for escape sequences&quot; do</code>
+          
+          <code class="ruby"></code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="176">
           <span class="hits">1</span>
           
-          <code class="ruby">      examples_exist_and_match(</code>
+          <code class="ruby">    context &quot;for escape sequences&quot; do</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="177">
+        <li class="covered" data-hits="1" data-linenumber="177">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">        /\x42/,</code>
+          <code class="ruby">      examples_exist_and_match(</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="178">
           
           
-          <code class="ruby">        /\x1D/,</code>
+          <code class="ruby">        /\x42/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="179">
           
           
-          <code class="ruby">        /\x3word/,</code>
+          <code class="ruby">        /\x1D/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="180">
           
           
-          <code class="ruby">        /#{&quot;\x80&quot;.force_encoding(&quot;ASCII-8BIT&quot;)}/</code>
+          <code class="ruby">        /\x3word/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="181">
           
           
-          <code class="ruby">      )</code>
+          <code class="ruby">        /#{&quot;\x80&quot;.force_encoding(&quot;ASCII-8BIT&quot;)}/</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="182">
           
           
-          <code class="ruby">    end</code>
+          <code class="ruby">      )</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="183">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">    end</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="184">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="184">
           
-          <code class="ruby">    context &quot;for unicode sequences&quot; do</code>
+          
+          <code class="ruby"></code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="185">
           <span class="hits">1</span>
           
-          <code class="ruby">      examples_exist_and_match(</code>
+          <code class="ruby">    context &quot;for unicode sequences&quot; do</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="186">
+        <li class="covered" data-hits="1" data-linenumber="186">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">      /\u6829/,</code>
+          <code class="ruby">      examples_exist_and_match(</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="187">
           
           
-          <code class="ruby">      /\uabcd/,</code>
+          <code class="ruby">      /\u6829/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="188">
           
           
-          <code class="ruby">      /\u{42}word/</code>
+          <code class="ruby">      /\uabcd/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="189">
           
           
-          <code class="ruby">      )</code>
+          <code class="ruby">      /\u{42}word/</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="190">
           
           
-          <code class="ruby">    end</code>
+          <code class="ruby">      )</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="191">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">    end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="192">
           
           
-          <code class="ruby">  end</code>
+          <code class="ruby"></code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="193">
+          
+          
+          <code class="ruby">  end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="194">
           
           
           <code class="ruby">end</code>

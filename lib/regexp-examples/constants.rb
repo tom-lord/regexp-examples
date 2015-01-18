@@ -1,6 +1,12 @@
 module RegexpExamples
-  # Number of times to repeat for Star and Plus repeaters
-  TIMES = 2
+  # The maximum variance for any given repeater, to prevent a huge/infinite number of
+  # exampls from being listed. For example, if MaxRepeaterVariance = 2 then:
+  # .* is equivalent to .{0,2}
+  # .+ is equivalent to .{1,3}
+  # .{2,} is equivalent to .{2,4}
+  # .{,3} is equivalent to .{0,2}
+  # .{3,8} is equivalent to .{3,5}
+  MaxRepeaterVariance = 2
 
   # Maximum number of characters returned from a char set, to reduce output spam
   # For example:
