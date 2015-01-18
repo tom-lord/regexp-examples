@@ -72,7 +72,7 @@ Parsing character sets in regular expressions is extremely complicated. For exam
 ```ruby
 /[abc]/, /[A-Z0-9]/, /[^a-z]/, /[\w\s\b]/, [^\S], [-a-d], [\[\]], []\\\\\[]
 ```
-(Yes, that last one really is valid syntax, and the gem geneates examples correctly!)
+(Yes, that last one really is valid syntax, and the gem generates examples correctly!)
 
 However, there are a few obscure bugs that have yet to be resolved:
 
