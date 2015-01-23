@@ -209,7 +209,8 @@ RSpec.describe Regexp, "#examples" do
         /[^\Wa-zA-Z0-9_]/,
         /[^\d\D]*/,
         /[^\d\D]+/,
-        /[^\d\D]{2}/
+        /[^\d\D]{2}/,
+        /[^\d\D]word/
       )
     end
 
