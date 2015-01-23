@@ -1,6 +1,6 @@
 module RegexpExamples
   # The maximum variance for any given repeater, to prevent a huge/infinite number of
-  # exampls from being listed. For example, if MaxRepeaterVariance = 2 then:
+  # examples from being listed. For example, if MaxRepeaterVariance = 2 then:
   # .* is equivalent to .{0,2}
   # .+ is equivalent to .{1,3}
   # .{2,} is equivalent to .{2,4}

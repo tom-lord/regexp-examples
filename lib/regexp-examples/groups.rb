@@ -57,8 +57,12 @@ module RegexpExamples
       while i = @chars.index("-")
         # Prevent infinite loops from expanding [",", "-", "."] to itself
         # (Since ",".ord = 44, "-".ord = 45, ".".ord = 46)
-        break if (@chars[i-1] == ',' && @chars[i+1] == '.')
-        @chars[i-1..i+1] = (@chars[i-1]..@chars[i+1]).to_a
+        if (@chars[i-1] == ',' && @chars[i+1] == '.')
+          first = '-'
+          @chars.delete_at(i)
+        else
+          @chars[i-1..i+1] = (@chars[i-1]..@chars[i+1]).to_a
+        end
       end
       # restore them back
       @chars.unshift(first) if first
@@ -69,7 +73,7 @@ module RegexpExamples
       @chars.each_with_index do |char, i|
         if char == "\\"
           if BackslashCharMap.keys.include?(@chars[i+1])
-            @chars[i..i+1] = BackslashCharMap[@chars[i+1]]
+            @chars[i..i+1] = move_backslash_to_front( BackslashCharMap[@chars[i+1]] )
           elsif @chars[i+1] == 'b'
             @chars[i..i+1] = "\b"
           elsif @chars[i+1] == "\\"
@@ -85,6 +89,14 @@ module RegexpExamples
       (@negative ? (CharSets::Any - @chars) : @chars).map do |result|
         GroupResult.new(result)
       end
+    end
+
+    private
+    def move_backslash_to_front(chars)
+      if index = chars.index { |char| char == '\\' }
+        chars.unshift chars.delete_at(index)
+      end
+      chars
     end
   end
 

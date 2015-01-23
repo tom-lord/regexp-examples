@@ -65,7 +65,10 @@ module RegexpExamples
         group = parse_backreference_group($1)
       when BackslashCharMap.keys.include?(regexp_string[@current_position])
         group = CharGroup.new(
-          BackslashCharMap[regexp_string[@current_position]])
+          # Note: The `.dup` is important, as it prevents modifying the constant, in
+          # CharGroup#init_ranges (where the '-' is moved to the front)
+          BackslashCharMap[regexp_string[@current_position]].dup
+        )
       when rest_of_string =~ /\A(c|C-)(.)/ # Control character
         @current_position += $1.length
         group = parse_single_char_group( parse_control_character($2) )
@@ -98,7 +101,6 @@ module RegexpExamples
         end
       else
         group = parse_single_char_group( regexp_string[@current_position] )
-        # TODO: What about cases like \A, \z, \Z ?
       end
       group
     end

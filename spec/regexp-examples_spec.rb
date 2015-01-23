@@ -29,6 +29,14 @@ RSpec.describe Regexp, "#examples" do
     end
   end
 
+  def self.examples_are_empty(*regexps)
+    regexps.each do |regexp|
+      it do
+        expect(regexp.examples).to be_empty
+      end
+    end
+  end
+
   context 'returns matching strings' do
     context "for basic repeaters" do
       examples_exist_and_match(
@@ -54,6 +62,7 @@ RSpec.describe Regexp, "#examples" do
 
     context "for complex char groups (square brackets)" do
       examples_exist_and_match(
+
         /[abc]/,
         /[a-c]/,
         /[abc-e]/,
@@ -187,6 +196,20 @@ RSpec.describe Regexp, "#examples" do
       /\u6829/,
       /\uabcd/,
       /\u{42}word/
+      )
+    end
+
+    context "for empty character sets" do
+      examples_are_empty(
+        /[^\d\D]/,
+        /[^\w\W]/,
+        /[^\s\S]/,
+        /[^\h\H]/,
+        /[^\D0-9]/,
+        /[^\Wa-zA-Z0-9_]/,
+        /[^\d\D]*/,
+        /[^\d\D]+/,
+        /[^\d\D]{2}/
       )
     end
 

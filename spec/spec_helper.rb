@@ -33,7 +33,6 @@ RSpec.configure do |config|
   end
 
   config.disable_monkey_patching!
-  config.warnings = true
 
   # Print the 10 slowest examples and example groups at the
   # end of the spec run, to help surface which specs are running
