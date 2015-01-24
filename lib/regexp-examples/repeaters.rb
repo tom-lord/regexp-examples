@@ -6,13 +6,13 @@ module RegexpExamples
     end
 
     def result(min_repeats, max_repeats)
-      group_results = @group.result[0 .. MaxGroupResults-1]
+      group_results = @group.result[0 .. RegexpExamples.MaxGroupResults-1]
       results = []
       min_repeats.upto(max_repeats) do |repeats|
         if repeats.zero?
           results << [ GroupResult.new('') ]
         else
-          results << RegexpExamples::permutations_of_strings(
+          results << RegexpExamples.permutations_of_strings(
             [group_results] * repeats
           )
         end
@@ -37,7 +37,7 @@ module RegexpExamples
     end
 
     def result
-      super(0, MaxRepeaterVariance)
+      super(0, RegexpExamples.MaxRepeaterVariance)
     end
   end
 
@@ -47,7 +47,7 @@ module RegexpExamples
     end
 
     def result
-      super(1, MaxRepeaterVariance + 1)
+      super(1, RegexpExamples.MaxRepeaterVariance + 1)
     end
   end
 
@@ -67,9 +67,9 @@ module RegexpExamples
       @min = min || 0
       if max
         # Prevent huge number of results in case of e.g. /.{1,100}/.examples
-        @max = smallest(max, @min + MaxRepeaterVariance)
+        @max = smallest(max, @min + RegexpExamples.MaxRepeaterVariance)
       elsif has_comma
-        @max = @min + MaxRepeaterVariance
+        @max = @min + RegexpExamples.MaxRepeaterVariance
       else
         @max = @min
       end

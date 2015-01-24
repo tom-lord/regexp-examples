@@ -114,7 +114,7 @@ module RegexpExamples
     # itself
     def result
       strings = @groups.map {|repeater| repeater.result}
-      RegexpExamples::permutations_of_strings(strings).map do |result|
+      RegexpExamples.permutations_of_strings(strings).map do |result|
         GroupResult.new(result, group_id)
       end
     end
@@ -131,8 +131,8 @@ module RegexpExamples
 
 
     def result
-      left_result = RegexpExamples::map_results(@left_repeaters)
-      right_result = RegexpExamples::map_results(@right_repeaters)
+      left_result = RegexpExamples.map_results(@left_repeaters)
+      right_result = RegexpExamples.map_results(@right_repeaters)
       left_result.concat(right_result).flatten.uniq.map do |result|
         GroupResult.new(result)
       end

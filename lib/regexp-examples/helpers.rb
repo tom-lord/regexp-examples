@@ -27,7 +27,7 @@ module RegexpExamples
     repeaters
       .map {|repeater| repeater.result}
       .instance_eval do |partial_results|
-        RegexpExamples::permutations_of_strings(partial_results)
+        RegexpExamples.permutations_of_strings(partial_results)
       end
   end
 end

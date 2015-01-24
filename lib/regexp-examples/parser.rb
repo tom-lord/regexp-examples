@@ -1,10 +1,14 @@
 module RegexpExamples
   class Parser
     attr_reader :regexp_string
-    def initialize(regexp_string)
+    def initialize(regexp_string, options={})
       @regexp_string = regexp_string
       @num_groups = 0
       @current_position = 0
+      RegexpExamples::ResultCountLimiters.configure!(
+        options[:max_repeater_variance],
+        options[:max_group_results]
+      )
     end
 
     def parse

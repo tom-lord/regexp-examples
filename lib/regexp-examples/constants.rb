@@ -1,18 +1,35 @@
 module RegexpExamples
-  # The maximum variance for any given repeater, to prevent a huge/infinite number of
-  # examples from being listed. For example, if MaxRepeaterVariance = 2 then:
-  # .* is equivalent to .{0,2}
-  # .+ is equivalent to .{1,3}
-  # .{2,} is equivalent to .{2,4}
-  # .{,3} is equivalent to .{0,2}
-  # .{3,8} is equivalent to .{3,5}
-  MaxRepeaterVariance = 2
+  class ResultCountLimiters
+    # The maximum variance for any given repeater, to prevent a huge/infinite number of
+    # examples from being listed. For example, if @@max_repeater_variance = 2 then:
+    # .* is equivalent to .{0,2}
+    # .+ is equivalent to .{1,3}
+    # .{2,} is equivalent to .{2,4}
+    # .{,3} is equivalent to .{0,2}
+    # .{3,8} is equivalent to .{3,5}
+    MaxRepeaterVarianceDefault = 2
 
-  # Maximum number of characters returned from a char set, to reduce output spam
-  # For example:
-  # If MaxGroupResults = 5, then
-  # \d = [0, 1, 2, 3, 4]
-  MaxGroupResults = 5
+    # Maximum number of characters returned from a char set, to reduce output spam
+    # For example, if @@max_group_results = 5 then:
+    # \d = ["0", "1", "2", "3", "4"]
+    # \w = ["a", "b", "c", "d", "e"]
+    MaxGroupResultsDefault = 5
+
+    class << self
+      attr_reader :max_repeater_variance, :max_group_results
+      def configure!(max_repeater_variance, max_group_results)
+        @max_repeater_variance = (max_repeater_variance || MaxRepeaterVarianceDefault)
+        @max_group_results = (max_group_results || MaxGroupResultsDefault)
+      end
+    end
+  end
+
+  def self.MaxRepeaterVariance
+    ResultCountLimiters.max_repeater_variance
+  end
+  def self.MaxGroupResults
+    ResultCountLimiters.max_group_results
+  end
 
   module CharSets
     Lower      = Array('a'..'z')
