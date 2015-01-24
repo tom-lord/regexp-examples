@@ -9,11 +9,15 @@ module RegexpExamples
       group_results = @group.result[0 .. MaxGroupResults-1]
       results = []
       min_repeats.upto(max_repeats) do |repeats|
-        group_results.each do |group_result|
-          results << group_result * repeats
+        if repeats.zero?
+          results << [ GroupResult.new('') ]
+        else
+          results << RegexpExamples::permutations_of_strings(
+            [group_results] * repeats
+          )
         end
       end
-      results.uniq
+      results.flatten.uniq
     end
   end
 

@@ -69,9 +69,7 @@ There are a few obscure bugs that have yet to be resolved:
 
 * Various (weird!) legal patterns do not get parsed correctly, such as `/[[wtf]]/.examples` - To solve this, I'll probably have to dig deep into the Ruby source code and imitate the actual Regex parser more closely.
 
-* Not all examples are shown for repeated groups, e.g. `/[ab]{2}/.examples` does not contain `"ab"` or `"ba"`. This is due to a flaw in the current parser design, and will be fixed in the next major release.
-
-* Similarly, examples like `/(a){2} \1/.examples #=> ["aa aa"]` do not quite work properly, as the backreference is saved as `"aa"`, rather than just `"a"`. This bug is closely related to the one above.
+* Backreferences are replaced by the _first_ occurance of the group, not the _last_ (as it should be). This is quite a rare occurance, but for example: `/(a|b){2} \1/.examples` incorrectly includes: `"ba b"` rather than the correct: `"ba a"`
 
 ## Installation
 

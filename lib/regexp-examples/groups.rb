@@ -16,12 +16,6 @@ module RegexpExamples
     def all_subgroups
       [self, subgroups].flatten.reject { |subgroup| subgroup.group_id.nil? }
     end
-
-    # Overridden in order to preserve the @group_id and @subgroups
-    # Used by BaseGroup (which, in turn, is used by all Group objects)
-    def *(int)
-      self.class.new(super.to_s, group_id, subgroups)
-    end
   end
 
   class SingleCharGroup

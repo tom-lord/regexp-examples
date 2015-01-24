@@ -208,11 +208,17 @@ RSpec.describe Regexp, "#examples" do
         /[^\h\H]/,
         /[^\D0-9]/,
         /[^\Wa-zA-Z0-9_]/,
-        /[^\d\D]*/,
         /[^\d\D]+/,
         /[^\d\D]{2}/,
         /[^\d\D]word/
       )
+    end
+
+    context "exact examples match" do
+      # More rigorous tests to assert that ALL examples are being listed
+      it { expect(/[ab]{2}/.examples).to eq ["aa", "ab", "ba", "bb"] }
+      it { expect(/(a|b){2}/.examples).to eq ["aa", "ab", "ba", "bb"] }
+      it { expect(/a+|b?/.examples).to eq ["a", "aa", "aaa", "", "b"] }
     end
 
   end
