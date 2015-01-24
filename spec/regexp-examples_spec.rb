@@ -128,7 +128,8 @@ RSpec.describe Regexp, "#examples" do
         /((a?b*c+)) \1/,
         /((a?b*c+)?) \1/,
         /a|b|c|d/,
-        /a+|b*|c?/
+        /a+|b*|c?/,
+        /one|two|three/
       )
     end
 

@@ -135,13 +135,10 @@ module RegexpExamples
       @right_repeaters = right_repeaters
     end
 
+
     def result
-      left_result = @left_repeaters.map do |repeater|
-        RegexpExamples::permutations_of_strings([repeater.result])
-      end
-      right_result = @right_repeaters.map do |repeater|
-        RegexpExamples::permutations_of_strings([repeater.result])
-      end
+      left_result = RegexpExamples::map_results(@left_repeaters)
+      right_result = RegexpExamples::map_results(@right_repeaters)
       left_result.concat(right_result).flatten.uniq.map do |result|
         GroupResult.new(result)
       end

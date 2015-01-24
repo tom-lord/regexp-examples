@@ -12,7 +12,9 @@ module RegexpExamples
       while @current_position < regexp_string.length
         group = parse_group(repeaters)
         break if group.is_a? MultiGroupEnd
-        repeaters = [] if group.is_a? OrGroup
+        if group.is_a? OrGroup
+          return [OneTimeRepeater.new(group)]
+        end
         @current_position += 1
         repeaters << parse_repeater(group)
       end
