@@ -14,11 +14,8 @@ or a huge number of possible matches, such as `/.\w/`, then only a subset of the
 
 ```ruby
 /a*/.examples #=> [''. 'a', 'aa']
-/b+/.examples #=> ['b', 'bb']
+/ab+/.examples #=> ['ab', 'abb', 'abbb']
 /this|is|awesome/.examples #=> ['this', 'is', 'awesome']
-/foo-.{1,}-bar/.examples #=> ['foo-a-bar', 'foo-b-bar', 'foo-c-bar', 'foo-d-bar', 'foo-e-bar',
-  # 'foo-aa-bar', 'foo-bb-bar', 'foo-cc-bar', 'foo-dd-bar', 'foo-ee-bar', 'foo-aaa-bar', 'foo-bbb-bar',
-  # 'foo-ccc-bar', 'foo-ddd-bar', 'foo-eee-bar']
 /https?:\/\/(www\.)?github\.com/.examples #=> ['http://github.com',
   # 'http://www.github.com', 'https://github.com', 'https://www.github.com']
 /(I(N(C(E(P(T(I(O(N)))))))))*/.examples #=> ["", "INCEPTION", "INCEPTIONINCEPTION"]
@@ -73,7 +70,8 @@ There are a few obscure bugs that have yet to be resolved:
 * Various (weird!) legal patterns do not get parsed correctly, such as `/[[wtf]]/.examples` - To solve this, I'll probably have to dig deep into the Ruby source code and imitate the actual Regex parser more closely.
 
 * Not all examples are shown for repeated groups, e.g. `/[ab]{2}/.examples` does not contain `"ab"` or `"ba"`. This is due to a flaw in the current parser design, and will be fixed in the next major release.
-* Mixing capture groups, 'or' groups, and backreferences does not work properly, e.g. `/(a|b)\1/.examples`. This is actually due to the same flaw as above, and will be fixed soon(-ish, probably).
+
+* Similarly, examples like `/(a){2} \1/.examples #=> ["aa aa"]` do not quite work properly, as the backreference is saved as `"aa"`, rather than just `"a"`. This bug is closely related to the one above.
 
 ## Installation
 
