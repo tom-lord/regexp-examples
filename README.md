@@ -85,13 +85,13 @@ When generating examples, the gem uses 2 configurable values to limit how many e
 To use an alternative value, simply pass the configuration option as follows:
 
 ```ruby
-/a*/.examples(max_repeater_variance: 5) #=> [''. 'a', 'aa', 'aaa', 'aaaa']
+/a*/.examples(max_repeater_variance: 5) #=> [''. 'a', 'aa', 'aaa', 'aaaa' 'aaaaa']
 /[F-X]/.examples(max_group_results: 10) #=> ['F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O']
 ```
 
 **_WARNING_**: Choosing huge numbers, along with a "complex" regex, could easily cause your system to freeze!
 
-For example, if you try to generate a list of _all_ 5-letter words: `/\w{5}/.examples(max_group_results: 999)`, then - since there are actually `63` "word" characters (upper/lower case letters, numbers and "\_"), this will try to generate `63**5 #=> 992436543` (almost 1 trillion) examples!
+For example, if you try to generate a list of _all_ 5-letter words: `/\w{5}/.examples(max_group_results: 999)`, then since there are actually `63` "word" characters (upper/lower case letters, numbers and "\_"), this will try to generate `63**5 #=> 992436543` (almost 1 _trillion_) examples!
 
 In other words, think twice before playing around with this config!
 
