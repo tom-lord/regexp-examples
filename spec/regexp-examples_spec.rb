@@ -218,9 +218,27 @@ RSpec.describe Regexp, "#examples" do
 
     context "exact examples match" do
       # More rigorous tests to assert that ALL examples are being listed
-      it { expect(/[ab]{2}/.examples).to eq ["aa", "ab", "ba", "bb"] }
-      it { expect(/(a|b){2}/.examples).to eq ["aa", "ab", "ba", "bb"] }
-      it { expect(/a+|b?/.examples).to eq ["a", "aa", "aaa", "", "b"] }
+      context "default options" do
+        it { expect(/[ab]{2}/.examples).to eq ["aa", "ab", "ba", "bb"] }
+        it { expect(/(a|b){2}/.examples).to eq ["aa", "ab", "ba", "bb"] }
+        it { expect(/a+|b?/.examples).to eq ["a", "aa", "aaa", "", "b"] }
+      end
+      context "max_repeater_variance option" do
+        it do
+          expect(/a+/.examples(max_repeater_variance: 5))
+            .to eq %w(a aa aaa aaaa aaaaa aaaaaa)
+        end
+        it do
+          expect(/a{4,8}/.examples(max_repeater_variance: 0))
+            .to eq %w(aaaa)
+        end
+      end
+      context "max_group_results option" do
+        it do
+          expect(/\d/.examples(max_group_results: 10))
+            .to eq %w(0 1 2 3 4 5 6 7 8 9)
+        end
+      end
     end
 
   end
