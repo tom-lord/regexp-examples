@@ -70,17 +70,17 @@ Using any of the following will raise a RegexpExamples::IllegalSyntax exception:
 When generating examples, the gem uses 2 configurable values to limit how many examples are listed:
 
 * `max_repeater_variance` (default = `2`) restricts how many examples to return for each repeater. For example:
-  * .\* is equivalent to .{0,2}
-  * .+ is equivalent to .{1,3}
-  * .{2,} is equivalent to .{2,4}
-  * .{,3} is equivalent to .{0,2}
-  * .{3,8} is equivalent to .{3,5}
+  * `.*` is equivalent to `.{0,2}`
+  * `.+` is equivalent to `.{1,3}`
+  * `.{2,}` is equivalent to `.{2,4}`
+  * `.{,3}` is equivalent to `.{0,2}`
+  * `.{3,8}` is equivalent to `.{3,5}`
 
 * `max_group_results` (default = `5`) restricts how many characters to return for each "set". For example:
-  * \d = ["0", "1", "2", "3", "4"]
-  * \w = ["a", "b", "c", "d", "e"]
-  * [h-s] = ["h", "i", "j", "k", "l"]
-  * (1|2|3|4|5|6|7|8) = ["1", "2", "3", "4", "5"]
+  * `\d` is equivalent to `[01234]`
+  * `\w` is equivalent to `[abcde]`
+  * `[h-s]` is equivalent to `[hijkl]`
+  * `(1|2|3|4|5|6|7|8)` is equivalent to `[12345]`
 
 To use an alternative value, simply pass the configuration option as follows:
 
