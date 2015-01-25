@@ -41,9 +41,12 @@ For more detail on this, see [configuration options](#configuration_options).
 * Unicode characters, e.g. `/\u0123/`, `/\uabcd/`, `/\u{789}/`
 * **Arbitrarily complex combinations of all the above!**
 
+<a name="not_yet_supported_syntax"/>
 ## Not-Yet-Supported syntax
 
 * Options, e.g. `/pattern/i`, `/foo.*bar/m` - Using options will currently just be ignored, e.g. `/test/i.examples` will NOT include `"TEST"`
+
+* Nested character classes, and the use of set intersection, e.g. `/[[a-d]&&[c-f]]/.examples` (which _should_ return: `["c", "d"]`). ([See here](http://www.ruby-doc.org/core-2.2.0/Regexp.html#class-Regexp-label-Character+Classes) for the official documentation on this.)
 
 Using any of the following will raise a RegexpExamples::UnsupportedSyntax exception (until such time as they are implemented!):
 
@@ -89,7 +92,7 @@ To use an alternative value, simply pass the configuration option as follows:
 /[F-X]/.examples(max_group_results: 10) #=> ['F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O']
 ```
 
-**_WARNING_**: Choosing huge numbers, along with a "complex" regex, could easily cause your system to freeze!
+_**WARNING**: Choosing huge numbers, along with a "complex" regex, could easily cause your system to freeze!_
 
 For example, if you try to generate a list of _all_ 5-letter words: `/\w{5}/.examples(max_group_results: 999)`, then since there are actually `63` "word" characters (upper/lower case letters, numbers and "\_"), this will try to generate `63**5 #=> 992436543` (almost 1 _trillion_) examples!
 
@@ -105,7 +108,7 @@ A more sensible use case might be, for example, to generate one random 1-4 digit
 
 There are a few obscure bugs that have yet to be resolved:
 
-* Various (weird!) legal patterns do not get parsed correctly, such as `/[[wtf]]/.examples` - To solve this, I'll probably have to dig deep into the Ruby source code and imitate the actual Regex parser more closely.
+* Nested character classes, like `/[[test]]/.examples`, don't work properly - see the note in [Not-Yet-Supported Syntax](#not_yet_supported_syntax) above.
 
 * Backreferences are replaced by the _first_ occurance of the group, not the _last_ (as it should be). This is quite a rare occurance, but for example: `/(a|b){2} \1/.examples` incorrectly includes: `"ba b"` rather than the correct: `"ba a"`
 
