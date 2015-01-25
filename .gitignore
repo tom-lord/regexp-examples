@@ -12,5 +12,3 @@
 *.a
 mkmf.log
 tags
-/coverage/
-!/coverage/coverage-badge.png

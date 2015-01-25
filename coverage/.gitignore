@@ -1,0 +1,4 @@
+# Ignore any file in this directory except for this file and coverage-badge.png files
+*
+!/.gitignore
+!coverage-badge.png
