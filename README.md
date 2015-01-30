@@ -44,9 +44,16 @@ For more detail on this, see [configuration options](#configuration_options).
 <a name="not_yet_supported_syntax"/>
 ## Not-Yet-Supported syntax
 
-* Options, e.g. `/pattern/i`, `/foo.*bar/m` - Using options will currently just be ignored, e.g. `/test/i.examples` will NOT include `"TEST"`
+* Non-greedy repeaters, e.g. `/.*?/`, are not yet parsed correctly.
+Technically, these can never be handled perfectly by this gem as they are not truly _regular_ expressions, so these will be implemented with some warning message.
+
+* Options, e.g. `/pattern/i`, `/foo.*bar/m` - Using options will currently just be ignored, e.g. `/test/i.examples` will NOT include `"TEST"`. Using the `x` ("ignore whitespace") option may cause invalid examples to be generated.
+  * Options toggling, i.e. `/(?imx)/`, `/(?-imx)/`, `/(?imx: re)/` and `/(?-imx: re)/`, is also not supported, and will cause invalid examples to be generated.
+  * Likewise, including comments inside the pattern, i.e. `/(?#...)/`, is not supported.
 
 * Nested character classes, and the use of set intersection, e.g. `/[[a-d]&&[c-f]]/.examples` (which _should_ return: `["c", "d"]`). ([See here](http://www.ruby-doc.org/core-2.2.0/Regexp.html#class-Regexp-label-Character+Classes) for the official documentation on this.)
+
+* The patterns: `/\10/` ... `/\77/` should match the octal representation of their character code, if there is no nth grouped subexpression. For example, `/\10/.examples` should return `["\x08"]`. Funnily enough, I did not think of this when writing my regexp parser.
 
 Using any of the following will raise a RegexpExamples::UnsupportedSyntax exception (until such time as they are implemented!):
 
