@@ -11,5 +11,5 @@ module CoreExtensions
   end
 end
 
-Regexp.include CoreExtensions::Regexp::Examples
+Regexp.send(:include, CoreExtensions::Regexp::Examples)
 
