@@ -9,7 +9,8 @@ This method generates a list of (some\*) strings that will match the given regul
 
 \* If the regex has an infinite number of possible srings that match it, such as `/a*b+c{2,}/`,
 or a huge number of possible matches, such as `/.\w/`, then only a subset of these will be listed.
-For more detail on this, see [configuration options](#configuration_options).
+
+For more detail on this, see [configuration options](#configuration-options).
 
 ## Usage
 
@@ -41,19 +42,29 @@ For more detail on this, see [configuration options](#configuration_options).
 * Unicode characters, e.g. `/\u0123/`, `/\uabcd/`, `/\u{789}/`
 * **Arbitrarily complex combinations of all the above!**
 
-<a name="not_yet_supported_syntax"/>
-## Not-Yet-Supported syntax
+## Bugs and Not-Yet-Supported syntax
 
-* Non-greedy repeaters, e.g. `/.*?/`, are not yet parsed correctly.
-Technically, these can never be handled perfectly by this gem as they are not truly _regular_ expressions, so these will be implemented with some warning message.
+* Backreferences are replaced by the _first_ occurance of the group, not the _last_ (as it should be). This is quite a rare occurance, but for example:
+  * `/(a|b){2} \1/.examples` incorrectly includes: `"ba b"` rather than the correct: `"ba a"`
 
-* Options, e.g. `/pattern/i`, `/foo.*bar/m` - Using options will currently just be ignored, e.g. `/test/i.examples` will NOT include `"TEST"`. Using the `x` ("ignore whitespace") option may cause invalid examples to be generated.
-  * Options toggling, i.e. `/(?imx)/`, `/(?-imx)/`, `/(?imx: re)/` and `/(?-imx: re)/`, is also not supported, and will cause invalid examples to be generated.
-  * Likewise, including comments inside the pattern, i.e. `/(?#...)/`, is not supported.
+* Options, e.g. `/pattern/i`, `/foo.*bar/m` - Using options will currently just be ignored, for example:
+  * `/test/i.examples` will NOT include `"TEST"`
+  * `/white  space/x.examples` will not strip out the whitespace from the pattern, i.e. this incorrectly returns `["white  space"]` rather than `["whitespace"]`
 
-* Nested character classes, and the use of set intersection, e.g. `/[[a-d]&&[c-f]]/.examples` (which _should_ return: `["c", "d"]`). ([See here](http://www.ruby-doc.org/core-2.2.0/Regexp.html#class-Regexp-label-Character+Classes) for the official documentation on this.)
+* Nested character classes, and the use of set intersection ([See here](http://www.ruby-doc.org/core-2.2.0/Regexp.html#class-Regexp-label-Character+Classes) for the official documentation on this.) For example:
+  * `/[[abc]]/.examples`  (which _should_ return `["a", "b", "c"]`)
+  * `/[[a-d]&&[c-f]]/.examples` (which _should_ return: `["c", "d"]`) 
+
+* Extended groups are not yet supported, such as:
+  * Including comments inside the pattern, i.e. `/(?#...)/`
+  * Conditional capture groups, such as `/(group1) (?(1)yes|no)`
+  * Options toggling, i.e. `/(?imx)/`, `/(?-imx)/`, `/(?imx: re)/` and `/(?-imx: re)/`
+
+* Possessive quantifiers, i.e. `/.?+/`, `/.*+/`, `/.++/`
 
 * The patterns: `/\10/` ... `/\77/` should match the octal representation of their character code, if there is no nth grouped subexpression. For example, `/\10/.examples` should return `["\x08"]`. Funnily enough, I did not think of this when writing my regexp parser.
+
+Full documentation on all the various other obscurities in the ruby (version 2.x) regexp parser can be found [here](https://raw.githubusercontent.com/k-takata/Onigmo/master/doc/RE).
 
 Using any of the following will raise a RegexpExamples::UnsupportedSyntax exception (until such time as they are implemented!):
 
@@ -74,7 +85,6 @@ Using any of the following will raise a RegexpExamples::IllegalSyntax exception:
 
 (Note: Backreferences are not really "regular" either, but I got these to work with a bit of hackery!)
 
-<a name="configuration_options"/>
 ##Configuration Options
 
 When generating examples, the gem uses 2 configurable values to limit how many examples are listed:
@@ -110,14 +120,6 @@ A more sensible use case might be, for example, to generate one random 1-4 digit
 `/\d{1,4}/.examples(max_repeater_variance: 3, max_group_results: 10).sample(1)`
 
 (Note: I may develop a much more efficient way to "generate one example" in a later release of this gem.)
-
-## Known Bugs
-
-There are a few obscure bugs that have yet to be resolved:
-
-* Nested character classes, like `/[[test]]/.examples`, don't work properly - see the note in [Not-Yet-Supported Syntax](#not_yet_supported_syntax) above.
-
-* Backreferences are replaced by the _first_ occurance of the group, not the _last_ (as it should be). This is quite a rare occurance, but for example: `/(a|b){2} \1/.examples` incorrectly includes: `"ba b"` rather than the correct: `"ba a"`
 
 ## Installation
 
