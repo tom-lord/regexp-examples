@@ -42,7 +42,9 @@ RSpec.describe Regexp, "#examples" do
       examples_exist_and_match(
         /a/,
         /a*/,
+        /a*?/,
         /a+/,
+        /a+?/,
         /a?/,
         /a{1}/,
         /a{1,}/,

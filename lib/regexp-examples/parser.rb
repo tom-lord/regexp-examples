@@ -28,8 +28,7 @@ module RegexpExamples
     private
 
     def parse_group(repeaters)
-      char = regexp_string[@current_position]
-      case char
+      case next_char
       when '('
         group = parse_multi_group
       when ')'
@@ -55,7 +54,7 @@ module RegexpExamples
           raise IllegalSyntaxError, "Anchors cannot be supported, as they are not regular"
         end
       else
-        group = parse_single_char_group(char)
+        group = parse_single_char_group(next_char)
       end
       group
     end
@@ -69,11 +68,11 @@ module RegexpExamples
       when rest_of_string =~ /\Ak<([^>]+)>/ # Named capture group
         @current_position += ($1.length + 2)
         group = parse_backreference_group($1)
-      when BackslashCharMap.keys.include?(regexp_string[@current_position])
+      when BackslashCharMap.keys.include?(next_char)
         group = CharGroup.new(
           # Note: The `.dup` is important, as it prevents modifying the constant, in
           # CharGroup#init_ranges (where the '-' is moved to the front)
-          BackslashCharMap[regexp_string[@current_position]].dup
+          BackslashCharMap[next_char].dup
         )
       when rest_of_string =~ /\A(c|C-)(.)/ # Control character
         @current_position += $1.length
@@ -106,14 +105,13 @@ module RegexpExamples
           raise IllegalSyntaxError, "Anchors cannot be supported, as they are not regular"
         end
       else
-        group = parse_single_char_group( regexp_string[@current_position] )
+        group = parse_single_char_group( next_char )
       end
       group
     end
 
     def parse_repeater(group)
-      char = regexp_string[@current_position]
-      case char
+      case next_char
       when '*'
         repeater = parse_star_repeater(group)
       when '+'
@@ -162,19 +160,19 @@ module RegexpExamples
       end
       chars = []
       @current_position += 1
-      if regexp_string[@current_position] == ']'
+      if next_char == ']'
         # Beware of the sneaky edge case:
         # /[]]/ (match "]")
         chars << ']'
         @current_position += 1
       end
-      until regexp_string[@current_position] == ']' \
+      until next_char == ']' \
         && !regexp_string[0..@current_position-1].match(/[^\\](\\{2})*\\\z/)
         # Beware of having an ODD number of "\" before the "]", e.g.
         # /[\]]/ (match "]")
         # /[\\]/ (match "\")
         # /[\\\]]/ (match "\" or "]")
-        chars << regexp_string[@current_position]
+        chars << next_char
         @current_position += 1
       end
       CharGroup.new(chars)
@@ -214,12 +212,22 @@ module RegexpExamples
 
     def parse_star_repeater(group)
       @current_position += 1
+      parse_non_greedy_repeater
       StarRepeater.new(group)
     end
 
     def parse_plus_repeater(group)
       @current_position += 1
+      parse_non_greedy_repeater
       PlusRepeater.new(group)
+    end
+
+    def parse_non_greedy_repeater
+      if next_char == '?'
+        # TODO: Delay this warning until after parsing, and only display if capture groups are used
+        warn "Warning: Non-greedy operators (*? and +?) might not work properly, when using capture groups"
+        @current_position += 1
+      end
     end
 
     def parse_question_mark_repeater(group)
@@ -242,6 +250,10 @@ module RegexpExamples
 
     def rest_of_string
       regexp_string[@current_position..-1]
+    end
+
+    def next_char
+      regexp_string[@current_position]
     end
   end
 end
