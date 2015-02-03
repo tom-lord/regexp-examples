@@ -45,9 +45,6 @@ For more detail on this, see [configuration options](#configuration-options).
 
 ## Bugs and Not-Yet-Supported syntax
 
-* Backreferences are replaced by the _first_ occurance of the group, not the _last_ (as it should be). This is quite a rare occurance, but for example:
-  * `/(a|b){2} \1/.examples` incorrectly includes: `"ba b"` rather than the correct: `"ba a"`
-
 * Options, e.g. `/pattern/i`, `/foo.*bar/m` - Using options will currently just be ignored, for example:
   * `/test/i.examples` will NOT include `"TEST"`
   * `/white  space/x.examples` will not strip out the whitespace from the pattern, i.e. this incorrectly returns `["white  space"]` rather than `["whitespace"]`

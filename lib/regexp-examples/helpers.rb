@@ -20,6 +20,11 @@ module RegexpExamples
     subgroups = result
       .map(&:all_subgroups)
       .flatten
+
+    # Only save the LAST group from repeated capture groups, e.g. /([ab]){2}/
+    subgroups.delete_if do |subgroup|
+      subgroups.count { |other_subgroup| other_subgroup.group_id == subgroup.group_id } > 1
+    end
     GroupResult.new(result.join, nil, subgroups)
   end
 

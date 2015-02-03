@@ -131,7 +131,8 @@ RSpec.describe Regexp, "#examples" do
         /(one)(two)(three)(four)(five)(six)(seven)(eight)(nine)(ten) \10\9\8\7\6\5\4\3\2\1/,
         /(a?(b?(c?(d?(e?)))))/,
         /(a)? \1/,
-        /(a|(b)) \2/
+        /(a|(b)) \2/,
+        /([ab]){2} \1/ # \1 should always be the LAST result of the capture group
       )
     end
 
