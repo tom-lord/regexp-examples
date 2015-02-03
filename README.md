@@ -29,14 +29,15 @@ For more detail on this, see [configuration options](#configuration-options).
 ## Supported syntax
 
 * All forms of repeaters (quantifiers), e.g. `/a*/`, `/a+/`, `/a?/`, `/a{1,4}/`, `/a{3,}/`, `/a{,2}/`
+  * Reluctant and possissive repeaters work fine, too - e.g. `/a*?/`, `/a*+/`
 * Boolean "Or" groups, e.g. `/a|b|c/`
 * Character sets (inluding ranges and negation!), e.g. `/[abc]/`, `/[A-Z0-9]/`, `/[^a-z]/`, `/[\w\s\b]/`
 * Escaped characters, e.g. `/\n/`, `/\w/`, `/\D/` (and so on...)
-* Non-capture groups, e.g. `/(?:foo)/`
 * Capture groups, e.g. `/(group)/`
   * Including named groups, e.g. `/(?<name>group)/`
   * ...And backreferences(!!!), e.g. `/(this|that) \1/` `/(?<name>foo) \k<name>/`
-  * Groups work fine, even if nested! e.g. `/(even(this(works?))) \1 \2 \3/`
+  * Groups work fine, even if nested or optional e.g. `/(even(this(works?))) \1 \2 \3/`, `/what about (this)? \1/`
+  * Non-capture groups, e.g. `/(?:foo)/`
 * Control characters, e.g. `/\ca/`, `/\cZ/`, `/\C-9/`
 * Escape sequences, e.g. `/\x42/`, `/\x3D/`, `/\x5word/`, `/#{"\x80".force_encoding("ASCII-8BIT")}/`
 * Unicode characters, e.g. `/\u0123/`, `/\uabcd/`, `/\u{789}/`
@@ -53,18 +54,16 @@ For more detail on this, see [configuration options](#configuration-options).
 
 * Nested character classes, and the use of set intersection ([See here](http://www.ruby-doc.org/core-2.2.0/Regexp.html#class-Regexp-label-Character+Classes) for the official documentation on this.) For example:
   * `/[[abc]]/.examples`  (which _should_ return `["a", "b", "c"]`)
-  * `/[[a-d]&&[c-f]]/.examples` (which _should_ return: `["c", "d"]`) 
+  * `/[[a-d]&&[c-f]]/.examples` (which _should_ return: `["c", "d"]`)
 
 * Extended groups are not yet supported, such as:
   * Including comments inside the pattern, i.e. `/(?#...)/`
   * Conditional capture groups, such as `/(group1) (?(1)yes|no)`
   * Options toggling, i.e. `/(?imx)/`, `/(?-imx)/`, `/(?imx: re)/` and `/(?-imx: re)/`
 
-* Possessive quantifiers, i.e. `/.?+/`, `/.*+/`, `/.++/`
-
 * The patterns: `/\10/` ... `/\77/` should match the octal representation of their character code, if there is no nth grouped subexpression. For example, `/\10/.examples` should return `["\x08"]`. Funnily enough, I did not think of this when writing my regexp parser.
 
-Full documentation on all the various other obscurities in the ruby (version 2.x) regexp parser can be found [here](https://raw.githubusercontent.com/k-takata/Onigmo/master/doc/RE).
+There are loads more (increasingly obscure) unsupported bits of syntax, which I cannot be bothered to write out here. Full documentation on all the various other obscurities in the ruby (version 2.x) regexp parser can be found [here](https://raw.githubusercontent.com/k-takata/Onigmo/master/doc/RE).
 
 Using any of the following will raise a RegexpExamples::UnsupportedSyntax exception (until such time as they are implemented!):
 
@@ -105,8 +104,10 @@ When generating examples, the gem uses 2 configurable values to limit how many e
 To use an alternative value, simply pass the configuration option as follows:
 
 ```ruby
-/a*/.examples(max_repeater_variance: 5) #=> [''. 'a', 'aa', 'aaa', 'aaaa' 'aaaaa']
-/[F-X]/.examples(max_group_results: 10) #=> ['F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O']
+/a*/.examples(max_repeater_variance: 5)
+  #=> [''. 'a', 'aa', 'aaa', 'aaaa' 'aaaaa']
+/[F-X]/.examples(max_group_results: 10)
+  #=> ['F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O']
 ```
 
 _**WARNING**: Choosing huge numbers, along with a "complex" regex, could easily cause your system to freeze!_

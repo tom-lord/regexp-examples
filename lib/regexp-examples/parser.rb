@@ -212,26 +212,26 @@ module RegexpExamples
 
     def parse_star_repeater(group)
       @current_position += 1
-      parse_non_greedy_repeater
+      parse_reluctant_or_possessive_repeater
       StarRepeater.new(group)
     end
 
     def parse_plus_repeater(group)
       @current_position += 1
-      parse_non_greedy_repeater
+      parse_reluctant_or_possessive_repeater
       PlusRepeater.new(group)
     end
 
-    def parse_non_greedy_repeater
-      if next_char == '?'
-        # TODO: Delay this warning until after parsing, and only display if capture groups are used
-        warn "Warning: Non-greedy operators (*? and +?) might not work properly, when using capture groups"
+    def parse_reluctant_or_possessive_repeater
+      if next_char =~ /[?+]/
+        # Don't treat these repeaters any differently when generating examples
         @current_position += 1
       end
     end
 
     def parse_question_mark_repeater(group)
       @current_position += 1
+      parse_reluctant_or_possessive_repeater
       QuestionMarkRepeater.new(group)
     end
 
@@ -241,6 +241,7 @@ module RegexpExamples
       min = match[1].to_i if match[1]
       has_comma = !match[2].nil?
       max = match[3].to_i if match[3]
+      parse_reluctant_or_possessive_repeater
       RangeRepeater.new(group, min, has_comma, max)
     end
 

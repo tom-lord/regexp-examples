@@ -40,16 +40,28 @@ RSpec.describe Regexp, "#examples" do
   context 'returns matching strings' do
     context "for basic repeaters" do
       examples_exist_and_match(
-        /a/,
-        /a*/,
-        /a*?/,
+        /a/,   # "one-time repeater"
+        /a*/,  # greedy
+        /a*?/, # reluctant (non-greedy)
+        /a*+/, # possesive
         /a+/,
         /a+?/,
+        /a*+/,
         /a?/,
+        /a??/,
+        /a?+/,
         /a{1}/,
+        /a{1}?/,
+        /a{1}+/,
         /a{1,}/,
+        /a{1,}?/,
+        /a{1,}+/,
         /a{,2}/,
-        /a{1,2}/
+        /a{,2}?/,
+        /a{,2}+/,
+        /a{1,2}/,
+        /a{1,2}?/,
+        /a{1,2}+/
       )
     end
 
