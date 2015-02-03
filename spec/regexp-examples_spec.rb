@@ -233,9 +233,13 @@ RSpec.describe Regexp, "#examples" do
     context "exact examples match" do
       # More rigorous tests to assert that ALL examples are being listed
       context "default options" do
+        # Simple examples
         it { expect(/[ab]{2}/.examples).to eq ["aa", "ab", "ba", "bb"] }
         it { expect(/(a|b){2}/.examples).to eq ["aa", "ab", "ba", "bb"] }
         it { expect(/a+|b?/.examples).to eq ["a", "aa", "aaa", "", "b"] }
+
+        # a{1}? should be equivalent to (?:a{1})?, i.e. NOT a "non-greedy quantifier"
+        it { expect(/a{1}?/.examples).to eq ["", "a"] }
       end
       context "max_repeater_variance option" do
         it do
