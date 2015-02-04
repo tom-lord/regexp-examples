@@ -45,9 +45,9 @@ For more detail on this, see [configuration options](#configuration-options).
 
 ## Bugs and Not-Yet-Supported syntax
 
-* Options, e.g. `/pattern/i`, `/foo.*bar/m` - Using options will currently just be ignored, for example:
-  * `/test/i.examples` will NOT include `"TEST"`
+* Other options (besides ingnorecase), will currently just be ignored, for example:
   * `/white  space/x.examples` will not strip out the whitespace from the pattern, i.e. this incorrectly returns `["white  space"]` rather than `["whitespace"]`
+  * `/./m.examples(max_group_results: 999)` will not include `"\n"`
 
 * Nested character classes, and the use of set intersection ([See here](http://www.ruby-doc.org/core-2.2.0/Regexp.html#class-Regexp-label-Character+Classes) for the official documentation on this.) For example:
   * `/[[abc]]/.examples`  (which _should_ return `["a", "b", "c"]`)

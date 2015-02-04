@@ -1,13 +1,14 @@
 module RegexpExamples
   class Parser
     attr_reader :regexp_string
-    def initialize(regexp_string, options={})
+    def initialize(regexp_string, regexp_options, config_options={})
       @regexp_string = regexp_string
+      @ignorecase = ( regexp_options & Regexp::IGNORECASE == 1 )
       @num_groups = 0
       @current_position = 0
       RegexpExamples::ResultCountLimiters.configure!(
-        options[:max_repeater_variance],
-        options[:max_group_results]
+        config_options[:max_repeater_variance],
+        config_options[:max_group_results]
       )
     end
 
@@ -26,6 +27,10 @@ module RegexpExamples
     end
 
     private
+
+    def regexp_options
+      {ignorecase: @ignorecase}
+    end
 
     def parse_group(repeaters)
       case next_char
@@ -72,7 +77,8 @@ module RegexpExamples
         group = CharGroup.new(
           # Note: The `.dup` is important, as it prevents modifying the constant, in
           # CharGroup#init_ranges (where the '-' is moved to the front)
-          BackslashCharMap[next_char].dup
+          BackslashCharMap[next_char].dup,
+          regexp_options
         )
       when rest_of_string =~ /\A(c|C-)(.)/ # Control character
         @current_position += $1.length
@@ -147,7 +153,7 @@ module RegexpExamples
         end
       end
       groups = parse
-      MultiGroup.new(groups, group_id)
+      MultiGroup.new(groups, group_id, regexp_options)
     end
 
     def parse_multi_end_group
@@ -175,11 +181,11 @@ module RegexpExamples
         chars << next_char
         @current_position += 1
       end
-      CharGroup.new(chars)
+      CharGroup.new(chars, regexp_options)
     end
 
     def parse_dot_group
-      DotGroup.new
+      DotGroup.new(regexp_options)
     end
 
     def parse_or_group(left_repeaters)
@@ -190,7 +196,7 @@ module RegexpExamples
 
 
     def parse_single_char_group(char)
-      SingleCharGroup.new(char)
+      SingleCharGroup.new(char, regexp_options)
     end
 
     def parse_backreference_group(match)

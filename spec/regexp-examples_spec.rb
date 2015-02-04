@@ -242,6 +242,7 @@ RSpec.describe Regexp, "#examples" do
         # a{1}? should be equivalent to (?:a{1})?, i.e. NOT a "non-greedy quantifier"
         it { expect(/a{1}?/.examples).to eq ["", "a"] }
       end
+
       context "max_repeater_variance option" do
         it do
           expect(/a+/.examples(max_repeater_variance: 5))
@@ -252,11 +253,18 @@ RSpec.describe Regexp, "#examples" do
             .to eq %w(aaaa)
         end
       end
+
       context "max_group_results option" do
         it do
           expect(/\d/.examples(max_group_results: 10))
             .to eq %w(0 1 2 3 4 5 6 7 8 9)
         end
+      end
+
+      context "case insensitive" do
+        it { expect(/ab/i.examples).to eq %w(ab aB Ab AB) }
+        it { expect(/a+/i.examples).to eq %w(a A aa aA Aa AA aaa aaA aAa aAA Aaa AaA AAa AAA) }
+        it { expect(/([ab])\1/i.examples).to eq %w(aa bb AA BB) }
       end
     end
 

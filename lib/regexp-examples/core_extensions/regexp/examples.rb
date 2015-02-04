@@ -1,9 +1,9 @@
 module CoreExtensions
   module Regexp
     module Examples
-      def examples(options={})
+      def examples(config_options={})
         full_examples = RegexpExamples.map_results(
-          RegexpExamples::Parser.new(source, options).parse
+          RegexpExamples::Parser.new(source, options, config_options).parse
         )
         RegexpExamples::BackReferenceReplacer.new.substitute_backreferences(full_examples)
       end

@@ -16,19 +16,30 @@ module RegexpExamples
     def all_subgroups
       [self, subgroups].flatten.reject { |subgroup| subgroup.group_id.nil? }
     end
+
+    def swapcase
+      # Override to preserve subgroups
+      GroupResult.new(super.to_s, group_id, subgroups)
+    end
   end
 
   module GroupWithOptions
     attr_reader :options
     def result
-      # TODO: Handle options (mainly case insensitive) here
-      super
+      group_result = super
+      if options[:ignorecase]
+        group_result
+          .concat( group_result.map(&:swapcase) )
+          .uniq
+      else
+        group_result
+      end
     end
   end
 
   class SingleCharGroup
     prepend GroupWithOptions
-    def initialize(char, options = {})
+    def initialize(char, options)
       @char = char
       @options = options
     end
@@ -39,7 +50,7 @@ module RegexpExamples
 
   class CharGroup
     prepend GroupWithOptions
-    def initialize(chars, options = {})
+    def initialize(chars, options)
       @chars = chars
       @options = options
       if chars[0] == "^"
@@ -123,7 +134,7 @@ module RegexpExamples
   class MultiGroup
     prepend GroupWithOptions
     attr_reader :group_id
-    def initialize(groups, group_id, options = {})
+    def initialize(groups, group_id, options)
       @groups = groups
       @group_id = group_id
       @options = options
