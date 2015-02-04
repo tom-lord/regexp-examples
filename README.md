@@ -43,6 +43,8 @@ For more detail on this, see [configuration options](#configuration-options).
 * Unicode characters, e.g. `/\u0123/`, `/\uabcd/`, `/\u{789}/`
 * **Arbitrarily complex combinations of all the above!**
 
+* Case insensitive examples can be generated too, e.g. `/cool/i.examples # => ["cool", "cooL", "coOl", "coOL", ...]`
+
 ## Bugs and Not-Yet-Supported syntax
 
 * Other options (besides ingnorecase), will currently just be ignored, for example:
