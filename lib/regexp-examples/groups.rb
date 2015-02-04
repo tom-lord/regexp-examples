@@ -18,9 +18,19 @@ module RegexpExamples
     end
   end
 
+  module GroupWithOptions
+    attr_reader :options
+    def result
+      # TODO: Handle options (mainly case insensitive) here
+      super
+    end
+  end
+
   class SingleCharGroup
-    def initialize(char)
+    prepend GroupWithOptions
+    def initialize(char, options = {})
       @char = char
+      @options = options
     end
     def result
       [GroupResult.new(@char)]
@@ -28,8 +38,10 @@ module RegexpExamples
   end
 
   class CharGroup
-    def initialize(chars)
+    prepend GroupWithOptions
+    def initialize(chars, options = {})
       @chars = chars
+      @options = options
       if chars[0] == "^"
         @negative = true
         @chars = @chars[1..-1]
@@ -43,6 +55,7 @@ module RegexpExamples
 
     def init_ranges
       # save first and last "-" if present
+
       first = nil
       last = nil
       first = @chars.shift if @chars.first == "-"
@@ -95,6 +108,11 @@ module RegexpExamples
   end
 
   class DotGroup
+    prepend GroupWithOptions
+    def initialize(options={})
+      @options = options
+    end
+
     def result
       CharSets::Any.map do |result|
         GroupResult.new(result)
@@ -103,10 +121,12 @@ module RegexpExamples
   end
 
   class MultiGroup
+    prepend GroupWithOptions
     attr_reader :group_id
-    def initialize(groups, group_id)
+    def initialize(groups, group_id, options = {})
       @groups = groups
       @group_id = group_id
+      @options = options
     end
 
     # Generates the result of each contained group
