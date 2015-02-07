@@ -39,17 +39,18 @@ For more detail on this, see [configuration options](#configuration-options).
   * Groups work fine, even if nested or optional e.g. `/(even(this(works?))) \1 \2 \3/`, `/what about (this)? \1/`
   * Non-capture groups, e.g. `/(?:foo)/`
 * Control characters, e.g. `/\ca/`, `/\cZ/`, `/\C-9/`
-* Escape sequences, e.g. `/\x42/`, `/\x3D/`, `/\x5word/`, `/#{"\x80".force_encoding("ASCII-8BIT")}/`
+* Escape sequences, e.g. `/\x42/`, `/\x5word/`, `/#{"\x80".force_encoding("ASCII-8BIT")}/`
 * Unicode characters, e.g. `/\u0123/`, `/\uabcd/`, `/\u{789}/`
 * **Arbitrarily complex combinations of all the above!**
+
 
 * Case insensitive examples can be generated too, e.g. `/cool/i.examples # => ["cool", "cooL", "coOl", "coOL", ...]`
 
 ## Bugs and Not-Yet-Supported syntax
 
-* Other options (besides ingnorecase), will currently just be ignored, for example:
-  * `/white  space/x.examples` will not strip out the whitespace from the pattern, i.e. this incorrectly returns `["white  space"]` rather than `["whitespace"]`
-  * `/./m.examples(max_group_results: 999)` will not include `"\n"`
+* The "extended form" option (`/x`) is not yet supported, and will be ignored. For example:
+  * `/white  space/x.examples` incorrectly returns `["white  space"]` rather than `["whitespace"]`
+  * `/foo#comment/x.examples` incorrectly returns `["foo#comment"]`, rahter than `["foo"]`
 
 * Nested character classes, and the use of set intersection ([See here](http://www.ruby-doc.org/core-2.2.0/Regexp.html#class-Regexp-label-Character+Classes) for the official documentation on this.) For example:
   * `/[[abc]]/.examples`  (which _should_ return `["a", "b", "c"]`)
@@ -62,13 +63,13 @@ For more detail on this, see [configuration options](#configuration-options).
 
 * The patterns: `/\10/` ... `/\77/` should match the octal representation of their character code, if there is no nth grouped subexpression. For example, `/\10/.examples` should return `["\x08"]`. Funnily enough, I did not think of this when writing my regexp parser.
 
-There are loads more (increasingly obscure) unsupported bits of syntax, which I cannot be bothered to write out here. Full documentation on all the various other obscurities in the ruby (version 2.x) regexp parser can be found [here](https://raw.githubusercontent.com/k-takata/Onigmo/master/doc/RE).
-
 Using any of the following will raise a RegexpExamples::UnsupportedSyntax exception (until such time as they are implemented!):
 
 * POSIX bracket expressions, e.g. `/[[:alnum:]]/`, `/[[:space:]]/`
 * Named properties, e.g. `/\p{L}/` ("Letter"), `/\p{Arabic}/` ("Arabic character"), `/\p{^Ll}/` ("Not a lowercase letter")
 * Subexpression calls, e.g. `/(?<name> ... \g<name>* )/` (Note: These could get _really_ ugly to implement, and may even be impossible, so I highly doubt it's worth the effort!)
+
+There are loads more (increasingly obscure) unsupported bits of syntax, which I cannot be bothered to write out here. Full documentation on all the various other obscurities in the ruby (version 2.x) regexp parser can be found [here](https://raw.githubusercontent.com/k-takata/Onigmo/master/doc/RE).
 
 ## Impossible features ("illegal syntax")
 

@@ -23,7 +23,7 @@ module RegexpExamples
     end
   end
 
-  module GroupWithOptions
+  module GroupWithIgnoreCase
     attr_reader :options
     def result
       group_result = super
@@ -38,7 +38,7 @@ module RegexpExamples
   end
 
   class SingleCharGroup
-    prepend GroupWithOptions
+    prepend GroupWithIgnoreCase
     def initialize(char, options)
       @char = char
       @options = options
@@ -49,7 +49,7 @@ module RegexpExamples
   end
 
   class CharGroup
-    prepend GroupWithOptions
+    prepend GroupWithIgnoreCase
     def initialize(chars, options)
       @chars = chars
       @options = options
@@ -119,20 +119,22 @@ module RegexpExamples
   end
 
   class DotGroup
-    prepend GroupWithOptions
+    attr_reader :options
     def initialize(options={})
       @options = options
     end
 
     def result
-      CharSets::Any.map do |result|
+      chars = CharSets::Any
+      chars |= ["\n"] if options[:multiline]
+      chars.map do |result|
         GroupResult.new(result)
       end
     end
   end
 
   class MultiGroup
-    prepend GroupWithOptions
+    prepend GroupWithIgnoreCase
     attr_reader :group_id
     def initialize(groups, group_id, options)
       @groups = groups

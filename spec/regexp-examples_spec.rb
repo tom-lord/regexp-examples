@@ -266,6 +266,11 @@ RSpec.describe Regexp, "#examples" do
         it { expect(/a+/i.examples).to eq %w(a A aa aA Aa AA aaa aaA aAa aAA Aaa AaA AAa AAA) }
         it { expect(/([ab])\1/i.examples).to eq %w(aa bb AA BB) }
       end
+
+      context "multiline" do
+        it { expect(/./.examples(max_group_results: 999)).not_to include "\n" }
+        it { expect(/./m.examples(max_group_results: 999)).to include "\n" }
+      end
     end
 
   end

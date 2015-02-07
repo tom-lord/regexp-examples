@@ -3,7 +3,8 @@ module RegexpExamples
     attr_reader :regexp_string
     def initialize(regexp_string, regexp_options, config_options={})
       @regexp_string = regexp_string
-      @ignorecase = ( regexp_options & Regexp::IGNORECASE == 1 )
+      @ignorecase = (regexp_options & Regexp::IGNORECASE).nonzero?
+      @multiline = (regexp_options & Regexp::MULTILINE).nonzero?
       @num_groups = 0
       @current_position = 0
       RegexpExamples::ResultCountLimiters.configure!(
@@ -29,7 +30,10 @@ module RegexpExamples
     private
 
     def regexp_options
-      {ignorecase: @ignorecase}
+      {
+        ignorecase: @ignorecase,
+        multiline: @multiline
+      }
     end
 
     def parse_group(repeaters)
