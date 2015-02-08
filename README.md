@@ -47,6 +47,7 @@ For more detail on this, see [configuration options](#configuration-options).
   * Case insensitive examples: `/cool/i.examples #=> ["cool", "cooL", "coOl", "coOL", ...]`
   * Multiline examples: `/./m.examples(max_group_results: 999) #=> ["a", "b", "c", ..., "\n"]`
   * Extended form examples: `/line1 #comment \n line2/x.examples #=> ["line1line2"]`
+  * Options toggling supported: `/before(?imx-imx)after/`, `/before(?imx-imx:subexpr)after/`
 
 ## Bugs and Not-Yet-Supported syntax
 
@@ -54,10 +55,9 @@ For more detail on this, see [configuration options](#configuration-options).
   * `/[[abc]]/.examples`  (which _should_ return `["a", "b", "c"]`)
   * `/[[a-d]&&[c-f]]/.examples` (which _should_ return: `["c", "d"]`)
 
-* Extended groups are not yet supported, such as:
+* Some extended groups are not yet supported, such as:
   * Including comments inside the pattern, i.e. `/(?#...)/`
   * Conditional capture groups, such as `/(group1) (?(1)yes|no)`
-  * Options toggling, i.e. `/(?imx)/`, `/(?-imx)/`, `/(?imx: re)/` and `/(?-imx: re)/`
 
 * The patterns: `/\10/` ... `/\77/` should match the octal representation of their character code, if there is no nth grouped subexpression. For example, `/\10/.examples` should return `["\x08"]`. Funnily enough, I did not think of this when writing my regexp parser.
 

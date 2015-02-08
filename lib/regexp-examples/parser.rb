@@ -146,6 +146,9 @@ module RegexpExamples
       @current_position += 1
       @num_groups += 1
       group_id = nil # init
+      previous_ignorecase = @ignorecase
+      previous_multiline = @multiline
+      previous_extended = @extended
       rest_of_string.match(
         /
           \A
@@ -169,11 +172,14 @@ module RegexpExamples
           group_id = @num_groups.to_s
         when match[2] == ':' # e.g. /(?:nocapture)/
           @current_position += 2
-          group_id = nil
         when match[2] =~ /\A(?=[mix-]+)([mix]*)-?([mix]*)/ # e.g. /(?i-mx)/
           regexp_options_toggle($1, $2)
           @current_position += $&.length + 1
-          return parse_single_char_group('')
+          if next_char == ':' # e.g. /(?i:subexpr)/
+            @current_position += 1
+          else
+            return parse_single_char_group('')
+          end
         when %w(! =).include?(match[2]) # e.g. /(?=lookahead)/, /(?!neglookahead)/
           raise IllegalSyntaxError, "Lookaheads are not regular; cannot generate examples"
         when %w(! =).include?(match[3]) # e.g. /(?<=lookbehind)/, /(?<!neglookbehind)/
@@ -184,7 +190,10 @@ module RegexpExamples
         end
       end
       groups = parse
-      MultiGroup.new(groups, group_id, @ignorecase)
+      @ignorecase = previous_ignorecase
+      @multiline = previous_multiline
+      @extended = previous_extended
+      MultiGroup.new(groups, group_id)
     end
 
     def regexp_options_toggle(on, off)

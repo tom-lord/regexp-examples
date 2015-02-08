@@ -286,9 +286,16 @@ RSpec.describe Regexp, "#examples" do
       end
 
       context "options toggling" do
-        it { expect(/a(?i)b(?-i)c/.examples).to eq %w{abc aBc}}
-        it { expect(/a(?x)   b(?-x) c/.examples).to eq %w{ab\ c}}
-        it { expect(/(?m)./.examples(max_group_results: 999)).to include "\n" }
+        context "rest of string" do
+          it { expect(/a(?i)b(?-i)c/.examples).to eq %w{abc aBc}}
+          it { expect(/a(?x)   b(?-x) c/.examples).to eq %w{ab\ c}}
+          it { expect(/(?m)./.examples(max_group_results: 999)).to include "\n" }
+        end
+        context "subexpression" do
+          it { expect(/a(?i:b)c/.examples).to eq %w{abc aBc}}
+          it { expect(/a(?i:b(?-i:c))/.examples).to eq %w{abc aBc}}
+          it { expect(/a(?-i:b)c/i.examples).to eq %w{abc abC Abc AbC}}
+        end
       end
     end
 

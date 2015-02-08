@@ -134,12 +134,10 @@ module RegexpExamples
   end
 
   class MultiGroup
-    prepend GroupWithIgnoreCase
     attr_reader :group_id
-    def initialize(groups, group_id, ignorecase)
+    def initialize(groups, group_id)
       @groups = groups
       @group_id = group_id
-      @ignorecase = ignorecase
     end
 
     # Generates the result of each contained group
