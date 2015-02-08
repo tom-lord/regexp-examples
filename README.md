@@ -43,10 +43,10 @@ For more detail on this, see [configuration options](#configuration-options).
 * Unicode characters, e.g. `/\u0123/`, `/\uabcd/`, `/\u{789}/`
 * **Arbitrarily complex combinations of all the above!**
 
-* Regexp options can also be used, for example:
-  * Case insensitive examples, e.g. `/cool/i.examples #=> ["cool", "cooL", "coOl", "coOL", ...]`
-  * Multiline examples, e.g. `/./m.examples(max_group_results: 999) #=> ["a", "b", "c", ..., "\n"]`
-  * Extended form examples, e.g. `/line1 #comment \n line2/x.examples #=> ["line1line2"]`
+* Regexp options can also be used:
+  * Case insensitive examples: `/cool/i.examples #=> ["cool", "cooL", "coOl", "coOL", ...]`
+  * Multiline examples: `/./m.examples(max_group_results: 999) #=> ["a", "b", "c", ..., "\n"]`
+  * Extended form examples: `/line1 #comment \n line2/x.examples #=> ["line1line2"]`
 
 ## Bugs and Not-Yet-Supported syntax
 
