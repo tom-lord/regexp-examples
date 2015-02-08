@@ -43,14 +43,12 @@ For more detail on this, see [configuration options](#configuration-options).
 * Unicode characters, e.g. `/\u0123/`, `/\uabcd/`, `/\u{789}/`
 * **Arbitrarily complex combinations of all the above!**
 
-
-* Case insensitive examples can be generated too, e.g. `/cool/i.examples # => ["cool", "cooL", "coOl", "coOL", ...]`
+* Regexp options can also be used, for example:
+  * Case insensitive examples, e.g. `/cool/i.examples #=> ["cool", "cooL", "coOl", "coOL", ...]`
+  * Multiline examples, e.g. `/./m.examples(max_group_results: 999) #=> ["a", "b", "c", ..., "\n"]`
+  * Extended form examples, e.g. `/line1 #comment \n line2/x.examples #=> ["line1line2"]`
 
 ## Bugs and Not-Yet-Supported syntax
-
-* The "extended form" option (`/x`) is not yet supported, and will be ignored. For example:
-  * `/white  space/x.examples` incorrectly returns `["white  space"]` rather than `["whitespace"]`
-  * `/foo#comment/x.examples` incorrectly returns `["foo#comment"]`, rahter than `["foo"]`
 
 * Nested character classes, and the use of set intersection ([See here](http://www.ruby-doc.org/core-2.2.0/Regexp.html#class-Regexp-label-Character+Classes) for the official documentation on this.) For example:
   * `/[[abc]]/.examples`  (which _should_ return `["a", "b", "c"]`)

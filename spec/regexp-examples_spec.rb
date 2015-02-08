@@ -233,7 +233,7 @@ RSpec.describe Regexp, "#examples" do
 
     context "exact examples match" do
       # More rigorous tests to assert that ALL examples are being listed
-      context "default options" do
+      context "default config options" do
         # Simple examples
         it { expect(/[ab]{2}/.examples).to eq ["aa", "ab", "ba", "bb"] }
         it { expect(/(a|b){2}/.examples).to eq ["aa", "ab", "ba", "bb"] }
@@ -243,7 +243,7 @@ RSpec.describe Regexp, "#examples" do
         it { expect(/a{1}?/.examples).to eq ["", "a"] }
       end
 
-      context "max_repeater_variance option" do
+      context "max_repeater_variance config option" do
         it do
           expect(/a+/.examples(max_repeater_variance: 5))
             .to eq %w(a aa aaa aaaa aaaaa aaaaaa)
@@ -254,7 +254,7 @@ RSpec.describe Regexp, "#examples" do
         end
       end
 
-      context "max_group_results option" do
+      context "max_group_results config option" do
         it do
           expect(/\d/.examples(max_group_results: 10))
             .to eq %w(0 1 2 3 4 5 6 7 8 9)
@@ -270,6 +270,19 @@ RSpec.describe Regexp, "#examples" do
       context "multiline" do
         it { expect(/./.examples(max_group_results: 999)).not_to include "\n" }
         it { expect(/./m.examples(max_group_results: 999)).to include "\n" }
+      end
+
+      context "exteded form" do
+        it { expect(/a b c/x.examples).to eq %w(abc) }
+        it { expect(/a#comment/x.examples).to eq %w(a) }
+        it do
+          expect(
+            /
+              line1 #comment
+              line2 #comment
+            /x.examples
+          ).to eq %w(line1line2)
+        end
       end
     end
 

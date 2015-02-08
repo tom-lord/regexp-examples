@@ -3,8 +3,9 @@ module RegexpExamples
     attr_reader :regexp_string
     def initialize(regexp_string, regexp_options, config_options={})
       @regexp_string = regexp_string
-      @ignorecase = (regexp_options & Regexp::IGNORECASE).nonzero?
-      @multiline = (regexp_options & Regexp::MULTILINE).nonzero?
+      @ignorecase = !(regexp_options & Regexp::IGNORECASE).zero?
+      @multiline = !(regexp_options & Regexp::MULTILINE).zero?
+      @extended = !(regexp_options & Regexp::EXTENDED).zero?
       @num_groups = 0
       @current_position = 0
       RegexpExamples::ResultCountLimiters.configure!(
@@ -32,7 +33,8 @@ module RegexpExamples
     def regexp_options
       {
         ignorecase: @ignorecase,
-        multiline: @multiline
+        multiline: @multiline,
+        extended: @extended
       }
     end
 
@@ -62,10 +64,22 @@ module RegexpExamples
         else
           raise IllegalSyntaxError, "Anchors cannot be supported, as they are not regular"
         end
+      when /[#\s]/
+        if regexp_options[:extended]
+          parse_extended_whitespace
+          group = parse_single_char_group('') # Ignore the whitespace/comment
+        else
+          group = parse_single_char_group(next_char)
+        end
       else
         group = parse_single_char_group(next_char)
       end
       group
+    end
+
+    def parse_extended_whitespace
+      whitespace_chars = rest_of_string.match(/#.*|\s+/)[0]
+      @current_position += whitespace_chars.length - 1
     end
 
     def parse_after_backslash_group
