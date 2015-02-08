@@ -157,6 +157,7 @@ module RegexpExamples
               :               # Non capture group
               |!              # Neglookahead
               |=              # Lookahead
+              |\#             # Comment group
               |<              # Lookbehind or named capture
               (
                 !             # Neglookbehind
@@ -172,6 +173,9 @@ module RegexpExamples
           group_id = @num_groups.to_s
         when match[2] == ':' # e.g. /(?:nocapture)/
           @current_position += 2
+        when match[2] == '#' # e.g. /(?#comment)/
+          comment_group = rest_of_string.match(/.*?[^\\](?:\\{2})*\)/)[0]
+          @current_position += comment_group.length
         when match[2] =~ /\A(?=[mix-]+)([mix]*)-?([mix]*)/ # e.g. /(?i-mx)/
           regexp_options_toggle($1, $2)
           @current_position += $&.length + 1

@@ -38,6 +38,7 @@ For more detail on this, see [configuration options](#configuration-options).
   * ...And backreferences(!!!), e.g. `/(this|that) \1/` `/(?<name>foo) \k<name>/`
   * Groups work fine, even if nested or optional e.g. `/(even(this(works?))) \1 \2 \3/`, `/what about (this)? \1/`
   * Non-capture groups, e.g. `/(?:foo)/`
+  * Comment groups, e.g. `/foo(?#comment)bar/`
 * Control characters, e.g. `/\ca/`, `/\cZ/`, `/\C-9/`
 * Escape sequences, e.g. `/\x42/`, `/\x5word/`, `/#{"\x80".force_encoding("ASCII-8BIT")}/`
 * Unicode characters, e.g. `/\u0123/`, `/\uabcd/`, `/\u{789}/`
@@ -55,9 +56,7 @@ For more detail on this, see [configuration options](#configuration-options).
   * `/[[abc]]/.examples`  (which _should_ return `["a", "b", "c"]`)
   * `/[[a-d]&&[c-f]]/.examples` (which _should_ return: `["c", "d"]`)
 
-* Some extended groups are not yet supported, such as:
-  * Including comments inside the pattern, i.e. `/(?#...)/`
-  * Conditional capture groups, such as `/(group1) (?(1)yes|no)`
+* Conditional capture groups, such as `/(group1) (?(1)yes|no)`
 
 * The patterns: `/\10/` ... `/\77/` should match the octal representation of their character code, if there is no nth grouped subexpression. For example, `/\10/.examples` should return `["\x08"]`. Funnily enough, I did not think of this when writing my regexp parser.
 

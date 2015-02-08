@@ -231,6 +231,13 @@ RSpec.describe Regexp, "#examples" do
       )
     end
 
+    context "comment group" do
+      examples_exist_and_match(
+        /a(?#comment)b/,
+        /a(?#ugly backslashy\ comment\\\))b/
+      )
+    end
+
     context "exact examples match" do
       # More rigorous tests to assert that ALL examples are being listed
       context "default config options" do
