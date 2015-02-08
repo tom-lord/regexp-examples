@@ -24,10 +24,10 @@ module RegexpExamples
   end
 
   module GroupWithIgnoreCase
-    attr_reader :options
+    attr_reader :ignorecase
     def result
       group_result = super
-      if options[:ignorecase]
+      if ignorecase
         group_result
           .concat( group_result.map(&:swapcase) )
           .uniq
@@ -39,9 +39,9 @@ module RegexpExamples
 
   class SingleCharGroup
     prepend GroupWithIgnoreCase
-    def initialize(char, options)
+    def initialize(char, ignorecase)
       @char = char
-      @options = options
+      @ignorecase = ignorecase
     end
     def result
       [GroupResult.new(@char)]
@@ -50,9 +50,9 @@ module RegexpExamples
 
   class CharGroup
     prepend GroupWithIgnoreCase
-    def initialize(chars, options)
+    def initialize(chars, ignorecase)
       @chars = chars
-      @options = options
+      @ignorecase = ignorecase
       if chars[0] == "^"
         @negative = true
         @chars = @chars[1..-1]
@@ -119,14 +119,14 @@ module RegexpExamples
   end
 
   class DotGroup
-    attr_reader :options
-    def initialize(options={})
-      @options = options
+    attr_reader :multiline
+    def initialize(multiline)
+      @multiline = multiline
     end
 
     def result
       chars = CharSets::Any
-      chars |= ["\n"] if options[:multiline]
+      chars |= ["\n"] if multiline
       chars.map do |result|
         GroupResult.new(result)
       end
@@ -136,10 +136,10 @@ module RegexpExamples
   class MultiGroup
     prepend GroupWithIgnoreCase
     attr_reader :group_id
-    def initialize(groups, group_id, options)
+    def initialize(groups, group_id, ignorecase)
       @groups = groups
       @group_id = group_id
-      @options = options
+      @ignorecase = ignorecase
     end
 
     # Generates the result of each contained group

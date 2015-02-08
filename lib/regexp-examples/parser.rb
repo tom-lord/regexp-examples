@@ -8,7 +8,7 @@ module RegexpExamples
       @extended = !(regexp_options & Regexp::EXTENDED).zero?
       @num_groups = 0
       @current_position = 0
-      RegexpExamples::ResultCountLimiters.configure!(
+      ResultCountLimiters.configure!(
         config_options[:max_repeater_variance],
         config_options[:max_group_results]
       )
@@ -29,14 +29,6 @@ module RegexpExamples
     end
 
     private
-
-    def regexp_options
-      {
-        ignorecase: @ignorecase,
-        multiline: @multiline,
-        extended: @extended
-      }
-    end
 
     def parse_group(repeaters)
       case next_char
@@ -65,7 +57,7 @@ module RegexpExamples
           raise IllegalSyntaxError, "Anchors cannot be supported, as they are not regular"
         end
       when /[#\s]/
-        if regexp_options[:extended]
+        if @extended
           parse_extended_whitespace
           group = parse_single_char_group('') # Ignore the whitespace/comment
         else
@@ -96,7 +88,7 @@ module RegexpExamples
           # Note: The `.dup` is important, as it prevents modifying the constant, in
           # CharGroup#init_ranges (where the '-' is moved to the front)
           BackslashCharMap[next_char].dup,
-          regexp_options
+          @ignorecase
         )
       when rest_of_string =~ /\A(c|C-)(.)/ # Control character
         @current_position += $1.length
@@ -171,7 +163,7 @@ module RegexpExamples
         end
       end
       groups = parse
-      MultiGroup.new(groups, group_id, regexp_options)
+      MultiGroup.new(groups, group_id, @ignorecase)
     end
 
     def parse_multi_end_group
@@ -199,11 +191,11 @@ module RegexpExamples
         chars << next_char
         @current_position += 1
       end
-      CharGroup.new(chars, regexp_options)
+      CharGroup.new(chars, @ignorecase)
     end
 
     def parse_dot_group
-      DotGroup.new(regexp_options)
+      DotGroup.new(@multiline)
     end
 
     def parse_or_group(left_repeaters)
@@ -214,7 +206,7 @@ module RegexpExamples
 
 
     def parse_single_char_group(char)
-      SingleCharGroup.new(char, regexp_options)
+      SingleCharGroup.new(char, @ignorecase)
     end
 
     def parse_backreference_group(match)
