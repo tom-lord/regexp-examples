@@ -126,7 +126,7 @@ module RegexpExamples
 
     def result
       chars = CharSets::Any
-      chars |= ["\n"] if multiline
+      chars = (["\n"] | chars) if multiline
       chars.map do |result|
         GroupResult.new(result)
       end

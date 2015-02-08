@@ -46,7 +46,7 @@ For more detail on this, see [configuration options](#configuration-options).
 
 * Regexp options can also be used:
   * Case insensitive examples: `/cool/i.examples #=> ["cool", "cooL", "coOl", "coOL", ...]`
-  * Multiline examples: `/./m.examples(max_group_results: 999) #=> ["a", "b", "c", ..., "\n"]`
+  * Multiline examples: `/./m.examples #=> ["\n", "a", "b", "c", "d"]`
   * Extended form examples: `/line1 #comment \n line2/x.examples #=> ["line1line2"]`
   * Options toggling supported: `/before(?imx-imx)after/`, `/before(?imx-imx:subexpr)after/`
 
