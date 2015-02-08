@@ -146,13 +146,34 @@ module RegexpExamples
       @current_position += 1
       @num_groups += 1
       group_id = nil # init
-      rest_of_string.match(/\A(\?)?(:|!|=|<(!|=|[^!=][^>]*))?/) do |match|
+      rest_of_string.match(
+        /
+          \A
+          (\?)?               # Is it a "special" group, i.e. starts with a "?"?
+            (
+              :               # Non capture group
+              |!              # Neglookahead
+              |=              # Lookahead
+              |<              # Lookbehind or named capture
+              (
+                !             # Neglookbehind
+                |=            # Lookbehind
+                |[^>]+        # Named capture
+              )
+              |[mix]*-?[mix]* # Option toggle
+          )?
+        /x
+      ) do |match|
         case
         when match[1].nil? # e.g. /(normal)/
           group_id = @num_groups.to_s
         when match[2] == ':' # e.g. /(?:nocapture)/
           @current_position += 2
           group_id = nil
+        when match[2] =~ /\A(?=[mix-]+)([mix]*)-?([mix]*)/ # e.g. /(?i-mx)/
+          regexp_options_toggle($1, $2)
+          @current_position += $&.length + 1
+          return parse_single_char_group('')
         when %w(! =).include?(match[2]) # e.g. /(?=lookahead)/, /(?!neglookahead)/
           raise IllegalSyntaxError, "Lookaheads are not regular; cannot generate examples"
         when %w(! =).include?(match[3]) # e.g. /(?<=lookbehind)/, /(?<!neglookbehind)/
@@ -164,6 +185,15 @@ module RegexpExamples
       end
       groups = parse
       MultiGroup.new(groups, group_id, @ignorecase)
+    end
+
+    def regexp_options_toggle(on, off)
+      @ignorecase = true if (on.include? "i")
+      @ignorecase = false if (off.include? "i")
+      @multiline = true if (on.include? "m")
+      @multiline = false if (off.include? "m")
+      @extended = true if (on.include? "x")
+      @extended = false if (off.include? "x")
     end
 
     def parse_multi_end_group

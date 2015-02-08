@@ -284,6 +284,12 @@ RSpec.describe Regexp, "#examples" do
           ).to eq %w(line1line2)
         end
       end
+
+      context "options toggling" do
+        it { expect(/a(?i)b(?-i)c/.examples).to eq %w{abc aBc}}
+        it { expect(/a(?x)   b(?-x) c/.examples).to eq %w{ab\ c}}
+        it { expect(/(?m)./.examples(max_group_results: 999)).to include "\n" }
+      end
     end
 
   end
