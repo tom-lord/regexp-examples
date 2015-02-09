@@ -44,13 +44,13 @@ module RegexpExamples
         group = parse_or_group(repeaters)
       when '\\'
         group = parse_after_backslash_group
-      when '^', 'A'
+      when '^'
         if @current_position == 0
           group = parse_single_char_group('') # Ignore the "illegal" character
         else
           raise IllegalSyntaxError, "Anchors cannot be supported, as they are not regular"
         end
-      when '$', 'z', 'Z'
+      when '$'
         if @current_position == (regexp_string.length - 1)
           group = parse_single_char_group('') # Ignore the "illegal" character
         else
@@ -103,18 +103,18 @@ module RegexpExamples
       when rest_of_string =~ /\Ap\{([^}]+)\}/ # Named properties
         @current_position += ($1.length + 2)
         raise UnsupportedSyntaxError, "Named properties ({\\p#{$1}}) are not yet supported"
-      when rest_of_string =~ /\Ag/ # Subexpression call
+      when next_char == 'g' # Subexpression call
         # TODO: Should this be IllegalSyntaxError ?
         raise UnsupportedSyntaxError, "Subexpression calls (\g) are not yet supported"
-      when rest_of_string =~ /\A[GbB]/ # Anchors
+      when next_char =~ /[bB]/ # Anchors
         raise IllegalSyntaxError, "Anchors cannot be supported, as they are not regular"
-      when rest_of_string =~ /\AA/ # Start of string
+      when next_char =~ /[AG]/ # Start of string
         if @current_position == 1
           group = parse_single_char_group('') # Ignore the "illegal" character
         else
           raise IllegalSyntaxError, "Anchors cannot be supported, as they are not regular"
         end
-      when rest_of_string =~ /\A[zZ]/ # End of string
+      when next_char =~ /[zZ]/ # End of string
         if @current_position == (regexp_string.length - 1)
           group = parse_single_char_group('') # Ignore the "illegal" character
         else

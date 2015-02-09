@@ -103,23 +103,16 @@ RSpec.describe Regexp, "#examples" do
     end
 
     context "for escaped characters" do
-      examples_exist_and_match(
-        /\w/,
-        /\W/,
-        /\s/,
-        /\S/,
-        /\d/,
-        /\D/,
-        /\h/,
-        /\H/,
-        /\t/,
-        /\n/,
-        /\f/,
-        /\a/,
-        /\v/,
-        /\e/,
-        /[\b]/
-      )
+      all_letters = Array('a'..'z') | Array('A'..'Z')
+      special_letters = %w(b c g p u x z A B C G K M P Z)
+      valid_letters = all_letters - special_letters
+
+      # TODO: \R == (\r\n|[\n\v\f\r])
+      valid_letters.each do |char|
+        backslash_char = "\\#{char}"
+        examples_exist_and_match( /#{backslash_char}/ )
+      end
+      examples_exist_and_match( /[\b]/ )
     end
 
     context "for backreferences" do
@@ -158,7 +151,6 @@ RSpec.describe Regexp, "#examples" do
         /(?<!neglookbehind)/,
         /\bword-boundary/,
         /no\Bn-word-boundary/,
-        /\Glast-match/,
         /start-of\A-string/,
         /start-of^-line/,
         /end-of\Z-string/,
@@ -170,6 +162,7 @@ RSpec.describe Regexp, "#examples" do
     context "ignore start/end anchors if at start/end" do
       examples_exist_and_match(
         /\Astart/,
+        /\Glast-match/,
         /^start/,
         /end$/,
         /end\z/,
