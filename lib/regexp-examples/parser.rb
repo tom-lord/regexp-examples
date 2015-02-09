@@ -103,6 +103,8 @@ module RegexpExamples
       when rest_of_string =~ /\Ap\{([^}]+)\}/ # Named properties
         @current_position += ($1.length + 2)
         raise UnsupportedSyntaxError, "Named properties ({\\p#{$1}}) are not yet supported"
+      when next_char == 'K' # Keep (special lookbehind that CAN be supported safely!)
+        group = parse_single_char_group('') # Ignore it
       when next_char == 'g' # Subexpression call
         # TODO: Should this be IllegalSyntaxError ?
         raise UnsupportedSyntaxError, "Subexpression calls (\g) are not yet supported"
