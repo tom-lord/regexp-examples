@@ -48,13 +48,13 @@ module RegexpExamples
         if @current_position == 0
           group = parse_single_char_group('') # Ignore the "illegal" character
         else
-          raise IllegalSyntaxError, "Anchors cannot be supported, as they are not regular"
+          raise IllegalSyntaxError, "Anchors ('#{next_char}') cannot be supported, as they are not regular"
         end
       when '$'
         if @current_position == (regexp_string.length - 1)
           group = parse_single_char_group('') # Ignore the "illegal" character
         else
-          raise IllegalSyntaxError, "Anchors cannot be supported, as they are not regular"
+          raise IllegalSyntaxError, "Anchors ('#{next_char}') cannot be supported, as they are not regular"
         end
       when /[#\s]/
         if @extended
@@ -107,18 +107,18 @@ module RegexpExamples
         # TODO: Should this be IllegalSyntaxError ?
         raise UnsupportedSyntaxError, "Subexpression calls (\g) are not yet supported"
       when next_char =~ /[bB]/ # Anchors
-        raise IllegalSyntaxError, "Anchors cannot be supported, as they are not regular"
+        raise IllegalSyntaxError, "Anchors ('\\#{next_char}') cannot be supported, as they are not regular"
       when next_char =~ /[AG]/ # Start of string
         if @current_position == 1
           group = parse_single_char_group('') # Ignore the "illegal" character
         else
-          raise IllegalSyntaxError, "Anchors cannot be supported, as they are not regular"
+          raise IllegalSyntaxError, "Anchors ('\\#{next_char}') cannot be supported, as they are not regular"
         end
       when next_char =~ /[zZ]/ # End of string
         if @current_position == (regexp_string.length - 1)
           group = parse_single_char_group('') # Ignore the "illegal" character
         else
-          raise IllegalSyntaxError, "Anchors cannot be supported, as they are not regular"
+          raise IllegalSyntaxError, "Anchors ('\\#{next_char}') cannot be supported, as they are not regular"
         end
       else
         group = parse_single_char_group( next_char )
