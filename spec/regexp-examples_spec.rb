@@ -104,10 +104,9 @@ RSpec.describe Regexp, "#examples" do
 
     context "for escaped characters" do
       all_letters = Array('a'..'z') | Array('A'..'Z')
-      special_letters = %w(b c g p u x z A B C G K M P Z)
+      special_letters = %w(b c g p u x z A B C G M P Z)
       valid_letters = all_letters - special_letters
 
-      # TODO: \R == (\r\n|[\n\v\f\r])
       valid_letters.each do |char|
         backslash_char = "\\#{char}"
         examples_exist_and_match( /#{backslash_char}/ )

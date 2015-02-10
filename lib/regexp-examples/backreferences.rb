@@ -20,6 +20,8 @@ module RegexpExamples
       full_example.all_subgroups.detect do |subgroup|
         subgroup.group_id == group_id
       end || raise(RegexpExamples::BackrefNotFound)
+      # TODO: Regex like /\10/ should match the octal representation of their character code,
+      # if there is no nth grouped subexpression. For example, `/\10/.examples` should return `["\x08"]`
     end
 
   end
