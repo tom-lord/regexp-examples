@@ -46,20 +46,20 @@ module RegexpExamples
         group = parse_after_backslash_group
       when '^'
         if @current_position == 0
-          group = parse_single_char_group('') # Ignore the "illegal" character
+          group = PlaceHolderGroup.new # Ignore the "illegal" character
         else
           raise IllegalSyntaxError, "Anchors ('#{next_char}') cannot be supported, as they are not regular"
         end
       when '$'
         if @current_position == (regexp_string.length - 1)
-          group = parse_single_char_group('') # Ignore the "illegal" character
+          group = PlaceHolderGroup.new # Ignore the "illegal" character
         else
           raise IllegalSyntaxError, "Anchors ('#{next_char}') cannot be supported, as they are not regular"
         end
       when /[#\s]/
         if @extended
           parse_extended_whitespace
-          group = parse_single_char_group('') # Ignore the whitespace/comment
+          group = PlaceHolderGroup.new # Ignore the whitespace/comment
         else
           group = parse_single_char_group(next_char)
         end
@@ -104,7 +104,7 @@ module RegexpExamples
         @current_position += ($1.length + 2)
         raise UnsupportedSyntaxError, "Named properties ({\\p#{$1}}) are not yet supported"
       when next_char == 'K' # Keep (special lookbehind that CAN be supported safely!)
-        group = parse_single_char_group('') # Ignore it
+        group = PlaceHolderGroup.new
       when next_char == 'R' # Linebreak
         group = CharGroup.new(["\r\n", "\n", "\v", "\f", "\r"], @ignorecase) # A bit hacky...
       when next_char == 'g' # Subexpression call
@@ -114,13 +114,13 @@ module RegexpExamples
         raise IllegalSyntaxError, "Anchors ('\\#{next_char}') cannot be supported, as they are not regular"
       when next_char =~ /[AG]/ # Start of string
         if @current_position == 1
-          group = parse_single_char_group('') # Ignore the "illegal" character
+          group = PlaceHolderGroup.new
         else
           raise IllegalSyntaxError, "Anchors ('\\#{next_char}') cannot be supported, as they are not regular"
         end
       when next_char =~ /[zZ]/ # End of string
         if @current_position == (regexp_string.length - 1)
-          group = parse_single_char_group('') # Ignore the "illegal" character
+          group = PlaceHolderGroup.new
         else
           raise IllegalSyntaxError, "Anchors ('\\#{next_char}') cannot be supported, as they are not regular"
         end
@@ -186,7 +186,7 @@ module RegexpExamples
           if next_char == ':' # e.g. /(?i:subexpr)/
             @current_position += 1
           else
-            return parse_single_char_group('')
+            return PlaceHolderGroup.new
           end
         when %w(! =).include?(match[2]) # e.g. /(?=lookahead)/, /(?!neglookahead)/
           raise IllegalSyntaxError, "Lookaheads are not regular; cannot generate examples"

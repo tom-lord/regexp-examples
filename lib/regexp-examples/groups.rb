@@ -48,6 +48,16 @@ module RegexpExamples
     end
   end
 
+  # Used as a workaround for when a grep is expected to be returned,
+  # but there are no results for the group.
+  # i.e. PlaceHolderGroup.new.result == '' == SingleCharGroup.new('').result
+  # (But using PlaceHolderGroup makes it clearer what the intention is!)
+  class PlaceHolderGroup
+    def result
+      [GroupResult.new('')]
+    end
+  end
+
   class CharGroup
     prepend GroupWithIgnoreCase
     def initialize(chars, ignorecase)
