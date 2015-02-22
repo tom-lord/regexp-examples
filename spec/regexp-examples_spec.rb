@@ -2,10 +2,16 @@ RSpec.describe Regexp, "#examples" do
   def self.examples_exist_and_match(*regexps)
     regexps.each do |regexp|
       it do
-        regexp_examples = regexp.examples
-        expect(regexp_examples).not_to be_empty, "No examples were generated for regexp: #{regexp.source}"
+        begin
+          regexp_examples = regexp.examples
+        rescue
+          # TODO: Find a nicer way to display this?
+          puts "Error generating examples for /#{regexp.source}/"
+          raise $!
+        end
+        expect(regexp_examples).not_to be_empty, "No examples were generated for regexp: /#{regexp.source}/"
         regexp_examples.each { |example| expect(example).to match(/\A(?:#{regexp.source})\z/) }
-        # Note: /\A...\z/ is used, to prevent misleading examples from passing the test.
+        # Note: /\A...\z/ is used to prevent misleading examples from passing the test.
         # For example, we don't want things like:
         # /a*/.examples to include "xyz"
         # /a|b/.examples to include "bad"
@@ -32,7 +38,7 @@ RSpec.describe Regexp, "#examples" do
   def self.examples_are_empty(*regexps)
     regexps.each do |regexp|
       it do
-        expect(regexp.examples).to be_empty
+        expect(regexp.examples).to be_empty, "Unexpected examples for regexp: /#{regexp.source}/"
       end
     end
   end
