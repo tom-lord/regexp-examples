@@ -3,7 +3,7 @@ RSpec.describe Regexp, "#examples" do
     regexps.each do |regexp|
       it do
         regexp_examples = regexp.examples
-        expect(regexp_examples).not_to be_empty
+        expect(regexp_examples).not_to be_empty, "No examples were generated for regexp: #{regexp.source}"
         regexp_examples.each { |example| expect(example).to match(/\A(?:#{regexp.source})\z/) }
         # Note: /\A...\z/ is used, to prevent misleading examples from passing the test.
         # For example, we don't want things like:
@@ -230,10 +230,31 @@ RSpec.describe Regexp, "#examples" do
       )
     end
 
-    context "comment group" do
+    context "for comment groups" do
       examples_exist_and_match(
         /a(?#comment)b/,
         /a(?#ugly backslashy\ comment\\\))b/
+      )
+    end
+
+    context "for POSIX groups" do
+      before { pending "TODO: POSIX Groups" }
+      examples_exist_and_match(
+        /[[:alnum:]]/,
+        /[[:alpha:]]/,
+        /[[:blank:]]/,
+        /[[:cntrl:]]/,
+        /[[:digit:]]/,
+        /[[:graph:]]/,
+        /[[:lower:]]/,
+        /[[:print:]]/,
+        /[[:punct:]]/,
+        /[[:space:]]/,
+        /[[:upper:]]/,
+        /[[:xdigit:]]/,
+        /[[:word:]]/,
+        /[[:ascii:]]/,
+        /[[:^alnum:]]/ # Negated
       )
     end
 
