@@ -19,7 +19,16 @@ module RegexpExamples
     def find_backref_for(full_example, group_id)
       full_example.all_subgroups.detect do |subgroup|
         subgroup.group_id == group_id
-      end || raise(RegexpExamples::BackrefNotFound)
+      end || octal_char_for(group_id)
+    end
+
+    def octal_char_for(octal_chars)
+      # For octal characters in the range \10 - \177
+      if octal_chars =~ /\A[01]?[0-7]{1,2}\z/ && octal_chars.to_i >= 10
+        Integer(octal_chars, 8).chr
+      else
+        raise(RegexpExamples::BackrefNotFound)
+      end
     end
 
   end

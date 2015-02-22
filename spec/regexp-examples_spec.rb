@@ -136,6 +136,13 @@ RSpec.describe Regexp, "#examples" do
       )
     end
 
+    context "for escaped octal characters" do
+      examples_exist_and_match(
+        /\10\20\30\40\50/,
+        /\177123/ # Should work for numbers up to 177
+      )
+    end
+
     context "for complex patterns" do
       # Longer combinations of the above
       examples_exist_and_match(
@@ -248,6 +255,13 @@ RSpec.describe Regexp, "#examples" do
 
         # a{1}? should be equivalent to (?:a{1})?, i.e. NOT a "non-greedy quantifier"
         it { expect(/a{1}?/.examples).to eq ["", "a"] }
+      end
+
+      context "backreferences and escaped octal combined" do
+        it do
+          expect(/(a)(b)(c)(d)(e)(f)(g)(h)(i)(j)? \10\9\8\7\6\5\4\3\2\1/.examples)
+            .to eq ["abcdefghi \x08ihgfedcba", "abcdefghij jihgfedcba"]
+        end
       end
 
       context "max_repeater_variance config option" do

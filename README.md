@@ -42,6 +42,7 @@ For more detail on this, see [configuration options](#configuration-options).
 * Control characters, e.g. `/\ca/`, `/\cZ/`, `/\C-9/`
 * Escape sequences, e.g. `/\x42/`, `/\x5word/`, `/#{"\x80".force_encoding("ASCII-8BIT")}/`
 * Unicode characters, e.g. `/\u0123/`, `/\uabcd/`, `/\u{789}/`
+* Octal characters, e.g. `/\10/`, `/\177/`
 * **Arbitrarily complex combinations of all the above!**
 
 * Regexp options can also be used:
@@ -57,8 +58,6 @@ For more detail on this, see [configuration options](#configuration-options).
   * `/[[a-d]&&[c-f]]/.examples` (which _should_ return: `["c", "d"]`)
 
 * Conditional capture groups, such as `/(group1) (?(1)yes|no)`
-
-* The patterns: `/\10/` ... `/\77/` should match the octal representation of their character code, if there is no nth grouped subexpression. For example, `/\10/.examples` should return `["\x08"]`. Funnily enough, I did not think of this when writing my regexp parser.
 
 Using any of the following will raise a RegexpExamples::UnsupportedSyntax exception (until such time as they are implemented!):
 

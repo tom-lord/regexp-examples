@@ -77,7 +77,7 @@ module RegexpExamples
     def parse_after_backslash_group
       @current_position += 1
       case
-      when rest_of_string =~ /\A(\d+)/
+      when rest_of_string =~ /\A(\d{1,3})/
         @current_position += ($1.length - 1) # In case of 10+ backrefs!
         group = parse_backreference_group($1)
       when rest_of_string =~ /\Ak<([^>]+)>/ # Named capture group
