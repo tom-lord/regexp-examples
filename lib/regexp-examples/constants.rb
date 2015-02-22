@@ -35,10 +35,12 @@ module RegexpExamples
     Lower      = Array('a'..'z')
     Upper      = Array('A'..'Z')
     Digit      = Array('0'..'9')
-    Punct      = [33..47, 58..64, 91..96, 123..126].map { |r| r.map(&:chr) }.flatten
+    # Chars in ranges: [33..47, 58..64, 91..96, 123..126]
+    Punct      = %w(] [ ! " # $ % & ' ( ) * + , . / : ; < = > ? @ \\ ^ _ ` { | } ~ -)
     Hex        = Array('a'..'f') | Array('A'..'F') | Digit
     Word       = Lower | Upper | Digit | ['_']
     Whitespace = [' ', "\t", "\n", "\r", "\v", "\f"]
+    Control    = (0..31).map(&:chr) | ["\x7f"]
     # Ensure that the "common" characters appear first in the array. Do not include "\n"!
     Any        = Lower | Upper | Digit | Punct | (0..255).map(&:chr) - ["\n"]
   end.freeze
@@ -61,6 +63,23 @@ module RegexpExamples
     'a' => ["\a"], # alarm
     'v' => ["\v"], # vertical tab
     'e' => ["\e"], # escape
+  }.freeze
+
+  POSIXCharMap = {
+    'alnum'  => CharSets::Upper | CharSets::Lower | CharSets::Digit,
+    'alpha'  => CharSets::Upper | CharSets::Lower,
+    'blank'  => [" ", "\t"],
+    'cntrl'  => CharSets::Control,
+    'digit'  => CharSets::Digit,
+    'graph'  => (CharSets::Any - CharSets::Control) - [" "], #  Visible chars
+    'lower'  => CharSets::Lower,
+    'print'  => CharSets::Any - CharSets::Control,
+    'punct'  => CharSets::Punct,
+    'space'  => CharSets::Whitespace,
+    'upper'  => CharSets::Upper,
+    'xdigit' => CharSets::Hex,
+    'word'   => CharSets::Word,
+    'ascii'  => CharSets::Any | ["\n"],
   }.freeze
 end
 
