@@ -43,6 +43,7 @@ For more detail on this, see [configuration options](#configuration-options).
 * Escape sequences, e.g. `/\x42/`, `/\x5word/`, `/#{"\x80".force_encoding("ASCII-8BIT")}/`
 * Unicode characters, e.g. `/\u0123/`, `/\uabcd/`, `/\u{789}/`
 * Octal characters, e.g. `/\10/`, `/\177/`
+* POSIX bracket expressions (including negation), e.g. `/[[:alnum:]]/`, `/[[:^space:]]/`
 * **Arbitrarily complex combinations of all the above!**
 
 * Regexp options can also be used:
@@ -54,14 +55,13 @@ For more detail on this, see [configuration options](#configuration-options).
 ## Bugs and Not-Yet-Supported syntax
 
 * Nested character classes, and the use of set intersection ([See here](http://www.ruby-doc.org/core-2.2.0/Regexp.html#class-Regexp-label-Character+Classes) for the official documentation on this.) For example:
-  * `/[[abc]]/.examples`  (which _should_ return `["a", "b", "c"]`)
+  * `/[[abc]de]/.examples`  (which _should_ return `["a", "b", "c", "d", "e"]`)
   * `/[[a-d]&&[c-f]]/.examples` (which _should_ return: `["c", "d"]`)
 
 * Conditional capture groups, such as `/(group1) (?(1)yes|no)`
 
 Using any of the following will raise a RegexpExamples::UnsupportedSyntax exception (until such time as they are implemented!):
 
-* POSIX bracket expressions, e.g. `/[[:alnum:]]/`, `/[[:space:]]/`
 * Named properties, e.g. `/\p{L}/` ("Letter"), `/\p{Arabic}/` ("Arabic character"), `/\p{^Ll}/` ("Not a lowercase letter")
 * Subexpression calls, e.g. `/(?<name> ... \g<name>* )/` (Note: These could get _really_ ugly to implement, and may even be impossible, so I highly doubt it's worth the effort!)
 

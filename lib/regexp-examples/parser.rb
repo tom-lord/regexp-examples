@@ -218,8 +218,11 @@ module RegexpExamples
     end
 
     def parse_char_group
-      if rest_of_string =~ /\A\[\[:[^:]+:\]\]/
-        raise UnsupportedSyntaxError, "POSIX bracket expressions are not yet implemented"
+      # TODO: Extract all this logic into ChargroupParser
+      if rest_of_string =~ /\A\[\[:(\^?)([^:]+):\]\]/
+        @current_position += (6 + $1.length + $2.length)
+        chars = $1.empty? ? POSIXCharMap[$2] : CharSets::Any - POSIXCharMap[$2]
+        return CharGroup.new(chars, @ignorecase)
       end
       chars = []
       @current_position += 1
@@ -238,7 +241,8 @@ module RegexpExamples
         chars << next_char
         @current_position += 1
       end
-      CharGroup.new(chars, @ignorecase)
+      parsed_chars = ChargroupParser.new(chars).result
+      CharGroup.new(parsed_chars, @ignorecase)
     end
 
     def parse_dot_group

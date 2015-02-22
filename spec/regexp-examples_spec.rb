@@ -3,7 +3,7 @@ RSpec.describe Regexp, "#examples" do
     regexps.each do |regexp|
       it do
         begin
-          regexp_examples = regexp.examples
+          regexp_examples = regexp.examples(max_group_results: 999)
         rescue
           # TODO: Find a nicer way to display this?
           puts "Error generating examples for /#{regexp.source}/"
@@ -187,8 +187,7 @@ RSpec.describe Regexp, "#examples" do
         /\p{L}/,
         /\p{Arabic}/,
         /\p{^Ll}/,
-        /(?<name> ... \g<name>*)/,
-        /[[:space:]]/
+        /(?<name> ... \g<name>*)/
       )
     end
 
@@ -244,7 +243,6 @@ RSpec.describe Regexp, "#examples" do
     end
 
     context "for POSIX groups" do
-      before { pending "TODO: POSIX Groups" }
       examples_exist_and_match(
         /[[:alnum:]]/,
         /[[:alpha:]]/,

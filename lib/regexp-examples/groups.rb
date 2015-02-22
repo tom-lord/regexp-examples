@@ -63,69 +63,14 @@ module RegexpExamples
     def initialize(chars, ignorecase)
       @chars = chars
       @ignorecase = ignorecase
-      if chars[0] == "^"
-        @negative = true
-        @chars = @chars[1..-1]
-      else
-        @negative = false
-      end
-
-      init_backslash_chars
-      init_ranges
-    end
-
-    def init_ranges
-      # save first and last "-" if present
-
-      first = nil
-      last = nil
-      first = @chars.shift if @chars.first == "-"
-      last = @chars.pop if @chars.last == "-"
-      # Replace all instances of e.g. ["a", "-", "z"] with ["a", "b", ..., "z"]
-      while i = @chars.index("-")
-        # Prevent infinite loops from expanding [",", "-", "."] to itself
-        # (Since ",".ord = 44, "-".ord = 45, ".".ord = 46)
-        if (@chars[i-1] == ',' && @chars[i+1] == '.')
-          first = '-'
-          @chars.delete_at(i)
-        else
-          @chars[i-1..i+1] = (@chars[i-1]..@chars[i+1]).to_a
-        end
-      end
-      # restore them back
-      @chars.unshift(first) if first
-      @chars.push(last) if last
-    end
-
-    def init_backslash_chars
-      @chars.each_with_index do |char, i|
-        if char == "\\"
-          if BackslashCharMap.keys.include?(@chars[i+1])
-            @chars[i..i+1] = move_backslash_to_front( BackslashCharMap[@chars[i+1]] )
-          elsif @chars[i+1] == 'b'
-            @chars[i..i+1] = "\b"
-          elsif @chars[i+1] == "\\"
-            @chars.delete_at(i+1)
-          else
-            @chars.delete_at(i)
-          end
-        end
-      end
     end
 
     def result
-      (@negative ? (CharSets::Any - @chars) : @chars).map do |result|
+      @chars.map do |result|
         GroupResult.new(result)
       end
     end
 
-    private
-    def move_backslash_to_front(chars)
-      if index = chars.index { |char| char == '\\' }
-        chars.unshift chars.delete_at(index)
-      end
-      chars
-    end
   end
 
   class DotGroup
@@ -135,8 +80,7 @@ module RegexpExamples
     end
 
     def result
-      chars = CharSets::Any
-      chars = (["\n"] | chars) if multiline
+      chars = multiline ? CharSets::Any : CharSets::AnyNoNewLine
       chars.map do |result|
         GroupResult.new(result)
       end

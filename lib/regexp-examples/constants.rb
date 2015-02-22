@@ -32,17 +32,17 @@ module RegexpExamples
   end
 
   module CharSets
-    Lower      = Array('a'..'z')
-    Upper      = Array('A'..'Z')
-    Digit      = Array('0'..'9')
-    # Chars in ranges: [33..47, 58..64, 91..96, 123..126]
-    Punct      = %w(] [ ! " # $ % & ' ( ) * + , . / : ; < = > ? @ \\ ^ _ ` { | } ~ -)
-    Hex        = Array('a'..'f') | Array('A'..'F') | Digit
-    Word       = Lower | Upper | Digit | ['_']
-    Whitespace = [' ', "\t", "\n", "\r", "\v", "\f"]
-    Control    = (0..31).map(&:chr) | ["\x7f"]
-    # Ensure that the "common" characters appear first in the array. Do not include "\n"!
-    Any        = Lower | Upper | Digit | Punct | (0..255).map(&:chr) - ["\n"]
+    Lower        = Array('a'..'z')
+    Upper        = Array('A'..'Z')
+    Digit        = Array('0'..'9')
+    Punct        = %w(! " # % & ' ( ) * , - . / : ; ? @ [ \\ ] _ { })
+    Hex          = Array('a'..'f') | Array('A'..'F') | Digit
+    Word         = Lower | Upper | Digit | ['_']
+    Whitespace   = [' ', "\t", "\n", "\r", "\v", "\f"]
+    Control      = (0..31).map(&:chr) | ["\x7f"]
+    # Ensure that the "common" characters appear first in the array
+    Any          = Lower | Upper | Digit | Punct | (0..127).map(&:chr)
+    AnyNoNewLine = Any - ["\n"]
   end.freeze
 
   # Map of special regex characters, to their associated character sets
@@ -79,7 +79,7 @@ module RegexpExamples
     'upper'  => CharSets::Upper,
     'xdigit' => CharSets::Hex,
     'word'   => CharSets::Word,
-    'ascii'  => CharSets::Any | ["\n"],
+    'ascii'  => CharSets::Any
   }.freeze
 end
 
