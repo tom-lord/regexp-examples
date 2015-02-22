@@ -35,18 +35,20 @@ module RegexpExamples
     Lower      = Array('a'..'z')
     Upper      = Array('A'..'Z')
     Digit      = Array('0'..'9')
-    Punct      = [33..47, 58..64, 91..96, 123..126].map { |r| r.map { |val| val.chr } }.flatten
+    Punct      = [33..47, 58..64, 91..96, 123..126].map { |r| r.map(&:chr) }.flatten
     Hex        = Array('a'..'f') | Array('A'..'F') | Digit
+    Word       = Lower | Upper | Digit | ['_']
     Whitespace = [' ', "\t", "\n", "\r", "\v", "\f"]
-    Any        = Lower | Upper | Digit | Punct
-  end
+    # Ensure that the "common" characters appear first in the array. Do not include "\n"!
+    Any        = Lower | Upper | Digit | Punct | (0..255).map(&:chr) - ["\n"]
+  end.freeze
 
   # Map of special regex characters, to their associated character sets
   BackslashCharMap = {
     'd' => CharSets::Digit,
-    'D' => CharSets::Lower | CharSets::Upper | CharSets::Punct,
-    'w' => CharSets::Lower | CharSets::Upper | CharSets::Digit | ['_'],
-    'W' => CharSets::Punct.reject { |val| val == '_' },
+    'D' => CharSets::Any - CharSets::Digit,
+    'w' => CharSets::Word,
+    'W' => CharSets::Any - CharSets::Word,
     's' => CharSets::Whitespace,
     'S' => CharSets::Any - CharSets::Whitespace,
     'h' => CharSets::Hex,
@@ -59,6 +61,6 @@ module RegexpExamples
     'a' => ["\a"], # alarm
     'v' => ["\v"], # vertical tab
     'e' => ["\e"], # escape
-  }
+  }.freeze
 end
 
