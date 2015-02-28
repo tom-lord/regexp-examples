@@ -44,6 +44,7 @@ For more detail on this, see [configuration options](#configuration-options).
 * Unicode characters, e.g. `/\u0123/`, `/\uabcd/`, `/\u{789}/`
 * Octal characters, e.g. `/\10/`, `/\177/`
 * POSIX bracket expressions (including negation), e.g. `/[[:alnum:]]/`, `/[[:^space:]]/`
+* Named properties, e.g. `/\p{L}/` ("Letter"), `/\p{Arabic}/` ("Arabic character"), `/\p{^Ll}/` ("Not a lowercase letter")
 * **Arbitrarily complex combinations of all the above!**
 
 * Regexp options can also be used:
@@ -60,11 +61,6 @@ For more detail on this, see [configuration options](#configuration-options).
 
 * Conditional capture groups, such as `/(group1) (?(1)yes|no)`
 
-Using any of the following will raise a RegexpExamples::UnsupportedSyntax exception (until such time as they are implemented!):
-
-* Named properties, e.g. `/\p{L}/` ("Letter"), `/\p{Arabic}/` ("Arabic character"), `/\p{^Ll}/` ("Not a lowercase letter")
-* Subexpression calls, e.g. `/(?<name> ... \g<name>* )/` (Note: These could get _really_ ugly to implement, and may even be impossible, so I highly doubt it's worth the effort!)
-
 There are loads more (increasingly obscure) unsupported bits of syntax, which I cannot be bothered to write out here. Full documentation on all the various other obscurities in the ruby (version 2.x) regexp parser can be found [here](https://raw.githubusercontent.com/k-takata/Onigmo/master/doc/RE).
 
 ## Impossible features ("illegal syntax")
@@ -77,6 +73,7 @@ Using any of the following will raise a RegexpExamples::IllegalSyntax exception:
 * Lookarounds, e.g. `/foo(?=bar)/`, `/foo(?!bar)/`, `/(?<=foo)bar/`, `/(?<!foo)bar/`
 * [Anchors](http://ruby-doc.org/core-2.2.0/Regexp.html#class-Regexp-label-Anchors) (`\b`, `\B`, `\G`, `^`, `\A`, `$`, `\z`, `\Z`), e.g. `/\bword\b/`, `/line1\n^line2/`
   * However, a special case has been made to allow `^`, `\A` and `\G` at the start of a pattern; and to allow `$`, `\z` and `\Z` at the end of pattern. In such cases, the characters are effectively just ignored.
+* Subexpression calls, e.g. `/(?<name> ... \g<name>* )/`
 
 (Note: Backreferences are not really "regular" either, but I got these to work with a bit of hackery!)
 
