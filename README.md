@@ -1,7 +1,6 @@
 # regexp-examples
 [![Gem Version](https://badge.fury.io/rb/regexp-examples.svg)](http://badge.fury.io/rb/regexp-examples)
 [![Build Status](https://travis-ci.org/tom-lord/regexp-examples.svg?branch=master)](https://travis-ci.org/tom-lord/regexp-examples/builds)
-![Code Coverage](coverage/coverage-badge.png)
 
 Extends the Regexp class with the method: Regexp#examples
 
