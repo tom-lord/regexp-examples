@@ -1,6 +1,7 @@
 # regexp-examples
 [![Gem Version](https://badge.fury.io/rb/regexp-examples.svg)](http://badge.fury.io/rb/regexp-examples)
 [![Build Status](https://travis-ci.org/tom-lord/regexp-examples.svg?branch=master)](https://travis-ci.org/tom-lord/regexp-examples/builds)
+[![Coverage Status](https://coveralls.io/repos/tom-lord/regexp-examples/badge.svg?branch=master)](https://coveralls.io/r/tom-lord/regexp-examples?branch=master)
 
 Extends the Regexp class with the method: Regexp#examples
 
@@ -60,7 +61,7 @@ For more detail on this, see [configuration options](#configuration-options).
 
 * Conditional capture groups, such as `/(group1) (?(1)yes|no)`
 
-* Some named properties, e.g. /\p{Arabic}/, list non-matching examples for ruby 2.0/2.1. There are no known issues in ruby 2.2
+* Some named properties, e.g. `/\p{Arabic}/`, list non-matching examples for ruby 2.0/2.1. There are no known issues in ruby 2.2
 
 There are loads more (increasingly obscure) unsupported bits of syntax, which I cannot be bothered to write out here. Full documentation on all the various other obscurities in the ruby (version 2.x) regexp parser can be found [here](https://raw.githubusercontent.com/k-takata/Onigmo/master/doc/RE).
 
