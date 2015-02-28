@@ -22,14 +22,6 @@ RSpec.describe Regexp, "#examples" do
     end
   end
 
-  def self.examples_raise_unsupported_syntax_error(*regexps)
-    regexps.each do |regexp|
-      it "examples for /#{regexp.source}/" do
-        expect{regexp.examples}.to raise_error RegexpExamples::UnsupportedSyntaxError
-      end
-    end
-  end
-
   def self.examples_are_empty(*regexps)
     regexps.each do |regexp|
       it "examples for /#{regexp.source}/" do
@@ -162,7 +154,8 @@ RSpec.describe Regexp, "#examples" do
         /start-of^-line/,
         /end-of\Z-string/,
         /end-of\z-string/,
-        /end-of$-line/
+        /end-of$-line/,
+        /(?<name> ... \g<name>*)/
       )
     end
 
@@ -174,12 +167,6 @@ RSpec.describe Regexp, "#examples" do
         /end$/,
         /end\z/,
         /end\Z/
-      )
-    end
-
-    context "for unsupported syntax" do
-      examples_raise_unsupported_syntax_error(
-        /(?<name> ... \g<name>*)/
       )
     end
 
