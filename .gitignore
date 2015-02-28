@@ -12,3 +12,4 @@
 *.a
 mkmf.log
 tags
+/coverage/
