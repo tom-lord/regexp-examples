@@ -173,7 +173,7 @@ RSpec.describe Regexp, "#examples" do
     context "for named properties" do
       examples_exist_and_match(
         /\p{L}/,
-        /\p{Arabic}/,
+        /\p{Space}/,
         /\p{^Ll}/
       )
 
