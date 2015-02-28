@@ -1,14 +1,9 @@
 RSpec.describe Regexp, "#examples" do
   def self.examples_exist_and_match(*regexps)
     regexps.each do |regexp|
-      it do
-        begin
-          regexp_examples = regexp.examples(max_group_results: 999)
-        rescue
-          # TODO: Find a nicer way to display this?
-          puts "Error generating examples for /#{regexp.source}/"
-          raise $!
-        end
+      it "examples for /#{regexp.source}/" do
+        regexp_examples = regexp.examples(max_group_results: 999)
+
         expect(regexp_examples).not_to be_empty, "No examples were generated for regexp: /#{regexp.source}/"
         regexp_examples.each { |example| expect(example).to match(/\A(?:#{regexp.source})\z/) }
         # Note: /\A...\z/ is used to prevent misleading examples from passing the test.
@@ -21,7 +16,7 @@ RSpec.describe Regexp, "#examples" do
 
   def self.examples_raise_illegal_syntax_error(*regexps)
     regexps.each do |regexp|
-      it do
+      it "examples for /#{regexp.source}/" do
         expect{regexp.examples}.to raise_error RegexpExamples::IllegalSyntaxError
       end
     end
@@ -29,7 +24,7 @@ RSpec.describe Regexp, "#examples" do
 
   def self.examples_raise_unsupported_syntax_error(*regexps)
     regexps.each do |regexp|
-      it do
+      it "examples for /#{regexp.source}/" do
         expect{regexp.examples}.to raise_error RegexpExamples::UnsupportedSyntaxError
       end
     end
@@ -37,8 +32,8 @@ RSpec.describe Regexp, "#examples" do
 
   def self.examples_are_empty(*regexps)
     regexps.each do |regexp|
-      it do
-        expect(regexp.examples).to be_empty, "Unexpected examples for regexp: /#{regexp.source}/"
+      it "examples for /#{regexp.source}/" do
+        expect(regexp.examples).to be_empty
       end
     end
   end
