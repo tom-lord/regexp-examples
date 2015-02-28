@@ -103,9 +103,9 @@ module RegexpExamples
         @current_position += ($1.length + $2.length + 2)
         group = CharGroup.new(
           if($1 == "^")
-            CharSets::Any.dup - NamedPropertyCharMap[$2]
+            CharSets::Any.dup - NamedPropertyCharMap[$2.downcase]
           else
-            NamedPropertyCharMap[$2]
+            NamedPropertyCharMap[$2.downcase]
           end,
           @ignorecase
         )

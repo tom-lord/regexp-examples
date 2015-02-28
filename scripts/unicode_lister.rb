@@ -171,7 +171,7 @@ File.open(OutputFilename, 'w') do |f|
   NamedGroups.each do |name|
   count += 1
     matching_codes = (0..55295).lazy.select { |x| /\p{#{name}}/ =~ eval("?\\u{#{x.to_s(16)}}") }.first(128)
-    f.puts "'#{name}' => ranges_to_unicode(#{calculate_ranges(matching_codes)}),"
+    f.puts "'#{name.downcase}' => ranges_to_unicode(#{calculate_ranges(matching_codes)}),"
     puts "(#{count}/#{NamedGroups.length}) Finished property: #{name}"
   end
   puts "*"*50

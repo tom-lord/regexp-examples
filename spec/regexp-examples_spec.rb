@@ -174,6 +174,7 @@ RSpec.describe Regexp, "#examples" do
       examples_exist_and_match(
         /\p{L}/,
         /\p{Space}/,
+        /\p{AlPhA}/, # Checking case insensitivity
         /\p{^Ll}/
       )
 
