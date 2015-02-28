@@ -85,8 +85,6 @@ module RegexpExamples
         group = parse_backreference_group($1)
       when BackslashCharMap.keys.include?(next_char)
         group = CharGroup.new(
-          # Note: The `.dup` is important, as it prevents modifying the constant, in
-          # CharGroup#init_ranges (where the '-' is moved to the front)
           BackslashCharMap[next_char].dup,
           @ignorecase
         )
@@ -100,9 +98,16 @@ module RegexpExamples
         @current_position += $1.length
         sequence = $1.match(/\h{1,4}/)[0] # Strip off "{" and "}"
         group = parse_single_char_group( parse_unicode_sequence(sequence) )
-      when rest_of_string =~ /\Ap\{([^}]+)\}/ # Named properties
-        @current_position += ($1.length + 2)
-        raise UnsupportedSyntaxError, "Named properties ({\\p#{$1}}) are not yet supported"
+      when rest_of_string =~ /\Ap\{(\^?)([^}]+)\}/ # Named properties
+        @current_position += ($1.length + $2.length + 2)
+        group = CharGroup.new(
+          if($1 == "^")
+            CharSets::Any.dup - NamedPropertyCharMap[$2]
+          else
+            NamedPropertyCharMap[$2]
+          end,
+          @ignorecase
+        )
       when next_char == 'K' # Keep (special lookbehind that CAN be supported safely!)
         group = PlaceHolderGroup.new
       when next_char == 'R' # Linebreak

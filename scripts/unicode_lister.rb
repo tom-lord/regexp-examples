@@ -147,7 +147,7 @@ NamedGroups = %w(
 # when I do `/regex/ =~ eval("?\\u{#{x.to_s(16)}}")` in the range: 55296..57343
 # This means my calculation is MISSING results in the range: 55296..65535
 # However, for the sake of performance, I'm also being "lazy" and only calculating/saving
-# the first 10 matches anyway!
+# the first 128 matches anyway!
 # If anyone ever cares about this (I doubt it), I'll look into fixing/improving it.
 
 # Example input: [1, 2, 3, 4, 6, 7, 12, 14] (Array)
@@ -170,7 +170,7 @@ count = 0
 File.open(OutputFilename, 'w') do |f|
   NamedGroups.each do |name|
   count += 1
-    matching_codes = (0..55295).lazy.select { |x| /\p{#{name}}/ =~ eval("?\\u{#{x.to_s(16)}}") }.first(10)
+    matching_codes = (0..55295).lazy.select { |x| /\p{#{name}}/ =~ eval("?\\u{#{x.to_s(16)}}") }.first(128)
     f.puts "'#{name}' => ranges_to_unicode(#{calculate_ranges(matching_codes)}),"
     puts "(#{count}/#{NamedGroups.length}) Finished property: #{name}"
   end

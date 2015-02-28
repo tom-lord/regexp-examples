@@ -184,11 +184,17 @@ RSpec.describe Regexp, "#examples" do
 
     context "for unsupported syntax" do
       examples_raise_unsupported_syntax_error(
-        /\p{L}/,
-        /\p{Arabic}/,
-        /\p{^Ll}/,
         /(?<name> ... \g<name>*)/
       )
+    end
+
+    context "for named properties" do
+      examples_exist_and_match(
+        /\p{L}/,
+        /\p{Arabic}/,
+        /\p{^Ll}/
+      )
+
     end
 
     context "for control characters" do
