@@ -38,6 +38,8 @@ module RegexpExamples
           else
             # TODO!!!
             # Add range from previous char -> next char
+            @charset << "-"
+            @current_position += 1
           end
         when "&"
           if regexp_string[@current_position + 1] == "&"
