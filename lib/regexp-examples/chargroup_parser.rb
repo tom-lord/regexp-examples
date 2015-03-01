@@ -1,69 +1,106 @@
 module RegexpExamples
-  # Given an array of chars from inside a character set,
-  # Interprets all backslashes, ranges and negations
-  # TODO: This needs a bit of a rewrite because:
-  #   A) It's ugly
-  #   B) It doesn't take into account nested character groups, or set intersection
-  # To achieve this, the algorithm needs to be recursive, like the main Parser.
+  # A "sub-parser", for char groups in a regular expression
+  # Some examples of what this class needs to parse:
+  # [abc]          - plain characters
+  # [a-z]          - ranges
+  # [\n\b\d]       - escaped characters (which may represent character sets)
+  # [^abc]         - negated group
+  # [[a][bc]]      - sub-groups (should match "a", "b" or "c")
+  # [[:lower:]]    - POSIX group
+  # [[a-f]&&[d-z]] - set intersection (should match "d", "f" or "f")
+  # [[^:alpha:]&&[\n]a-c] - all of the above!!!! (should match "\n")
   class ChargroupParser
-    def initialize(chars)
-      @chars = chars
-      if @chars[0] == "^"
-        @negative = true
-        @chars = @chars[1..-1]
-      else
-        @negative = false
+    attr_reader :regexp_string
+    def initialize(regexp_string)
+      @regexp_string = regexp_string
+      @current_position = 0
+    end
+
+    def parse(is_sub_group: false)
+      @charset = []
+      @negative = false
+      parse_first_chars(is_sub_group)
+      until next_char == "]" do
+        case next_char
+        when "\\"
+          @current_position += 1
+          parse_after_backslash
+        when "["
+          @current_position += 1
+          sub_group_parser = self.class.new(rest_of_string)
+          sub_group_parser.parse(is_sub_group: true)
+          @charset.concat sub_group_parser.result
+          @current_position += sub_group_parser.length
+        when "-"
+          if regexp_string[@current_position + 1] == "]"
+            @charset << "-"
+            @current_position += 1
+          else
+            # TODO!!!
+            # Add range from previous char -> next char
+          end
+        when "&"
+          if regexp_string[@current_position + 1] == "&"
+            # TODO!!!
+            # Set intersection...
+          else
+            @charset << "&"
+            @current_position += 1
+          end
+        else
+          @charset << next_char
+          @current_position += 1
+        end
       end
 
-      init_backslash_chars
-      init_ranges
+      @charset.uniq!
+      @current_position += 1 # To account for final "]"
+    end
+
+    def length
+      @current_position
     end
 
     def result
-      @negative ? (CharSets::Any - @chars) : @chars
+      @negative ? (CharSets::Any - @charset) : @charset
     end
 
     private
-    def init_backslash_chars
-      @chars.each_with_index do |char, i|
-        if char == "\\"
-          if BackslashCharMap.keys.include?(@chars[i+1])
-            @chars[i..i+1] = move_backslash_to_front( BackslashCharMap[@chars[i+1]] )
-          elsif @chars[i+1] == 'b'
-            @chars[i..i+1] = "\b"
-          elsif @chars[i+1] == "\\"
-            @chars.delete_at(i+1)
-          else
-            @chars.delete_at(i)
-          end
+    def parse_first_chars(is_sub_group)
+      if next_char == '^'
+        @negative = true
+        @current_position += 1
+      end
+      
+      case rest_of_string
+      when /\A[-\]]/ # e.g. /[]]/ (match "]") or /[-]/ (match "-")
+        @charset << next_char
+        @current_position += 1
+      when /\A:([^:]+):\]/ # e.g. [[:alpha:]] - POSIX group
+        if is_sub_group
+          @charset.concat POSIXCharMap[$1]
+          @current_position += ($1.length + 2)
         end
       end
     end
 
-    def init_ranges
-      # remove hyphen ("-") from front/back, if present
-      hyphen = nil
-      hyphen = @chars.shift if @chars.first == "-"
-      hyphen ||= @chars.pop if @chars.last == "-"
-      # Replace all instances of e.g. ["a", "-", "z"] with ["a", "b", ..., "z"]
-      while i = @chars.index("-")
-        # Prevent infinite loops from expanding [",", "-", "."] to itself
-        # (Since ",".ord = 44, "-".ord = 45, ".".ord = 46)
-        if (@chars[i-1] == ',' && @chars[i+1] == '.')
-          hyphen = @chars.delete_at(i)
-        else
-          @chars[i-1..i+1] = (@chars[i-1]..@chars[i+1]).to_a
-        end
+    def parse_after_backslash
+      case next_char
+      when *BackslashCharMap.keys
+        @charset.concat BackslashCharMap[next_char]
+      when 'b'
+        @charset << "\b"
+      else
+        @charset << next_char
       end
-      # restore hyphen, if stripped out earlier
-      @chars.unshift(hyphen) if hyphen
     end
 
-    def move_backslash_to_front(chars)
-      if index = chars.index { |char| char == '\\' }
-        chars.unshift chars.delete_at(index)
-      end
-      chars
+    def rest_of_string
+      regexp_string[@current_position..-1]
+    end
+
+    def next_char
+      regexp_string[@current_position]
     end
   end
 end
