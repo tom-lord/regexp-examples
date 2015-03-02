@@ -22,9 +22,6 @@ module RegexpExamples
       parse_first_chars(is_sub_group)
       until next_char == "]" do
         case next_char
-        when "\\"
-          @current_position += 1
-          parse_after_backslash
         when "["
           @current_position += 1
           sub_group_parser = self.class.new(rest_of_string)
@@ -32,13 +29,12 @@ module RegexpExamples
           @charset.concat sub_group_parser.result
           @current_position += sub_group_parser.length
         when "-"
-          if regexp_string[@current_position + 1] == "]"
+          if regexp_string[@current_position + 1] == "]" # e.g. /[abc-]/ -- not a range!
             @charset << "-"
             @current_position += 1
           else
-            # TODO!!!
-            # Add range from previous char -> next char
-            @charset << "-"
+            @current_position += 1
+            @charset.concat (@charset.last .. parse_checking_backlash.first).to_a
             @current_position += 1
           end
         when "&"
@@ -50,7 +46,7 @@ module RegexpExamples
             @current_position += 1
           end
         else
-          @charset << next_char
+          @charset.concat parse_checking_backlash
           @current_position += 1
         end
       end
@@ -78,22 +74,33 @@ module RegexpExamples
       when /\A[-\]]/ # e.g. /[]]/ (match "]") or /[-]/ (match "-")
         @charset << next_char
         @current_position += 1
-      when /\A:([^:]+):\]/ # e.g. [[:alpha:]] - POSIX group
+      when /\A:(\^?)([^:]+):\]/ # e.g. [[:alpha:]] - POSIX group
         if is_sub_group
-          @charset.concat POSIXCharMap[$1]
-          @current_position += ($1.length + 2)
+          chars = $1.empty? ? POSIXCharMap[$2] : (CharSets::Any - POSIXCharMap[$2])
+          @charset.concat chars
+          @current_position += ($1.length + $2.length + 2)
         end
+      end
+    end
+
+    # Always returns an Array, for consistency
+    def parse_checking_backlash
+      if next_char == "\\"
+        @current_position += 1
+        parse_after_backslash
+      else
+        [next_char]
       end
     end
 
     def parse_after_backslash
       case next_char
       when *BackslashCharMap.keys
-        @charset.concat BackslashCharMap[next_char]
+        BackslashCharMap[next_char]
       when 'b'
-        @charset << "\b"
+        ["\b"]
       else
-        @charset << next_char
+        [next_char]
       end
     end
 

@@ -227,7 +227,7 @@ module RegexpExamples
       chargroup_parser = ChargroupParser.new(rest_of_string)
       chargroup_parser.parse
       parsed_chars = chargroup_parser.result
-      @current_position += chargroup_parser.length
+      @current_position += (chargroup_parser.length - 1) # Step back to closing "]"
       CharGroup.new(parsed_chars, @ignorecase)
     end
 
