@@ -39,8 +39,11 @@ module RegexpExamples
           end
         when "&"
           if regexp_string[@current_position + 1] == "&"
-            # TODO!!!
-            # Set intersection...
+            @current_position += 2
+            sub_group_parser = self.class.new(rest_of_string)
+            sub_group_parser.parse(is_sub_group: is_sub_group)
+            @charset &= sub_group_parser.result
+            @current_position += (sub_group_parser.length - 1)
           else
             @charset << "&"
             @current_position += 1
