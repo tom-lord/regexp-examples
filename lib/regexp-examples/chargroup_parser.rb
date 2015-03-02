@@ -11,21 +11,22 @@ module RegexpExamples
   # [[^:alpha:]&&[\n]a-c] - all of the above!!!! (should match "\n")
   class ChargroupParser
     attr_reader :regexp_string
-    def initialize(regexp_string)
+    def initialize(regexp_string, is_sub_group: false)
       @regexp_string = regexp_string
+      @is_sub_group = is_sub_group
       @current_position = 0
+      parse
     end
 
-    def parse(is_sub_group: false)
+    def parse
       @charset = []
       @negative = false
-      parse_first_chars(is_sub_group)
+      parse_first_chars
       until next_char == "]" do
         case next_char
         when "["
           @current_position += 1
-          sub_group_parser = self.class.new(rest_of_string)
-          sub_group_parser.parse(is_sub_group: true)
+          sub_group_parser = self.class.new(rest_of_string, is_sub_group: true)
           @charset.concat sub_group_parser.result
           @current_position += sub_group_parser.length
         when "-"
@@ -40,8 +41,7 @@ module RegexpExamples
         when "&"
           if regexp_string[@current_position + 1] == "&"
             @current_position += 2
-            sub_group_parser = self.class.new(rest_of_string)
-            sub_group_parser.parse(is_sub_group: is_sub_group)
+            sub_group_parser = self.class.new(rest_of_string, is_sub_group: @is_sub_group)
             @charset &= sub_group_parser.result
             @current_position += (sub_group_parser.length - 1)
           else
@@ -67,7 +67,7 @@ module RegexpExamples
     end
 
     private
-    def parse_first_chars(is_sub_group)
+    def parse_first_chars
       if next_char == '^'
         @negative = true
         @current_position += 1
@@ -78,7 +78,7 @@ module RegexpExamples
         @charset << next_char
         @current_position += 1
       when /\A:(\^?)([^:]+):\]/ # e.g. [[:alpha:]] - POSIX group
-        if is_sub_group
+        if @is_sub_group
           chars = $1.empty? ? POSIXCharMap[$2] : (CharSets::Any - POSIXCharMap[$2])
           @charset.concat chars
           @current_position += ($1.length + $2.length + 2)
