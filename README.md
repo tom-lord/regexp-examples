@@ -80,7 +80,7 @@ Or install it yourself as:
 
 There are also some various (increasingly obscure) unsupported bits of syntax, which I cannot be bothered to write out fully here. Full documentation on all the intricate obscurities in the ruby (version 2.x) regexp parser can be found [here](https://raw.githubusercontent.com/k-takata/Onigmo/master/doc/RE). To name a couple:
 * Conditional capture groups, e.g. `/(group1)? (?(1)yes|no)/.examples` (which *should* return: `["group1 yes", " no"]`)
-* Back reference by relalitve group number, e.g. `/(a)(b)(c)(d) \k<-2>` (which *should* return: `["abcd c"]`)
+* Back reference by relatve group number, e.g. `/(a)(b)(c)(d) \k<-2>/.examples` (which *should* return: `["abcd c"]`)
 
 ## Impossible features ("illegal syntax")
 
