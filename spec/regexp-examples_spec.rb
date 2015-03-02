@@ -69,7 +69,6 @@ RSpec.describe Regexp, "#examples" do
 
     context "for complex char groups (square brackets)" do
       examples_exist_and_match(
-
         /[abc]/,
         /[a-c]/,
         /[abc-e]/,
@@ -82,7 +81,13 @@ RSpec.describe Regexp, "#examples" do
         /[\n-\r]/,
         /[\-]/,
         /[%-+]/, # This regex is "supposed to" match some surprising things!!!
-        /['-.]/ # Test to ensure no "infinite loop" on character set expansion
+        /['-.]/, # Test to ensure no "infinite loop" on character set expansion
+        /[[abc]]/, # Nested groups
+        /[[[[abc]]]]/,
+        /[[a][b][c]]/,
+        /[[a-h]&&[f-z]]/, # Set intersection
+        /[[a-h]&&ab[c]]/, # Set intersection
+        /[[a-h]&[f-z]]/, # NOT set intersection
       )
     end
 

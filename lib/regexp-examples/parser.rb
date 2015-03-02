@@ -223,30 +223,10 @@ module RegexpExamples
     end
 
     def parse_char_group
-      # TODO: Extract all this logic into ChargroupParser
-      if rest_of_string =~ /\A\[\[:(\^?)([^:]+):\]\]/
-        @current_position += (6 + $1.length + $2.length)
-        chars = $1.empty? ? POSIXCharMap[$2] : CharSets::Any - POSIXCharMap[$2]
-        return CharGroup.new(chars, @ignorecase)
-      end
-      chars = []
-      @current_position += 1
-      if next_char == ']'
-        # Beware of the sneaky edge case:
-        # /[]]/ (match "]")
-        chars << ']'
-        @current_position += 1
-      end
-      until next_char == ']' \
-        && !regexp_string[0..@current_position-1].match(/[^\\](\\{2})*\\\z/)
-        # Beware of having an ODD number of "\" before the "]", e.g.
-        # /[\]]/ (match "]")
-        # /[\\]/ (match "\")
-        # /[\\\]]/ (match "\" or "]")
-        chars << next_char
-        @current_position += 1
-      end
-      parsed_chars = ChargroupParser.new(chars).result
+      @current_position += 1 # Skip past opening "["
+      chargroup_parser = ChargroupParser.new(rest_of_string)
+      parsed_chars = chargroup_parser.result
+      @current_position += (chargroup_parser.length - 1) # Step back to closing "]"
       CharGroup.new(parsed_chars, @ignorecase)
     end
 
