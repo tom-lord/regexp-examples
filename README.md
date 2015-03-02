@@ -26,12 +26,33 @@ For more detail on this, see [configuration options](#configuration-options).
 /what about (backreferences\?) \1/.examples #=> ['what about backreferences? backreferences?']
 ```
 
+## Installation
+
+Add this line to your application's Gemfile:
+
+```ruby
+gem 'regexp-examples'
+```
+
+And then execute:
+
+    $ bundle
+
+Or install it yourself as:
+
+    $ gem install regexp-examples
+
 ## Supported syntax
 
 * All forms of repeaters (quantifiers), e.g. `/a*/`, `/a+/`, `/a?/`, `/a{1,4}/`, `/a{3,}/`, `/a{,2}/`
   * Reluctant and possissive repeaters work fine, too - e.g. `/a*?/`, `/a*+/`
 * Boolean "Or" groups, e.g. `/a|b|c/`
-* Character sets (inluding ranges and negation!), e.g. `/[abc]/`, `/[A-Z0-9]/`, `/[^a-z]/`, `/[\w\s\b]/`
+* Character sets e.g. `/[abc]/` - including:
+  * Ranges, e.g.`/[A-Z0-9]/`
+  * Negation, e.g. `/[^a-z]/`
+  * Escaped characters, e.g. `/[\w\s\b]/`
+  * POSIX bracket expressions, e.g. `/[[:alnum:]]/`, `/[[:^space:]]/`
+  * Set intersection, e.g. `/[[a-h]&&[f-z]]/`
 * Escaped characters, e.g. `/\n/`, `/\w/`, `/\D/` (and so on...)
 * Capture groups, e.g. `/(group)/`
   * Including named groups, e.g. `/(?<name>group)/`
@@ -43,7 +64,6 @@ For more detail on this, see [configuration options](#configuration-options).
 * Escape sequences, e.g. `/\x42/`, `/\x5word/`, `/#{"\x80".force_encoding("ASCII-8BIT")}/`
 * Unicode characters, e.g. `/\u0123/`, `/\uabcd/`, `/\u{789}/`
 * Octal characters, e.g. `/\10/`, `/\177/`
-* POSIX bracket expressions (including negation), e.g. `/[[:alnum:]]/`, `/[[:^space:]]/`
 * Named properties, e.g. `/\p{L}/` ("Letter"), `/\p{Arabic}/` ("Arabic character"), `/\p{^Ll}/` ("Not a lowercase letter")
 * **Arbitrarily complex combinations of all the above!**
 
@@ -55,15 +75,12 @@ For more detail on this, see [configuration options](#configuration-options).
 
 ## Bugs and Not-Yet-Supported syntax
 
-* Nested character classes, and the use of set intersection ([See here](http://www.ruby-doc.org/core-2.2.0/Regexp.html#class-Regexp-label-Character+Classes) for the official documentation on this.) For example:
-  * `/[[abc]de]/.examples`  (which _should_ return `["a", "b", "c", "d", "e"]`)
-  * `/[[a-d]&&[c-f]]/.examples` (which _should_ return: `["c", "d"]`)
+* There are some (rare) edge cases where backreferences do not work properly, e.g. `/(a*)a* \1/.examples` - which includes "aaaa aa". This is because each repeater is not context-aware, so the "greediness" logic is flawed. (E.g. in this case, the second `a*` should always evaluate to an empty string, because the previous `a*` was greedy! However, patterns like this are highly unusual...
+* Some named properties, e.g. `/\p{Arabic}/`, list non-matching examples for ruby 2.0/2.1 (as the definitions changed in ruby 2.2). This would be "easy" to fix, but I can't be bothered... Feel free to make a pull request!
 
-* Conditional capture groups, such as `/(group1) (?(1)yes|no)`
-
-* Some named properties, e.g. `/\p{Arabic}/`, list non-matching examples for ruby 2.0/2.1. There are no known issues in ruby 2.2
-
-There are loads more (increasingly obscure) unsupported bits of syntax, which I cannot be bothered to write out here. Full documentation on all the various other obscurities in the ruby (version 2.x) regexp parser can be found [here](https://raw.githubusercontent.com/k-takata/Onigmo/master/doc/RE).
+There are also some various (increasingly obscure) unsupported bits of syntax, which I cannot be bothered to write out fully here. Full documentation on all the intricate obscurities in the ruby (version 2.x) regexp parser can be found [here](https://raw.githubusercontent.com/k-takata/Onigmo/master/doc/RE). To name a couple:
+* Conditional capture groups, e.g. `/(group1)? (?(1)yes|no)/.examples` (which *should* return: `["group1 yes", " no"]`)
+* Back reference by relalitve group number, e.g. `/(a)(b)(c)(d) \k<-2>` (which *should* return: `["abcd c"]`)
 
 ## Impossible features ("illegal syntax")
 
@@ -117,21 +134,12 @@ A more sensible use case might be, for example, to generate one random 1-4 digit
 
 (Note: I may develop a much more efficient way to "generate one example" in a later release of this gem.)
 
-## Installation
+## TODO
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'regexp-examples'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install regexp-examples
+* Performance improvements:
+  * Use of lambdas/something (in [constants.rb](lib/regexp-examples/constants.rb)) to improve the library load time.
+  * (Maybe?) add a `max_examples` configuration option and use lazy evaluation, to ensure the method never "freezes"
+* Write a blog post about how this amazing gem works! :)
 
 ## Contributing
 
