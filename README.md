@@ -15,7 +15,7 @@ For more detail on this, see [configuration options](#configuration-options).
 ## Usage
 
 ```ruby
-/a*/.examples #=> [''. 'a', 'aa']
+/a*/.examples #=> ['', 'a', 'aa']
 /ab+/.examples #=> ['ab', 'abb', 'abbb']
 /this|is|awesome/.examples #=> ['this', 'is', 'awesome']
 /https?:\/\/(www\.)?github\.com/.examples #=> ['http://github.com',
