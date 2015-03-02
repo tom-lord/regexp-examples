@@ -80,6 +80,8 @@ RSpec.describe Regexp, "#examples" do
         /[\\\]]/,
         /[\n-\r]/,
         /[\-]/,
+        /[-abc]/,
+        /[abc-]/,
         /[%-+]/, # This regex is "supposed to" match some surprising things!!!
         /['-.]/, # Test to ensure no "infinite loop" on character set expansion
         /[[abc]]/, # Nested groups
