@@ -1,10 +1,11 @@
+require 'pstore'
+require_relative '../lib/regexp-examples/unicode_char_ranges'
 # A script to generate lists of all unicode characters
 # that match all named group/character properties regexps.
 # For use in e.g. /\p{Arabic}/.examples
 
 # To (re-)generate this list, simply run this file!
 # > ruby scripts/unicode_lister.rb
-OutputFilename = 'unicode_result'
 
 # Taken from ruby documentation:
 # http://ruby-doc.org//core-2.2.0/Regexp.html#class-Regexp-label-Character+Properties
@@ -163,18 +164,18 @@ def calculate_ranges(matching_codes)
     end
   end
     .map { |range| range.size == 1 ? range.first : range}
-    .join(", ")
 end
 
 count = 0
-File.open(OutputFilename, 'w') do |f|
+store = PStore.new("db/#{RegexpExamples::UnicodeCharRanges::STORE_FILENAME}")
+store.transaction do
   NamedGroups.each do |name|
   count += 1
     matching_codes = (0..55295).lazy.select { |x| /\p{#{name}}/ =~ eval("?\\u{#{x.to_s(16)}}") }.first(128)
-    f.puts "'#{name.downcase}' => ranges_to_unicode(#{calculate_ranges(matching_codes)}),"
+    store[name.downcase] = calculate_ranges(matching_codes)
     puts "(#{count}/#{NamedGroups.length}) Finished property: #{name}"
   end
   puts "*"*50
-  puts "Finished! Result stored in: #{OutputFilename}"
+  puts "Finished! Result stored in: db/#{RegexpExamples::UnicodeCharRanges::STORE_FILENAME}"
 end
 
