@@ -79,7 +79,6 @@ Or install it yourself as:
 
 * There are some (rare) edge cases where backreferences do not work properly, e.g. `/(a*)a* \1/.examples` - which includes "aaaa aa". This is because each repeater is not context-aware, so the "greediness" logic is flawed. (E.g. in this case, the second `a*` should always evaluate to an empty string, because the previous `a*` was greedy! However, patterns like this are highly unusual...
 * Some named properties, e.g. `/\p{Arabic}/`, list non-matching examples for ruby 2.0/2.1 (as the definitions changed in ruby 2.2). This will be fixed in version 1.1.0 (see the pending pull request)!
-* Negated named properties using an upper case `P`, e.g. `/\P{Space}/.examples` does not parse correctly. (But `/\p{^Space}/.examples` works fine.) This will also be fixed in version 1.1.0.
 
 There are also some various (increasingly obscure) unsupported bits of syntax; some of which I haven't yet investigated. Much of this is not even mentioned in the ruby docs! Full documentation on all the intricate obscurities in the ruby (version 2.x) regexp parser can be found [here](https://raw.githubusercontent.com/k-takata/Onigmo/master/doc/RE). To name a few:
 * Conditional capture groups, e.g. `/(group1)? (?(1)yes|no)/.examples` (which *should* return: `["group1 yes", " no"]`)
