@@ -182,7 +182,9 @@ RSpec.describe Regexp, "#examples" do
         /\p{L}/,
         /\p{Space}/,
         /\p{AlPhA}/, # Checking case insensitivity
-        /\p{^Ll}/
+        /\p{^Ll}/,
+        /\P{Ll}/,
+        /\P{^Ll}/ # Double negative!!
       )
 
     end

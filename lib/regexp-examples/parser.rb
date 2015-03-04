@@ -99,13 +99,14 @@ module RegexpExamples
         @current_position += $1.length
         sequence = $1.match(/\h{1,4}/)[0] # Strip off "{" and "}"
         group = parse_single_char_group( parse_unicode_sequence(sequence) )
-      when rest_of_string =~ /\Ap\{(\^?)([^}]+)\}/ # Named properties
-        @current_position += ($1.length + $2.length + 2)
+      when rest_of_string =~ /\A(p)\{(\^?)([^}]+)\}/i # Named properties
+        @current_position += ($2.length + $3.length + 2)
+        is_negative = ($1 == "P") ^ ($2 == "^") # Beware of double negatives! E.g. /\P{^Space}/
         group = CharGroup.new(
-          if($1 == "^")
-            CharSets::Any.dup - NamedPropertyCharMap[$2.downcase]
+          if is_negative
+            CharSets::Any.dup - NamedPropertyCharMap[$3.downcase]
           else
-            NamedPropertyCharMap[$2.downcase]
+            NamedPropertyCharMap[$3.downcase]
           end,
           @ignorecase
         )
