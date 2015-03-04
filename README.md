@@ -23,7 +23,8 @@ For more detail on this, see [configuration options](#configuration-options).
 /(I(N(C(E(P(T(I(O(N)))))))))*/.examples #=> ["", "INCEPTION", "INCEPTIONINCEPTION"]
 /\x74\x68\x69\x73/.examples #=> ["this"]
 /\u6829/.examples #=> ["栩"]
-/what about (backreferences\?) \1/.examples #=> ['what about backreferences? backreferences?']
+/what about (backreferences\?) \1/.examples
+  #=> ['what about backreferences? backreferences?']
 ```
 
 ## Installation
@@ -45,9 +46,9 @@ Or install it yourself as:
 ## Supported syntax
 
 * All forms of repeaters (quantifiers), e.g. `/a*/`, `/a+/`, `/a?/`, `/a{1,4}/`, `/a{3,}/`, `/a{,2}/`
-  * Reluctant and possissive repeaters work fine, too - e.g. `/a*?/`, `/a*+/`
+  * Reluctant and possissive repeaters work fine, too, e.g. `/a*?/`, `/a*+/`
 * Boolean "Or" groups, e.g. `/a|b|c/`
-* Character sets e.g. `/[abc]/` - including:
+* Character sets, e.g. `/[abc]/` - including:
   * Ranges, e.g.`/[A-Z0-9]/`
   * Negation, e.g. `/[^a-z]/`
   * Escaped characters, e.g. `/[\w\s\b]/`
@@ -57,7 +58,7 @@ Or install it yourself as:
 * Capture groups, e.g. `/(group)/`
   * Including named groups, e.g. `/(?<name>group)/`
   * ...And backreferences(!!!), e.g. `/(this|that) \1/` `/(?<name>foo) \k<name>/`
-  * Groups work fine, even if nested or optional e.g. `/(even(this(works?))) \1 \2 \3/`, `/what about (this)? \1/`
+  * Groups work fine, even if nested or optional, e.g. `/(even(this(works?))) \1 \2 \3/`, `/what about (this)? \1/`
   * Non-capture groups, e.g. `/(?:foo)/`
   * Comment groups, e.g. `/foo(?#comment)bar/`
 * Control characters, e.g. `/\ca/`, `/\cZ/`, `/\C-9/`
@@ -76,11 +77,13 @@ Or install it yourself as:
 ## Bugs and Not-Yet-Supported syntax
 
 * There are some (rare) edge cases where backreferences do not work properly, e.g. `/(a*)a* \1/.examples` - which includes "aaaa aa". This is because each repeater is not context-aware, so the "greediness" logic is flawed. (E.g. in this case, the second `a*` should always evaluate to an empty string, because the previous `a*` was greedy! However, patterns like this are highly unusual...
-* Some named properties, e.g. `/\p{Arabic}/`, list non-matching examples for ruby 2.0/2.1 (as the definitions changed in ruby 2.2). This would be "easy" to fix, but I can't be bothered... Feel free to make a pull request!
+* Some named properties, e.g. `/\p{Arabic}/`, list non-matching examples for ruby 2.0/2.1 (as the definitions changed in ruby 2.2). This will be fixed in version 1.1.0 (see the pending pull request)!
+* Negated named properties using an upper case `P`, e.g. `/\P{Space}/.examples` does not parse correctly. (But `/\p{^Space}/.examples` works fine.) This will also be fixed in version 1.1.0.
 
-There are also some various (increasingly obscure) unsupported bits of syntax, which I cannot be bothered to write out fully here. Full documentation on all the intricate obscurities in the ruby (version 2.x) regexp parser can be found [here](https://raw.githubusercontent.com/k-takata/Onigmo/master/doc/RE). To name a couple:
+There are also some various (increasingly obscure) unsupported bits of syntax; some of which I haven't yet investigated. Much of this is not even mentioned in the ruby docs! Full documentation on all the intricate obscurities in the ruby (version 2.x) regexp parser can be found [here](https://raw.githubusercontent.com/k-takata/Onigmo/master/doc/RE). To name a few:
 * Conditional capture groups, e.g. `/(group1)? (?(1)yes|no)/.examples` (which *should* return: `["group1 yes", " no"]`)
-* Back reference by relatve group number, e.g. `/(a)(b)(c)(d) \k<-2>/.examples` (which *should* return: `["abcd c"]`)
+* Back reference by relative group number, e.g. `/(a)(b)(c)(d) \k<-2>/.examples` (which *should* return: `["abcd c"]`)
+* Back reference using single quotes, and for group numbers, e.g. `/(a) \k'1'/.examples` (which is really just alternative syntax for `/(a) \1/`!)
 
 ## Impossible features ("illegal syntax")
 
@@ -92,7 +95,7 @@ Using any of the following will raise a RegexpExamples::IllegalSyntax exception:
 * Lookarounds, e.g. `/foo(?=bar)/`, `/foo(?!bar)/`, `/(?<=foo)bar/`, `/(?<!foo)bar/`
 * [Anchors](http://ruby-doc.org/core-2.2.0/Regexp.html#class-Regexp-label-Anchors) (`\b`, `\B`, `\G`, `^`, `\A`, `$`, `\z`, `\Z`), e.g. `/\bword\b/`, `/line1\n^line2/`
   * However, a special case has been made to allow `^`, `\A` and `\G` at the start of a pattern; and to allow `$`, `\z` and `\Z` at the end of pattern. In such cases, the characters are effectively just ignored.
-* Subexpression calls, e.g. `/(?<name> ... \g<name>* )/`
+* Subexpression calls (`\g`), e.g. `/(?<name> ... \g<name>* )/`
 
 (Note: Backreferences are not really "regular" either, but I got these to work with a bit of hackery!)
 
@@ -137,8 +140,9 @@ A more sensible use case might be, for example, to generate one random 1-4 digit
 ## TODO
 
 * Performance improvements:
-  * Use of lambdas/something (in [constants.rb](lib/regexp-examples/constants.rb)) to improve the library load time.
-  * (Maybe?) add a `max_examples` configuration option and use lazy evaluation, to ensure the method never "freezes"
+  * Use of lambdas/something (in [constants.rb](lib/regexp-examples/constants.rb)) to improve the library load time. See the pending pull request.
+  * (Maybe?) add a `max_examples` configuration option and use lazy evaluation, to ensure the method never "freezes".
+* Potential future feature: `Regexp#random_example` - but implementing this properly is non-trivial, due to performance issues that need addressing first!
 * Write a blog post about how this amazing gem works! :)
 
 ## Contributing
