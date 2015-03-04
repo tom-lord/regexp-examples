@@ -65,7 +65,8 @@ Or install it yourself as:
 * Escape sequences, e.g. `/\x42/`, `/\x5word/`, `/#{"\x80".force_encoding("ASCII-8BIT")}/`
 * Unicode characters, e.g. `/\u0123/`, `/\uabcd/`, `/\u{789}/`
 * Octal characters, e.g. `/\10/`, `/\177/`
-* Named properties, e.g. `/\p{L}/` ("Letter"), `/\p{Arabic}/` ("Arabic character"), `/\p{^Ll}/` ("Not a lowercase letter")
+* Named properties, e.g. `/\p{L}/` ("Letter"), `/\p{Arabic}/` ("Arabic character")
+, `/\p{^Ll}/` ("Not a lowercase letter"), `\P{^Canadian_Aboriginal}` ("Not not a Canadian aboriginal character")
 * **Arbitrarily complex combinations of all the above!**
 
 * Regexp options can also be used:
