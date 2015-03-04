@@ -114,7 +114,7 @@ module RegexpExamples
       when next_char == 'R' # Linebreak
         group = CharGroup.new(["\r\n", "\n", "\v", "\f", "\r"], @ignorecase) # A bit hacky...
       when next_char == 'g' # Subexpression call
-        raise IllegalSyntaxError, "Subexpression calls (\g) are not yet supported"
+        raise IllegalSyntaxError, "Subexpression calls (\\g) cannot be supported, as they are not regular"
       when next_char =~ /[bB]/ # Anchors
         raise IllegalSyntaxError, "Anchors ('\\#{next_char}') cannot be supported, as they are not regular"
       when next_char =~ /[AG]/ # Start of string
