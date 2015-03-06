@@ -22,9 +22,15 @@ For more detail on this, see [configuration options](#configuration-options).
   # 'http://www.github.com', 'https://github.com', 'https://www.github.com']
 /(I(N(C(E(P(T(I(O(N)))))))))*/.examples #=> ["", "INCEPTION", "INCEPTIONINCEPTION"]
 /\x74\x68\x69\x73/.examples #=> ["this"]
-/\u6829/.examples #=> ["栩"]
 /what about (backreferences\?) \1/.examples
   #=> ['what about backreferences? backreferences?']
+/
+  \u{28}\u2022\u{5f}\u2022\u{29}
+  |
+  \u{28}\u{20}\u2022\u{5f}\u2022\u{29}\u{3e}\u2310\u25a0\u{2d}\u25a0\u{20}
+  |
+  \u{28}\u2310\u25a0\u{5f}\u25a0\u{29}
+/x.examples #=> ["(•_•)", "( •_•)>⌐■-■ ", "(⌐■_■)"]
 ```
 
 ## Installation
@@ -66,7 +72,7 @@ Or install it yourself as:
 * Unicode characters, e.g. `/\u0123/`, `/\uabcd/`, `/\u{789}/`
 * Octal characters, e.g. `/\10/`, `/\177/`
 * Named properties, e.g. `/\p{L}/` ("Letter"), `/\p{Arabic}/` ("Arabic character")
-, `/\p{^Ll}/` ("Not a lowercase letter"), `\P{^Canadian_Aboriginal}` ("Not not a Canadian aboriginal character")
+, `/\p{^Ll}/` ("Not a lowercase letter"), `/\P{^Canadian_Aboriginal}/` ("Not not a Canadian aboriginal character")
 * **Arbitrarily complex combinations of all the above!**
 
 * Regexp options can also be used:
@@ -77,7 +83,7 @@ Or install it yourself as:
 
 ## Bugs and Not-Yet-Supported syntax
 
-* There are some (rare) edge cases where backreferences do not work properly, e.g. `/(a*)a* \1/.examples` - which includes "aaaa aa". This is because each repeater is not context-aware, so the "greediness" logic is flawed. (E.g. in this case, the second `a*` should always evaluate to an empty string, because the previous `a*` was greedy! However, patterns like this are highly unusual...
+* There are some (rare) edge cases where backreferences do not work properly, e.g. `/(a*)a* \1/.examples` - which includes "aaaa aa". This is because each repeater is not context-aware, so the "greediness" logic is flawed. (E.g. in this case, the second `a*` should always evaluate to an empty string, because the previous `a*` was greedy! However, patterns like this are highly unusual...)
 * Some named properties, e.g. `/\p{Arabic}/`, list non-matching examples for ruby 2.0/2.1 (as the definitions changed in ruby 2.2). This will be fixed in version 1.1.0 (see the pending pull request)!
 
 There are also some various (increasingly obscure) unsupported bits of syntax; some of which I haven't yet investigated. Much of this is not even mentioned in the ruby docs! Full documentation on all the intricate obscurities in the ruby (version 2.x) regexp parser can be found [here](https://raw.githubusercontent.com/k-takata/Onigmo/master/doc/RE). To name a few:
