@@ -5,7 +5,7 @@
 
 Extends the Regexp class with the method: Regexp#examples
 
-This method generates a list of (some\*) strings that will match the given regular expression
+This method generates a list of (some\*) strings that will match the given regular expression.
 
 \* If the regex has an infinite number of possible srings that match it, such as `/a*b+c{2,}/`,
 or a huge number of possible matches, such as `/.\w/`, then only a subset of these will be listed.
@@ -51,6 +51,10 @@ Or install it yourself as:
 
 ## Supported syntax
 
+Short answer: **Everything** is supported, apart from "irregular" aspects of the regexp language -- see [impossible features](#impossible-features-illegal-syntax)
+
+Long answer:
+
 * All forms of repeaters (quantifiers), e.g. `/a*/`, `/a+/`, `/a?/`, `/a{1,4}/`, `/a{3,}/`, `/a{,2}/`
   * Reluctant and possissive repeaters work fine, too, e.g. `/a*?/`, `/a*+/`
 * Boolean "Or" groups, e.g. `/a|b|c/`
@@ -63,8 +67,9 @@ Or install it yourself as:
 * Escaped characters, e.g. `/\n/`, `/\w/`, `/\D/` (and so on...)
 * Capture groups, e.g. `/(group)/`
   * Including named groups, e.g. `/(?<name>group)/`
-  * ...And backreferences(!!!), e.g. `/(this|that) \1/` `/(?<name>foo) \k<name>/`
-  * Groups work fine, even if nested or optional, e.g. `/(even(this(works?))) \1 \2 \3/`, `/what about (this)? \1/`
+  * And backreferences(!!!), e.g. `/(this|that) \1/` `/(?<name>foo) \k<name>/`
+  * ...even for the more "obscure" syntax, e.g. `/(?<future>the) \k'future'/`, `/(a)(b) \k<-1>/``
+  * ...and even if nested or optional, e.g. `/(even(this(works?))) \1 \2 \3/`, `/what about (this)? \1/`
   * Non-capture groups, e.g. `/(?:foo)/`
   * Comment groups, e.g. `/foo(?#comment)bar/`
 * Control characters, e.g. `/\ca/`, `/\cZ/`, `/\C-9/`
@@ -86,10 +91,10 @@ Or install it yourself as:
 * There are some (rare) edge cases where backreferences do not work properly, e.g. `/(a*)a* \1/.examples` - which includes "aaaa aa". This is because each repeater is not context-aware, so the "greediness" logic is flawed. (E.g. in this case, the second `a*` should always evaluate to an empty string, because the previous `a*` was greedy! However, patterns like this are highly unusual...)
 * Some named properties, e.g. `/\p{Arabic}/`, list non-matching examples for ruby 2.0/2.1 (as the definitions changed in ruby 2.2). This will be fixed in version 1.1.0 (see the pending pull request)!
 
-There are also some various (increasingly obscure) unsupported bits of syntax; some of which I haven't yet investigated. Much of this is not even mentioned in the ruby docs! Full documentation on all the intricate obscurities in the ruby (version 2.x) regexp parser can be found [here](https://raw.githubusercontent.com/k-takata/Onigmo/master/doc/RE). To name a few:
+Since the Regexp language is so vast, it's quite likely I've missed something (please raise an issue if you find something)! The only missing feature that I'm currently aware of is:
 * Conditional capture groups, e.g. `/(group1)? (?(1)yes|no)/.examples` (which *should* return: `["group1 yes", " no"]`)
-* Back reference by relative group number, e.g. `/(a)(b)(c)(d) \k<-2>/.examples` (which *should* return: `["abcd c"]`)
-* Back reference using single quotes, and for group numbers, e.g. `/(a) \k'1'/.examples` (which is really just alternative syntax for `/(a) \1/`!)
+
+Some of the most obscure regexp features are not even mentioned in the ruby docs! However, full documentation on all the intricate obscurities in the ruby (version 2.x) regexp parser can be found [here](https://raw.githubusercontent.com/k-takata/Onigmo/master/doc/RE).
 
 ## Impossible features ("illegal syntax")
 

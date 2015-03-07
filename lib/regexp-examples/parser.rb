@@ -46,31 +46,60 @@ module RegexpExamples
       when '\\'
         group = parse_after_backslash_group
       when '^'
-        if @current_position == 0
-          group = PlaceHolderGroup.new # Ignore the "illegal" character
-        else
-          raise IllegalSyntaxError, "Anchors ('#{next_char}') cannot be supported, as they are not regular"
-        end
+        group = parse_caret
       when '$'
-        if @current_position == (regexp_string.length - 1)
-          group = PlaceHolderGroup.new # Ignore the "illegal" character
-        else
-          raise IllegalSyntaxError, "Anchors ('#{next_char}') cannot be supported, as they are not regular"
-        end
+        group = parse_dollar
       when /[#\s]/
-        if @extended
-          parse_extended_whitespace
-          group = PlaceHolderGroup.new # Ignore the whitespace/comment
-        else
-          group = parse_single_char_group(next_char)
-        end
+        group = parse_extended_whitespace
       else
         group = parse_single_char_group(next_char)
       end
       group
     end
 
+    def parse_repeater(group)
+      case next_char
+      when '*'
+        repeater = parse_star_repeater(group)
+      when '+'
+        repeater = parse_plus_repeater(group)
+      when '?'
+        repeater = parse_question_mark_repeater(group)
+      when '{'
+        repeater = parse_range_repeater(group)
+      else
+        repeater = parse_one_time_repeater(group)
+      end
+      repeater
+    end
+
+    def parse_caret
+      if @current_position == 0
+        return PlaceHolderGroup.new # Ignore the "illegal" character
+      else
+        raise_anchors_exception!
+      end
+    end
+
+    def parse_dollar
+      if @current_position == (regexp_string.length - 1)
+        return PlaceHolderGroup.new # Ignore the "illegal" character
+      else
+        raise_anchors_exception!
+      end
+    end
+
     def parse_extended_whitespace
+      if @extended
+        skip_whitespace
+        group = PlaceHolderGroup.new # Ignore the whitespace/comment
+      else
+        group = parse_single_char_group(next_char)
+      end
+      group
+    end
+
+    def skip_whitespace
       whitespace_chars = rest_of_string.match(/#.*|\s+/)[0]
       @current_position += whitespace_chars.length - 1
     end
@@ -81,9 +110,11 @@ module RegexpExamples
       when rest_of_string =~ /\A(\d{1,3})/
         @current_position += ($1.length - 1) # In case of 10+ backrefs!
         group = parse_backreference_group($1)
-      when rest_of_string =~ /\Ak<([^>]+)>/ # Named capture group
+      when rest_of_string =~ /\Ak['<]([\w-]+)['>]/ # Named capture group
         @current_position += ($1.length + 2)
-        group = parse_backreference_group($1)
+        # Check for RELATIVE group number, e.g. /(a)(b)(c)(d) \k<-2>/
+        group_id = ($1.to_i < 0) ? (@num_groups + $1.to_i + 1) : $1
+        group = parse_backreference_group(group_id)
       when BackslashCharMap.keys.include?(next_char)
         group = CharGroup.new(
           BackslashCharMap[next_char].dup,
@@ -117,18 +148,18 @@ module RegexpExamples
       when next_char == 'g' # Subexpression call
         raise IllegalSyntaxError, "Subexpression calls (\\g) cannot be supported, as they are not regular"
       when next_char =~ /[bB]/ # Anchors
-        raise IllegalSyntaxError, "Anchors ('\\#{next_char}') cannot be supported, as they are not regular"
+        raise_anchors_exception!
       when next_char =~ /[AG]/ # Start of string
         if @current_position == 1
           group = PlaceHolderGroup.new
         else
-          raise IllegalSyntaxError, "Anchors ('\\#{next_char}') cannot be supported, as they are not regular"
+          raise_anchors_exception!
         end
       when next_char =~ /[zZ]/ # End of string
         if @current_position == (regexp_string.length - 1)
           group = PlaceHolderGroup.new
         else
-          raise IllegalSyntaxError, "Anchors ('\\#{next_char}') cannot be supported, as they are not regular"
+          raise_anchors_exception!
         end
       else
         group = parse_single_char_group( next_char )
@@ -136,31 +167,13 @@ module RegexpExamples
       group
     end
 
-    def parse_repeater(group)
-      case next_char
-      when '*'
-        repeater = parse_star_repeater(group)
-      when '+'
-        repeater = parse_plus_repeater(group)
-      when '?'
-        repeater = parse_question_mark_repeater(group)
-      when '{'
-        repeater = parse_range_repeater(group)
-      else
-        repeater = parse_one_time_repeater(group)
-      end
-      repeater
-    end
-
     def parse_multi_group
       @current_position += 1
       @num_groups += 1
-      group_id = nil # init
-      previous_ignorecase = @ignorecase
-      previous_multiline = @multiline
-      previous_extended = @extended
-      rest_of_string.match(
-        /
+      remember_old_regexp_options do
+        group_id = nil # init
+        rest_of_string.match(
+          /
           \A
           (\?)?               # Is it a "special" group, i.e. starts with a "?"?
             (
@@ -175,39 +188,48 @@ module RegexpExamples
                 |[^>]+        # Named capture
               )
               |[mix]*-?[mix]* # Option toggle
-          )?
-        /x
-      ) do |match|
-        case
-        when match[1].nil? # e.g. /(normal)/
-          group_id = @num_groups.to_s
-        when match[2] == ':' # e.g. /(?:nocapture)/
-          @current_position += 2
-        when match[2] == '#' # e.g. /(?#comment)/
-          comment_group = rest_of_string.match(/.*?[^\\](?:\\{2})*\)/)[0]
-          @current_position += comment_group.length
-        when match[2] =~ /\A(?=[mix-]+)([mix]*)-?([mix]*)/ # e.g. /(?i-mx)/
-          regexp_options_toggle($1, $2)
-          @current_position += $&.length + 1
-          if next_char == ':' # e.g. /(?i:subexpr)/
-            @current_position += 1
-          else
-            return PlaceHolderGroup.new
+            )?
+          /x
+        ) do |match|
+          case
+          when match[1].nil? # e.g. /(normal)/
+            group_id = @num_groups.to_s
+          when match[2] == ':' # e.g. /(?:nocapture)/
+            @current_position += 2
+          when match[2] == '#' # e.g. /(?#comment)/
+            comment_group = rest_of_string.match(/.*?[^\\](?:\\{2})*\)/)[0]
+            @current_position += comment_group.length
+          when match[2] =~ /\A(?=[mix-]+)([mix]*)-?([mix]*)/ # e.g. /(?i-mx)/
+            regexp_options_toggle($1, $2)
+            @num_groups -= 1 # Toggle "groups" should not increase backref group count
+            @current_position += $&.length + 1
+            if next_char == ':' # e.g. /(?i:subexpr)/
+              @current_position += 1
+            else
+              return PlaceHolderGroup.new
+            end
+          when %w(! =).include?(match[2]) # e.g. /(?=lookahead)/, /(?!neglookahead)/
+            raise IllegalSyntaxError, "Lookaheads are not regular; cannot generate examples"
+          when %w(! =).include?(match[3]) # e.g. /(?<=lookbehind)/, /(?<!neglookbehind)/
+            raise IllegalSyntaxError, "Lookbehinds are not regular; cannot generate examples"
+          else # e.g. /(?<name>namedgroup)/
+            @current_position += (match[3].length + 3)
+            group_id = match[3]
           end
-        when %w(! =).include?(match[2]) # e.g. /(?=lookahead)/, /(?!neglookahead)/
-          raise IllegalSyntaxError, "Lookaheads are not regular; cannot generate examples"
-        when %w(! =).include?(match[3]) # e.g. /(?<=lookbehind)/, /(?<!neglookbehind)/
-          raise IllegalSyntaxError, "Lookbehinds are not regular; cannot generate examples"
-        else # e.g. /(?<name>namedgroup)/
-          @current_position += (match[3].length + 3)
-          group_id = match[3]
         end
+        MultiGroup.new(parse, group_id)
       end
-      groups = parse
+    end
+
+    def remember_old_regexp_options
+      previous_ignorecase = @ignorecase
+      previous_multiline = @multiline
+      previous_extended = @extended
+      group = yield
       @ignorecase = previous_ignorecase
       @multiline = previous_multiline
       @extended = previous_extended
-      MultiGroup.new(groups, group_id)
+      group
     end
 
     def regexp_options_toggle(on, off)
@@ -246,8 +268,8 @@ module RegexpExamples
       SingleCharGroup.new(char, @ignorecase)
     end
 
-    def parse_backreference_group(match)
-      BackReferenceGroup.new(match)
+    def parse_backreference_group(group_id)
+      BackReferenceGroup.new(group_id)
     end
 
     def parse_control_character(char)
@@ -306,6 +328,10 @@ module RegexpExamples
           parse_reluctant_or_possessive_repeater
         end
         repeater
+    end
+
+    def raise_anchors_exception!
+      raise IllegalSyntaxError, "Anchors ('#{next_char}') cannot be supported, as they are not regular"
     end
 
     def parse_one_time_repeater(group)
