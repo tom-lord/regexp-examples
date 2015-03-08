@@ -3,9 +3,11 @@
 [![Build Status](https://travis-ci.org/tom-lord/regexp-examples.svg?branch=master)](https://travis-ci.org/tom-lord/regexp-examples/builds)
 [![Coverage Status](https://coveralls.io/repos/tom-lord/regexp-examples/badge.svg?branch=master)](https://coveralls.io/r/tom-lord/regexp-examples?branch=master)
 
-Extends the Regexp class with the method: Regexp#examples
+Extends the Regexp class with the methods: Regexp#examples and Regexp#random_example
 
-This method generates a list of (some\*) strings that will match the given regular expression.
+Regexp#examples generates a list of all\* strings that will match the given regular expression.
+
+Regexp#random_example returns one, random string (from all possible strings!!) that matches the regex.
 
 \* If the regex has an infinite number of possible srings that match it, such as `/a*b+c{2,}/`,
 or a huge number of possible matches, such as `/.\w/`, then only a subset of these will be listed.
@@ -31,6 +33,14 @@ For more detail on this, see [configuration options](#configuration-options).
   |
   \u{28}\u2310\u25a0\u{5f}\u25a0\u{29}
 /x.examples #=> ["(•_•)", "( •_•)>⌐■-■ ", "(⌐■_■)"]
+
+###################################################################################
+
+# Obviously, you will get different results if you try these yourself!
+/\w{10}@(hotmail|gmail)\.com/.random_example #=> "TTsJsiwzKS@gmail.com"
+/\p{Greek}{80}/.random_example
+  #=> "ΖΆΧͷᵦμͷηϒϰΟᵝΔ΄θϔζΌψΨεκᴪΓΕπι϶ονϵΓϹᵦΟπᵡήϴϜΦϚϴϑ͵ϴΉϺ͵ϹϰϡᵠϝΤΏΨϹϊϻαώΞΰϰΑͼΈΘͽϙͽξΆΆΡΡΉΓς"
+/written by tom lord/i.random_example #=> "WrITtEN bY tOM LORD"
 ```
 
 ## Installation
@@ -51,7 +61,7 @@ Or install it yourself as:
 
 ## Supported syntax
 
-Short answer: **Everything** is supported, apart from "irregular" aspects of the regexp language -- see [impossible features](#impossible-features-illegal-syntax)
+Short answer: **Everything** is supported, apart from "irregular" aspects of the regexp language -- see [impossible features](#impossible-features-illegal-syntax).
 
 Long answer:
 
@@ -89,7 +99,7 @@ Long answer:
 ## Bugs and Not-Yet-Supported syntax
 
 * There are some (rare) edge cases where backreferences do not work properly, e.g. `/(a*)a* \1/.examples` - which includes "aaaa aa". This is because each repeater is not context-aware, so the "greediness" logic is flawed. (E.g. in this case, the second `a*` should always evaluate to an empty string, because the previous `a*` was greedy! However, patterns like this are highly unusual...)
-* Some named properties, e.g. `/\p{Arabic}/`, list non-matching examples for ruby 2.0/2.1 (as the definitions changed in ruby 2.2). This will be fixed in version 1.1.0 (see the pending pull request)!
+* Some named properties, e.g. `/\p{Arabic}/`, list non-matching examples for ruby 2.0/2.1 (as the definitions changed in ruby 2.2). This will be fixed in version 1.1.1 (see the pending pull request)!
 
 Since the Regexp language is so vast, it's quite likely I've missed something (please raise an issue if you find something)! The only missing feature that I'm currently aware of is:
 * Conditional capture groups, e.g. `/(group1)? (?(1)yes|no)/.examples` (which *should* return: `["group1 yes", " no"]`)
@@ -127,6 +137,8 @@ When generating examples, the gem uses 2 configurable values to limit how many e
   * `[h-s]` is equivalent to `[hijkl]`
   * `(1|2|3|4|5|6|7|8)` is equivalent to `[12345]`
 
+Rexexp#examples makes use of *both* these options; Rexexp#random_example only uses `max_repeater_variance`, since the other option is redundant!
+
 To use an alternative value, simply pass the configuration option as follows:
 
 ```ruby
@@ -134,26 +146,29 @@ To use an alternative value, simply pass the configuration option as follows:
   #=> [''. 'a', 'aa', 'aaa', 'aaaa' 'aaaaa']
 /[F-X]/.examples(max_group_results: 10)
   #=> ['F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O']
+/.*/.random_example(max_repeater_variance: 50)
+  #=> "A very unlikely result!"
 ```
 
-_**WARNING**: Choosing huge numbers, along with a "complex" regex, could easily cause your system to freeze!_
+_**WARNING**: Choosing huge numbers for Regexp#examples, along with a "complex" regex, could easily cause your system to freeze!_
 
 For example, if you try to generate a list of _all_ 5-letter words: `/\w{5}/.examples(max_group_results: 999)`, then since there are actually `63` "word" characters (upper/lower case letters, numbers and "\_"), this will try to generate `63**5 #=> 992436543` (almost 1 _trillion_) examples!
 
 In other words, think twice before playing around with this config!
 
-A more sensible use case might be, for example, to generate one random 1-4 digit string:
+A more sensible use case might be, for example, to generate all 1-4 digit strings:
 
-`/\d{1,4}/.examples(max_repeater_variance: 3, max_group_results: 10).sample(1)`
+`/\d{1,4}/.examples(max_repeater_variance: 3, max_group_results: 10)`
 
-(Note: I may develop a much more efficient way to "generate one example" in a later release of this gem.)
+Due to code optimisation, this is not something you need to worry about (much) for Regexp#random_example. For instance, the following takes no more than ~ 1 second on my machine:
+
+`/.*\w+\d{100}/.random_example(max_repeater_variance: 1000)`
 
 ## TODO
 
 * Performance improvements:
   * Use of lambdas/something (in [constants.rb](lib/regexp-examples/constants.rb)) to improve the library load time. See the pending pull request.
   * (Maybe?) add a `max_examples` configuration option and use lazy evaluation, to ensure the method never "freezes".
-* Potential future feature: `Regexp#random_example` - but implementing this properly is non-trivial, due to performance issues that need addressing first!
 * Write a blog post about how this amazing gem works! :)
 
 ## Contributing
