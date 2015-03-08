@@ -3,11 +3,11 @@
 [![Build Status](https://travis-ci.org/tom-lord/regexp-examples.svg?branch=master)](https://travis-ci.org/tom-lord/regexp-examples/builds)
 [![Coverage Status](https://coveralls.io/repos/tom-lord/regexp-examples/badge.svg?branch=master)](https://coveralls.io/r/tom-lord/regexp-examples?branch=master)
 
-Extends the Regexp class with the methods: Regexp#examples and Regexp#random_example
+Extends the Regexp class with the methods: `Regexp#examples` and `Regexp#random_example`
 
-Regexp#examples generates a list of all\* strings that will match the given regular expression.
+`Regexp#examples` generates a list of all\* strings that will match the given regular expression.
 
-Regexp#random_example returns one, random string (from all possible strings!!) that matches the regex.
+`Regexp#random_example` returns one, random string (from all possible strings!!) that matches the regex.
 
 \* If the regex has an infinite number of possible srings that match it, such as `/a*b+c{2,}/`,
 or a huge number of possible matches, such as `/.\w/`, then only a subset of these will be listed.
@@ -150,7 +150,7 @@ To use an alternative value, simply pass the configuration option as follows:
   #=> "A very unlikely result!"
 ```
 
-_**WARNING**: Choosing huge numbers for Regexp#examples, along with a "complex" regex, could easily cause your system to freeze!_
+_**WARNING**: Choosing huge numbers for `Regexp#examples`, along with a "complex" regex, could easily cause your system to freeze!_
 
 For example, if you try to generate a list of _all_ 5-letter words: `/\w{5}/.examples(max_group_results: 999)`, then since there are actually `63` "word" characters (upper/lower case letters, numbers and "\_"), this will try to generate `63**5 #=> 992436543` (almost 1 _trillion_) examples!
 
@@ -160,7 +160,7 @@ A more sensible use case might be, for example, to generate all 1-4 digit string
 
 `/\d{1,4}/.examples(max_repeater_variance: 3, max_group_results: 10)`
 
-Due to code optimisation, this is not something you need to worry about (much) for Regexp#random_example. For instance, the following takes no more than ~ 1 second on my machine:
+Due to code optimisation, this is not something you need to worry about (much) for `Regexp#random_example`. For instance, the following takes no more than ~ 1 second on my machine:
 
 `/.*\w+\d{100}/.random_example(max_repeater_variance: 1000)`
 
