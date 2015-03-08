@@ -116,7 +116,7 @@ module RegexpExamples
     # Generates the result of each contained group
     # and adds the filled group of each result to itself
     def result_by_method(method)
-      strings = @groups.map {|repeater| repeater.send(method)}
+      strings = @groups.map {|repeater| repeater.public_send(method)}
       RegexpExamples.permutations_of_strings(strings).map do |result|
         GroupResult.new(result, group_id)
       end
@@ -147,8 +147,8 @@ module RegexpExamples
 
     private
     def result_by_method(method)
-      left_result = RegexpExamples.send(method, @left_repeaters)
-      right_result = RegexpExamples.send(method, @right_repeaters)
+      left_result = RegexpExamples.public_send(method, @left_repeaters)
+      right_result = RegexpExamples.public_send(method, @right_repeaters)
       left_result.concat(right_result).flatten.uniq.map do |result|
         GroupResult.new(result)
       end

@@ -18,7 +18,7 @@ module CoreExtensions
 
       private
         def examples_by_method(method)
-        full_examples = RegexpExamples.send(
+        full_examples = RegexpExamples.public_send(
           method,
           RegexpExamples::Parser.new(source, options).parse
         )
