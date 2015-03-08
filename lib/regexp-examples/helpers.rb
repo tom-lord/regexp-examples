@@ -1,8 +1,6 @@
 module RegexpExamples
-  # Given an array of arrays of strings,
-  # returns all possible perutations,
-  # for strings created by joining one
-  # element from each array
+  # Given an array of arrays of strings, returns all possible perutations
+  # for strings, created by joining one element from each array
   #
   # For example:
   # permutations_of_strings [ ['a'], ['b'], ['c', 'd', 'e'] ] #=> ['abc', 'abd', 'abe']
@@ -29,8 +27,17 @@ module RegexpExamples
   end
 
   def self.map_results(repeaters)
+    generic_map_result(repeaters, :result)
+  end
+
+  def self.map_random_result(repeaters)
+    generic_map_result(repeaters, :random_result)
+  end
+
+  private
+  def self.generic_map_result(repeaters, method)
     repeaters
-      .map {|repeater| repeater.result}
+      .map {|repeater| repeater.public_send(method)}
       .instance_eval do |partial_results|
         RegexpExamples.permutations_of_strings(partial_results)
       end
