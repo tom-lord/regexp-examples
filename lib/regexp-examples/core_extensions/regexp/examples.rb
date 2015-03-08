@@ -7,6 +7,13 @@ module CoreExtensions
         )
         RegexpExamples::BackReferenceReplacer.new.substitute_backreferences(full_examples)
       end
+
+      def random_example
+        full_examples = RegexpExamples.map_random_result(
+          RegexpExamples::Parser.new(source, options, max_group_results: 1000000).parse
+        )
+        RegexpExamples::BackReferenceReplacer.new.substitute_backreferences(full_examples).first
+      end
     end
   end
 end

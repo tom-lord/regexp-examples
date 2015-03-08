@@ -37,7 +37,13 @@ module RegexpExamples
     end
   end
 
-  class SingleCharGroup
+  class BaseGroup
+    def random_result
+      result.sample(1)
+    end
+  end
+
+  class SingleCharGroup < BaseGroup
     prepend GroupWithIgnoreCase
     def initialize(char, ignorecase)
       @char = char
@@ -52,13 +58,13 @@ module RegexpExamples
   # but there are no results for the group.
   # i.e. PlaceHolderGroup.new.result == '' == SingleCharGroup.new('').result
   # (But using PlaceHolderGroup makes it clearer what the intention is!)
-  class PlaceHolderGroup
+  class PlaceHolderGroup < BaseGroup
     def result
       [GroupResult.new('')]
     end
   end
 
-  class CharGroup
+  class CharGroup < BaseGroup
     prepend GroupWithIgnoreCase
     def initialize(chars, ignorecase)
       @chars = chars
@@ -73,7 +79,7 @@ module RegexpExamples
 
   end
 
-  class DotGroup
+  class DotGroup < BaseGroup
     attr_reader :multiline
     def initialize(multiline)
       @multiline = multiline
@@ -87,7 +93,7 @@ module RegexpExamples
     end
   end
 
-  class MultiGroup
+  class MultiGroup < BaseGroup
     attr_reader :group_id
     def initialize(groups, group_id)
       @groups = groups
@@ -108,7 +114,7 @@ module RegexpExamples
   class MultiGroupEnd
   end
 
-  class OrGroup
+  class OrGroup < BaseGroup
     def initialize(left_repeaters, right_repeaters)
       @left_repeaters = left_repeaters
       @right_repeaters = right_repeaters
@@ -124,7 +130,7 @@ module RegexpExamples
     end
   end
 
-  class BackReferenceGroup
+  class BackReferenceGroup < BaseGroup
     attr_reader :id
     def initialize(id)
       @id = id
