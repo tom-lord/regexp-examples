@@ -17,7 +17,7 @@ module RegexpExamples
 
     class << self
       attr_reader :max_repeater_variance, :max_group_results
-      def configure!(max_repeater_variance, max_group_results)
+      def configure!(max_repeater_variance, max_group_results = nil)
         @max_repeater_variance = (max_repeater_variance || MaxRepeaterVarianceDefault)
         @max_group_results = (max_group_results || MaxGroupResultsDefault)
       end

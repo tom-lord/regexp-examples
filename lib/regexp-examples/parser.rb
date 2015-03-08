@@ -2,17 +2,13 @@ module RegexpExamples
   IllegalSyntaxError = Class.new(StandardError)
   class Parser
     attr_reader :regexp_string
-    def initialize(regexp_string, regexp_options, config_options={})
+    def initialize(regexp_string, regexp_options)
       @regexp_string = regexp_string
       @ignorecase = !(regexp_options & Regexp::IGNORECASE).zero?
       @multiline = !(regexp_options & Regexp::MULTILINE).zero?
       @extended = !(regexp_options & Regexp::EXTENDED).zero?
       @num_groups = 0
       @current_position = 0
-      ResultCountLimiters.configure!(
-        config_options[:max_repeater_variance],
-        config_options[:max_group_results]
-      )
     end
 
     def parse

@@ -1,19 +1,29 @@
 module CoreExtensions
   module Regexp
     module Examples
-      def examples(config_options={})
-        full_examples = RegexpExamples.map_results(
-          RegexpExamples::Parser.new(source, options, config_options).parse
+      def examples(**config_options)
+        RegexpExamples::ResultCountLimiters.configure!(
+          config_options[:max_repeater_variance],
+          config_options[:max_group_results]
         )
-        RegexpExamples::BackReferenceReplacer.new.substitute_backreferences(full_examples)
+        examples_by_method(:map_results)
       end
 
-      def random_example
-        full_examples = RegexpExamples.map_random_result(
-          RegexpExamples::Parser.new(source, options, max_group_results: 1000000).parse
+      def random_example(**config_options)
+        RegexpExamples::ResultCountLimiters.configure!(
+          config_options[:max_repeater_variance]
         )
-        RegexpExamples::BackReferenceReplacer.new.substitute_backreferences(full_examples).first
+        examples_by_method(:map_random_result).first
       end
+
+      private
+        def examples_by_method(method)
+        full_examples = RegexpExamples.send(
+          method,
+          RegexpExamples::Parser.new(source, options).parse
+        )
+        RegexpExamples::BackReferenceReplacer.new.substitute_backreferences(full_examples)
+        end
     end
   end
 end
