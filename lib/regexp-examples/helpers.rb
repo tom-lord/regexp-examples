@@ -1,8 +1,6 @@
 module RegexpExamples
-  # Given an array of arrays of strings,
-  # returns all possible perutations,
-  # for strings created by joining one
-  # element from each array
+  # Given an array of arrays of strings, returns all possible perutations
+  # for strings, created by joining one element from each array
   #
   # For example:
   # permutations_of_strings [ ['a'], ['b'], ['c', 'd', 'e'] ] #=> ['abc', 'abd', 'abe']
