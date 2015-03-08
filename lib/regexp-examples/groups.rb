@@ -37,13 +37,14 @@ module RegexpExamples
     end
   end
 
-  class BaseGroup
+  module RandomResultBySample
     def random_result
       result.sample(1)
     end
   end
 
-  class SingleCharGroup < BaseGroup
+  class SingleCharGroup
+    include RandomResultBySample
     prepend GroupWithIgnoreCase
     def initialize(char, ignorecase)
       @char = char
@@ -58,13 +59,15 @@ module RegexpExamples
   # but there are no results for the group.
   # i.e. PlaceHolderGroup.new.result == '' == SingleCharGroup.new('').result
   # (But using PlaceHolderGroup makes it clearer what the intention is!)
-  class PlaceHolderGroup < BaseGroup
+  class PlaceHolderGroup
+    include RandomResultBySample
     def result
       [GroupResult.new('')]
     end
   end
 
-  class CharGroup < BaseGroup
+  class CharGroup
+    include RandomResultBySample
     prepend GroupWithIgnoreCase
     def initialize(chars, ignorecase)
       @chars = chars
@@ -79,7 +82,8 @@ module RegexpExamples
 
   end
 
-  class DotGroup < BaseGroup
+  class DotGroup
+    include RandomResultBySample
     attr_reader :multiline
     def initialize(multiline)
       @multiline = multiline
@@ -93,18 +97,26 @@ module RegexpExamples
     end
   end
 
-  class MultiGroup < BaseGroup
+  class MultiGroup
     attr_reader :group_id
     def initialize(groups, group_id)
       @groups = groups
       @group_id = group_id
     end
 
-    # Generates the result of each contained group
-    # and adds the filled group of each result to
-    # itself
     def result
-      strings = @groups.map {|repeater| repeater.result}
+      result_by_method(:result)
+    end
+
+    def random_result
+      result_by_method(:random_result)
+    end
+
+    private
+    # Generates the result of each contained group
+    # and adds the filled group of each result to itself
+    def result_by_method(method)
+      strings = @groups.map {|repeater| repeater.send(method)}
       RegexpExamples.permutations_of_strings(strings).map do |result|
         GroupResult.new(result, group_id)
       end
@@ -114,23 +126,37 @@ module RegexpExamples
   class MultiGroupEnd
   end
 
-  class OrGroup < BaseGroup
+  class OrGroup
     def initialize(left_repeaters, right_repeaters)
       @left_repeaters = left_repeaters
       @right_repeaters = right_repeaters
     end
 
-
     def result
-      left_result = RegexpExamples.map_results(@left_repeaters)
-      right_result = RegexpExamples.map_results(@right_repeaters)
+      result_by_method(:map_results)
+    end
+
+    def random_result
+      # TODO: This logic is flawed in terms of choosing a truly "random" example!
+      # E.g. /a|b|c|d/.random_example will choose a letter with the following probabilities:
+      # a = 50%, b = 25%, c = 12.5%, d = 12.5%
+      # In order to fix this, I must either apply some weighted selection logic,
+      # or change how the OrGroup examples are generated - i.e. make this class work with >2 repeaters
+      result_by_method(:map_random_result).sample(1)
+    end
+
+    private
+    def result_by_method(method)
+      left_result = RegexpExamples.send(method, @left_repeaters)
+      right_result = RegexpExamples.send(method, @right_repeaters)
       left_result.concat(right_result).flatten.uniq.map do |result|
         GroupResult.new(result)
       end
     end
   end
 
-  class BackReferenceGroup < BaseGroup
+  class BackReferenceGroup
+    include RandomResultBySample
     attr_reader :id
     def initialize(id)
       @id = id
