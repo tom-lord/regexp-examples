@@ -16,7 +16,8 @@ RSpec.describe Regexp, "#random_example" do
     random_example_matches(
       /\w{10}/,
       /(we(need(to(go(deeper)?)?)?)?) \1/,
-      /case insensitive/i
+      /case insensitive/i,
+      /front seat|back seat/, # Which seat will I take??
     )
   end
 end
