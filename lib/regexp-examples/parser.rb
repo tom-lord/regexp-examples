@@ -13,9 +13,8 @@ module RegexpExamples
 
     def parse
       repeaters = []
-      while @current_position < regexp_string.length
+      until end_of_regexp
         group = parse_group(repeaters)
-        break if group.is_a? MultiGroupEnd
         if group.is_a? OrGroup
           return [OneTimeRepeater.new(group)]
         end
@@ -31,8 +30,6 @@ module RegexpExamples
       case next_char
       when '('
         group = parse_multi_group
-      when ')'
-        group = parse_multi_end_group
       when '['
         group = parse_char_group
       when '.'
@@ -237,10 +234,6 @@ module RegexpExamples
       @extended = false if (off.include? "x")
     end
 
-    def parse_multi_end_group
-      MultiGroupEnd.new
-    end
-
     def parse_char_group
       @current_position += 1 # Skip past opening "["
       chargroup_parser = ChargroupParser.new(rest_of_string)
@@ -340,6 +333,10 @@ module RegexpExamples
 
     def next_char
       regexp_string[@current_position]
+    end
+
+    def end_of_regexp
+      next_char == ")" || @current_position >= regexp_string.length
     end
   end
 end

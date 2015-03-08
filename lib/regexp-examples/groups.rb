@@ -123,9 +123,6 @@ module RegexpExamples
     end
   end
 
-  class MultiGroupEnd
-  end
-
   class OrGroup
     def initialize(left_repeaters, right_repeaters)
       @left_repeaters = left_repeaters
