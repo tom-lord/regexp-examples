@@ -14,6 +14,8 @@ or a huge number of possible matches, such as `/.\w/`, then only a subset of the
 
 For more detail on this, see [configuration options](#configuration-options).
 
+If you'd like to understand how/why this gem works, please check out my [blog post](http://tom-lord.weebly.com/blog/reverse-engineering-regular-expressions) about it!
+
 ## Usage
 
 ```ruby
@@ -98,7 +100,7 @@ Long answer:
 
 ## Bugs and Not-Yet-Supported syntax
 
-* There are some (rare) edge cases where backreferences do not work properly, e.g. `/(a*)a* \1/.examples` - which includes "aaaa aa". This is because each repeater is not context-aware, so the "greediness" logic is flawed. (E.g. in this case, the second `a*` should always evaluate to an empty string, because the previous `a*` was greedy! However, patterns like this are highly unusual...)
+* There are some (rare) edge cases where backreferences do not work properly, e.g. `/(a*)a* \1/.examples` - which includes "aaaa aa". This is because each repeater is not context-aware, so the "greediness" logic is flawed. (E.g. in this case, the second `a*` should always evaluate to an empty string, because the previous `a*` was greedy!) However, patterns like this are highly unusual...
 * Some named properties, e.g. `/\p{Arabic}/`, list non-matching examples for ruby 2.0/2.1 (as the definitions changed in ruby 2.2). This will be fixed in version 1.1.1 (see the pending pull request)!
 
 Since the Regexp language is so vast, it's quite likely I've missed something (please raise an issue if you find something)! The only missing feature that I'm currently aware of is:
@@ -109,7 +111,7 @@ Some of the most obscure regexp features are not even mentioned in the ruby docs
 ## Impossible features ("illegal syntax")
 
 The following features in the regex language can never be properly implemented into this gem because, put simply, they are not technically "regular"!
-If you'd like to understand this in more detail, there are many good blog posts out on the internet. The [wikipedia entry](http://en.wikipedia.org/wiki/Regular_expression)'s not bad either.
+If you'd like to understand this in more detail, check out what I had to say in [my blog post](http://tom-lord.weebly.com/blog/reverse-engineering-regular-expressions) about this gem!
 
 Using any of the following will raise a RegexpExamples::IllegalSyntax exception:
 
@@ -150,7 +152,7 @@ To use an alternative value, simply pass the configuration option as follows:
   #=> "A very unlikely result!"
 ```
 
-_**WARNING**: Choosing huge numbers for `Regexp#examples`, along with a "complex" regex, could easily cause your system to freeze!_
+_**WARNING**: Choosing huge numbers for `Regexp#examples` and/or a sufficiently "complex" regex, could easily cause your system to freeze!_
 
 For example, if you try to generate a list of _all_ 5-letter words: `/\w{5}/.examples(max_group_results: 999)`, then since there are actually `63` "word" characters (upper/lower case letters, numbers and "\_"), this will try to generate `63**5 #=> 992436543` (almost 1 _billion_) examples!
 
@@ -169,7 +171,6 @@ Due to code optimisation, this is not something you need to worry about (much) f
 * Performance improvements:
   * Use of lambdas/something (in [constants.rb](lib/regexp-examples/constants.rb)) to improve the library load time. See the pending pull request.
   * (Maybe?) add a `max_examples` configuration option and use lazy evaluation, to ensure the method never "freezes".
-* Write a blog post about how this amazing gem works! :)
 
 ## Contributing
 
