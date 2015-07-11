@@ -11,8 +11,8 @@ module RegexpExamples
 
     # Maximum number of characters returned from a char set, to reduce output spam
     # For example, if @@max_group_results = 5 then:
-    # \d = ["0", "1", "2", "3", "4"]
-    # \w = ["a", "b", "c", "d", "e"]
+    # \d is equivalent to [01234]
+    # \w is equivalent to [abcde]
     MaxGroupResultsDefault = 5
 
     class << self
