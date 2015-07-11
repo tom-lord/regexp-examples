@@ -17,7 +17,7 @@ module RegexpExamples
 
     class << self
       attr_reader :max_repeater_variance, :max_group_results
-      def configure!(max_repeater_variance, max_group_results)
+      def configure!(max_repeater_variance, max_group_results = nil)
         @max_repeater_variance = (max_repeater_variance || MaxRepeaterVarianceDefault)
         @max_group_results = (max_group_results || MaxGroupResultsDefault)
       end
@@ -44,7 +44,8 @@ module RegexpExamples
     Whitespace   = [' ', "\t", "\n", "\r", "\v", "\f"]
     Control      = (0..31).map(&:chr) | ["\x7f"]
     # Ensure that the "common" characters appear first in the array
-    Any          = Lower | Upper | Digit | Punct | (0..127).map(&:chr)
+    # Also, ensure "\n" comes first, to make it obvious when included
+    Any          = ["\n"] | Lower | Upper | Digit | Punct | (0..127).map(&:chr)
     AnyNoNewLine = Any - ["\n"]
   end.freeze
 

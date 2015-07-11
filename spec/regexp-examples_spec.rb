@@ -98,7 +98,8 @@ RSpec.describe Regexp, "#examples" do
         /(normal)/,
         /(?:nocapture)/,
         /(?<name>namedgroup)/,
-        /(?<name>namedgroup) \k<name>/
+        /(?<name>namedgroup) \k<name>/,
+        /(?<name>namedgroup) \k'name'/
       )
     end
 
@@ -124,7 +125,8 @@ RSpec.describe Regexp, "#examples" do
         /(a?(b?(c?(d?(e?)))))/,
         /(a)? \1/,
         /(a|(b)) \2/,
-        /([ab]){2} \1/ # \1 should always be the LAST result of the capture group
+        /([ab]){2} \1/, # \1 should always be the LAST result of the capture group
+        /(ref1) (ref2) \k'1' \k<-1>/, # RELATIVE backref!
       )
     end
 
@@ -182,7 +184,9 @@ RSpec.describe Regexp, "#examples" do
         /\p{L}/,
         /\p{Space}/,
         /\p{AlPhA}/, # Checking case insensitivity
-        /\p{^Ll}/
+        /\p{^Ll}/,
+        /\P{Ll}/,
+        /\P{^Ll}/ # Double negative!!
       )
 
     end
@@ -324,6 +328,7 @@ RSpec.describe Regexp, "#examples" do
           it { expect(/a(?i)b(?-i)c/.examples).to eq %w{abc aBc}}
           it { expect(/a(?x)   b(?-x) c/.examples).to eq %w{ab\ c}}
           it { expect(/(?m)./.examples(max_group_results: 999)).to include "\n" }
+          it { expect(/(?i)(a)-\1/.examples).to eq %w{a-a A-A}} # Toggle "groups" should not increase backref group count
         end
         context "subexpression" do
           it { expect(/a(?i:b)c/.examples).to eq %w{abc aBc}}
