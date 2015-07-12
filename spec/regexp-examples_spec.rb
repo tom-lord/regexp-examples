@@ -2,7 +2,7 @@ RSpec.describe Regexp, "#examples" do
   def self.examples_exist_and_match(*regexps)
     regexps.each do |regexp|
       it "examples for /#{regexp.source}/" do
-        regexp_examples = regexp.examples(max_group_results: 999)
+        regexp_examples = regexp.examples(max_group_results: 99999)
 
         expect(regexp_examples).not_to be_empty, "No examples were generated for regexp: /#{regexp.source}/"
         regexp_examples.each { |example| expect(example).to match(/\A(?:#{regexp.source})\z/) }
@@ -181,13 +181,28 @@ RSpec.describe Regexp, "#examples" do
 
     context "for named properties" do
       examples_exist_and_match(
-        /\p{L}/,
-        /\p{Space}/,
-        /\p{AlPhA}/, # Checking case insensitivity
-        /\p{^Ll}/,
-        /\P{Ll}/,
-        /\P{^Ll}/ # Double negative!!
+        /\p{AlPhA}/, # Case insensitivity
+        /\p{^Ll}/, # Negation syntax type 1
+        /\P{Ll}/, # Negation syntax type 2
+        /\P{^Ll}/ # Double negation!! (Should cancel out)
       )
+      # An exhaustive set of tests for all named properties!!!
+      # This is useful for verifying the PStore contains correct values for all ruby versions
+      %w(Alnum Alpha Blank Cntrl Digit Graph Lower Print Punct Space Upper XDigit Word ASCII Any Assigned
+         L Ll Lm Lo Lt Lu M Mn Mc Me N Nd Nl No P Pc Pd Ps Pe Pi Pf Po S Sm Sc Sk So Z Zs Zl Zp C Cc Cf Cn Co
+         Arabic Armenian Balinese Bengali Bopomofo Braille Buginese Buhid Canadian_Aboriginal Cham Cherokee
+         Common Coptic Cuneiform Cyrillic Devanagari Ethiopic Georgian Glagolitic Greek Gujarati Gurmukhi Han
+         Hangul Hanunoo Hebrew Hiragana Inherited Kannada Katakana Kayah_Li Khmer Lao Latin Lepcha Limbu
+         Malayalam Mongolian Myanmar New_Tai_Lue Nko Ogham Ol_Chiki Oriya Phags_Pa Rejang Runic Saurashtra
+         Sinhala Sundanese Syloti_Nagri Syriac Tagalog Tagbanwa Tai_Le Tamil Telugu Thaana Thai Tibetan Tifinagh
+        Vai Yi).each do |property|
+        examples_exist_and_match(/\p{#{property}}/)
+      end
+      # The following seem to genuinely have no matching examples (!!??!!?!)
+      %w(Cs Carian Cuneiform Cypriot Deseret Gothic Kharoshthi Linear_B Lycian
+         Lydian Old_Italic Old_Persian Osmanya Phoenician Shavian Ugaritic).each do |property|
+        examples_are_empty(/\p{#{property}}/)
+      end
 
     end
 
