@@ -6,7 +6,7 @@ module RegexpExamples
     end
 
     def result
-      group_results = group.result[0 .. RegexpExamples.MaxGroupResults-1]
+      group_results = group.result.first(RegexpExamples.MaxGroupResults)
       results = []
       min_repeats.upto(max_repeats) do |repeats|
         if repeats.zero?

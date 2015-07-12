@@ -28,9 +28,12 @@ module RegexpExamples
     def result
       group_result = super
       if ignorecase
-        group_result
-          .concat( group_result.map(&:swapcase) )
-          .uniq
+        Enumerator.new do |ignorecase_group_result|
+          group_result.each do |gr|
+            ignorecase_group_result << gr
+            ignorecase_group_result << gr.swapcase
+          end
+        end.lazy
       else
         group_result
       end
@@ -39,7 +42,7 @@ module RegexpExamples
 
   module RandomResultBySample
     def random_result
-      result.sample(1)
+      result.force.sample(1)
     end
   end
 
@@ -51,7 +54,7 @@ module RegexpExamples
       @ignorecase = ignorecase
     end
     def result
-      [GroupResult.new(@char)]
+      [GroupResult.new(@char)].lazy
     end
   end
 
@@ -62,7 +65,7 @@ module RegexpExamples
   class PlaceHolderGroup
     include RandomResultBySample
     def result
-      [GroupResult.new('')]
+      [GroupResult.new('')].lazy
     end
   end
 
@@ -75,7 +78,7 @@ module RegexpExamples
     end
 
     def result
-      @chars.map do |result|
+      @chars.lazy.map do |result|
         GroupResult.new(result)
       end
     end
@@ -91,7 +94,7 @@ module RegexpExamples
 
     def result
       chars = multiline ? CharSets::Any : CharSets::AnyNoNewLine
-      chars.map do |result|
+      chars.lazy.map do |result|
         GroupResult.new(result)
       end
     end
@@ -160,7 +163,7 @@ module RegexpExamples
     end
 
     def result
-      [ GroupResult.new("__#{@id}__") ]
+      [ GroupResult.new("__#{@id}__") ].lazy
     end
   end
 
