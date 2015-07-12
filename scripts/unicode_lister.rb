@@ -167,7 +167,8 @@ def calculate_ranges(matching_codes)
 end
 
 count = 0
-store = PStore.new("db/#{RegexpExamples::UnicodeCharRanges::STORE_FILENAME}")
+filename = "db/#{RegexpExamples::UnicodeCharRanges::STORE_FILENAME}"
+store = PStore.new(filename)
 store.transaction do
   NamedGroups.each do |name|
   count += 1
@@ -176,6 +177,6 @@ store.transaction do
     puts "(#{count}/#{NamedGroups.length}) Finished property: #{name}"
   end
   puts "*"*50
-  puts "Finished! Result stored in: db/#{RegexpExamples::UnicodeCharRanges::STORE_FILENAME}"
+  puts "Finished! Result stored in: #{filename}"
 end
 
