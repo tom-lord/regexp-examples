@@ -150,10 +150,11 @@ NamedGroups = %w(
 # `/regex/ =~ eval("?\\u{#{x.to_s(16)}}")`
 # TODO: Add a link to somewhere that explains this better.
 
-# Example input: [1, 2, 3, 4, 6, 7, 12, 14] (Array)
-# Example output: "1..4, 6..7, 12, 14" (String)
+# "Compresses" the values in an array by using ranges.
+# Example input: [1, 2, 3, 4, 6, 7, 12, 14]
+# Example output: [1..4, 6..7, 12, 14]
 def calculate_ranges(matching_codes)
-  return "" if matching_codes.empty?
+  return [] if matching_codes.empty?
   first = matching_codes.shift
   matching_codes.inject([first..first]) do |r,x|
     if r.last.last.succ != x
@@ -162,7 +163,7 @@ def calculate_ranges(matching_codes)
       r[0..-2] << (r.last.first..x) # Update last range
     end
   end
-    .map { |range| range.size == 1 ? range.first : range}
+    .map { |range| range.size == 1 ? range.first : range} # Replace `int..int` with `int`
 end
 
 count = 0
