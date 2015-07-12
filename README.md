@@ -168,7 +168,6 @@ Due to code optimisation, this is not something you need to worry about (much) f
 ## TODO
 
 * Performance improvements:
-  * Use of lambdas/something (in [constants.rb](lib/regexp-examples/constants.rb)) to improve the library load time. See the pending pull request.
   * (Maybe?) add a `max_examples` configuration option and use lazy evaluation, to ensure the method never "freezes".
 
 ## Contributing
