@@ -17,13 +17,13 @@ module CoreExtensions
       end
 
       private
-        def examples_by_method(method)
+      def examples_by_method(method)
         full_examples = RegexpExamples.public_send(
           method,
           RegexpExamples::Parser.new(source, options).parse
         )
         RegexpExamples::BackReferenceReplacer.new.substitute_backreferences(full_examples)
-        end
+      end
     end
   end
 end
