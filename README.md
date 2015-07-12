@@ -90,6 +90,7 @@ Long answer:
 * Octal characters, e.g. `/\10/`, `/\177/`
 * Named properties, e.g. `/\p{L}/` ("Letter"), `/\p{Arabic}/` ("Arabic character")
 , `/\p{^Ll}/` ("Not a lowercase letter"), `/\P{^Canadian_Aboriginal}/` ("Not not a Canadian aboriginal character")
+  * ...Even between different ruby versions!! (e.g. `/\p{Arabic}/.examples(max_group_results: 999)` will give you a different answer in ruby v2.1.x and v2.2.x)
 * **Arbitrarily complex combinations of all the above!**
 
 * Regexp options can also be used:
