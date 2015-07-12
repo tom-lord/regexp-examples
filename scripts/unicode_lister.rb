@@ -144,12 +144,11 @@ NamedGroups = %w(
   Yi
 )
 
-# Note: For some reason, a character encoding-related exception gets raised
-# when I do `/regex/ =~ eval("?\\u{#{x.to_s(16)}}")` in the range: 55296..57343
-# This means my calculation is MISSING results in the range: 55296..65535
-# However, for the sake of performance, I'm also being "lazy" and only calculating/saving
-# the first 128 matches anyway!
-# If anyone ever cares about this (I doubt it), I'll look into fixing/improving it.
+# Note: For the range 55296..57343, these are reserved values that are not legal
+# unicode characters.
+# I.e. a character encoding-related exception gets raised when you do:
+# `/regex/ =~ eval("?\\u{#{x.to_s(16)}}")`
+# TODO: Add a link to somewhere that explains this better.
 
 # Example input: [1, 2, 3, 4, 6, 7, 12, 14] (Array)
 # Example output: "1..4, 6..7, 12, 14" (String)
@@ -171,8 +170,11 @@ filename = "db/#{RegexpExamples::UnicodeCharRanges::STORE_FILENAME}"
 store = PStore.new(filename)
 store.transaction do
   NamedGroups.each do |name|
-  count += 1
-    matching_codes = (0..55295).lazy.select { |x| /\p{#{name}}/ =~ eval("?\\u{#{x.to_s(16)}}") }.first(128)
+    count += 1
+    # Original method, for only generating first 128 matches:
+    #matching_codes = (0..55295).lazy.select { |x| /\p{#{name}}/ =~ eval("?\\u{#{x.to_s(16)}}") }.first(128)
+    # Since this data is now being compressed and saved in a PStore, let's just generate everything!
+    matching_codes = [(0..55295), (57344..65535)].map(&:to_a).flatten.select { |x| /\p{#{name}}/ =~ eval("?\\u{#{x.to_s(16)}}") }
     store[name.downcase] = calculate_ranges(matching_codes)
     puts "(#{count}/#{NamedGroups.length}) Finished property: #{name}"
   end
