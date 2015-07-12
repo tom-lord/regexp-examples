@@ -1,3 +1,12 @@
-require "#{File.dirname(__FILE__)}/regexp-examples/unicode_char_ranges"
-Dir[File.dirname(__FILE__) + '/regexp-examples/**/*.rb'].each {|file| require file }
+require_relative "regexp-examples/unicode_char_ranges"
+require_relative "regexp-examples/backreferences"
+require_relative "regexp-examples/chargroup_parser"
+require_relative "regexp-examples/constants"
+require_relative "regexp-examples/groups"
+require_relative "regexp-examples/helpers"
+require_relative "regexp-examples/parser"
+require_relative "regexp-examples/repeaters"
+require_relative "regexp-examples/unicode_char_ranges"
+require_relative "regexp-examples/version"
+require_relative "core_extensions/regexp/examples"
 
