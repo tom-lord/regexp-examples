@@ -10,138 +10,16 @@ require_relative '../lib/regexp-examples/unicode_char_ranges'
 # Taken from ruby documentation:
 # http://ruby-doc.org//core-2.2.0/Regexp.html#class-Regexp-label-Character+Properties
 NamedGroups = %w(
-  Alnum
-  Alpha
-  Blank
-  Cntrl
-  Digit
-  Graph
-  Lower
-  Print
-  Punct
-  Space
-  Upper
-  XDigit
-  Word
-  ASCII
-  Any
-  Assigned
+  Alnum Alpha Blank Cntrl Digit Graph Lower Print Punct Space Upper XDigit Word ASCII Any Assigned
 
-  L
-  Ll
-  Lm
-  Lo
-  Lt
-  Lu
-  M
-  Mn
-  Mc
-  Me
-  N
-  Nd
-  Nl
-  No
-  P
-  Pc
-  Pd
-  Ps
-  Pe
-  Pi
-  Pf
-  Po
-  S
-  Sm
-  Sc
-  Sk
-  So
-  Z
-  Zs
-  Zl
-  Zp
-  C
-  Cc
-  Cf
-  Cn
-  Co
-  Cs
+  L Ll Lm Lo Lt Lu M Mn Mc Me N Nd Nl No P Pc Pd Ps Pe Pi Pf Po S Sm Sc Sk So Z Zs Zl Zp C Cc Cf Cn Co Cs
 
-  Arabic
-  Armenian
-  Balinese
-  Bengali
-  Bopomofo
-  Braille
-  Buginese
-  Buhid
-  Canadian_Aboriginal
-  Carian
-  Cham
-  Cherokee
-  Common
-  Coptic
-  Cuneiform
-  Cypriot
-  Cyrillic
-  Deseret
-  Devanagari
-  Ethiopic
-  Georgian
-  Glagolitic
-  Gothic
-  Greek
-  Gujarati
-  Gurmukhi
-  Han
-  Hangul
-  Hanunoo
-  Hebrew
-  Hiragana
-  Inherited
-  Kannada
-  Katakana
-  Kayah_Li
-  Kharoshthi
-  Khmer
-  Lao
-  Latin
-  Lepcha
-  Limbu
-  Linear_B
-  Lycian
-  Lydian
-  Malayalam
-  Mongolian
-  Myanmar
-  New_Tai_Lue
-  Nko
-  Ogham
-  Ol_Chiki
-  Old_Italic
-  Old_Persian
-  Oriya
-  Osmanya
-  Phags_Pa
-  Phoenician
-  Rejang
-  Runic
-  Saurashtra
-  Shavian
-  Sinhala
-  Sundanese
-  Syloti_Nagri
-  Syriac
-  Tagalog
-  Tagbanwa
-  Tai_Le
-  Tamil
-  Telugu
-  Thaana
-  Thai
-  Tibetan
-  Tifinagh
-  Ugaritic
-  Vai
-  Yi
+  Arabic Armenian Balinese Bengali Bopomofo Braille Buginese Buhid Canadian_Aboriginal Carian Cham Cherokee
+  Common Coptic Cuneiform Cypriot Cyrillic Deseret Devanagari Ethiopic Georgian Glagolitic Gothic Greek
+  Gujarati Gurmukhi Han Hangul Hanunoo Hebrew Hiragana Inherited Kannada Katakana Kayah_Li Kharoshthi Khmer
+  Lao Latin Lepcha Limbu Linear_B Lycian Lydian Malayalam Mongolian Myanmar New_Tai_Lue Nko Ogham Ol_Chiki
+  Old_Italic Old_Persian Oriya Osmanya Phags_Pa Phoenician Rejang Runic Saurashtra Shavian Sinhala Sundanese
+  Syloti_Nagri Syriac Tagalog Tagbanwa Tai_Le Tamil Telugu Thaana Thai Tibetan Tifinagh Ugaritic Vai Yi
 )
 
 # Note: For the range 55296..57343, these are reserved values that are not legal
@@ -172,10 +50,12 @@ store = PStore.new(filename)
 store.transaction do
   NamedGroups.each do |name|
     count += 1
-    # Original method, for only generating first 128 matches:
-    #matching_codes = (0..55295).lazy.select { |x| /\p{#{name}}/ =~ eval("?\\u{#{x.to_s(16)}}") }.first(128)
-    # Since this data is now being compressed and saved in a PStore, let's just generate everything!
-    matching_codes = [(0..55295), (57344..65535)].map(&:to_a).flatten.select { |x| /\p{#{name}}/ =~ eval("?\\u{#{x.to_s(16)}}") }
+    # Only generating first 128 matches, for performance...
+    # (I have tried this with generating ALL examples, and it makes the ruby gem
+    # painfully slow and bloated... Especially the test suite.)
+    matching_codes = [(0..55295), (57344..65535)].map(&:to_a).flatten.lazy
+      .select { |x| /\p{#{name}}/ =~ eval("?\\u{#{x.to_s(16)}}") }
+      .first(128)
     store[name.downcase] = calculate_ranges(matching_codes)
     puts "(#{count}/#{NamedGroups.length}) Finished property: #{name}"
   end
