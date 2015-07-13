@@ -79,18 +79,20 @@ module RegexpExamples
         @charset << next_char
         @current_position += 1
       when /\A:(\^?)([^:]+):\]/ # e.g. [[:alpha:]] - POSIX group
-        if @is_sub_group
-          chars = if Regexp.last_match(1).empty?
-                    POSIXCharMap[Regexp.last_match(2)]
-                  else
-                    CharSets::Any - POSIXCharMap[Regexp.last_match(2)]
-                  end
-          @charset.concat chars
-          @current_position += (Regexp.last_match(1).length + # 0 or 1, if '^' is present
-                                Regexp.last_match(2).length + # Length of group name
-                                2) # Length of opening and closing colons (always 2)
-        end
+        parse_posix_group(Regexp.last_match(1), Regexp.last_match(2)) if @is_sub_group
       end
+    end
+
+    def parse_posix_group(negation_flag, name)
+      chars = if negation_flag.empty?
+                POSIXCharMap[name]
+              else
+                CharSets::Any - POSIXCharMap[name]
+              end
+      @charset.concat chars
+      @current_position += (negation_flag.length + # 0 or 1, if '^' is present
+                            name.length +
+                            2) # Length of opening and closing colons (always 2)
     end
 
     # Always returns an Array, for consistency
