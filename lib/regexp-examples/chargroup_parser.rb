@@ -41,7 +41,7 @@ module RegexpExamples
         when '&'
           if regexp_string[@current_position + 1] == '&'
             @current_position += 2
-            sub_group_parser = self.class.new(rest_of_string, is_sub_group: @is_sub_group)
+            sub_group_parser = self.class.new(rest_of_string, is_sub_group: true)
             @charset &= sub_group_parser.result
             @current_position += (sub_group_parser.length - 1)
           else
@@ -80,9 +80,15 @@ module RegexpExamples
         @current_position += 1
       when /\A:(\^?)([^:]+):\]/ # e.g. [[:alpha:]] - POSIX group
         if @is_sub_group
-          chars = Regexp.last_match(1).empty? ? POSIXCharMap[Regexp.last_match(2)] : (CharSets::Any - POSIXCharMap[Regexp.last_match(2)])
+          chars = if Regexp.last_match(1).empty?
+                    POSIXCharMap[Regexp.last_match(2)]
+                  else
+                    CharSets::Any - POSIXCharMap[Regexp.last_match(2)]
+                  end
           @charset.concat chars
-          @current_position += (Regexp.last_match(1).length + Regexp.last_match(2).length + 2)
+          @current_position += (Regexp.last_match(1).length + # 0 or 1, if '^' is present
+                                Regexp.last_match(2).length + # Length of group name
+                                2) # Length of opening and closing colons (always 2)
         end
       end
     end
