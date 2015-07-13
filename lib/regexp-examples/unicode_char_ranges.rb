@@ -11,8 +11,8 @@ module RegexpExamples
 
     attr_reader :range_store
 
-    def initialize(location="db/#{STORE_FILENAME}")
-      @range_store = PStore.new(location)
+    def initialize(filename="#{STORE_FILENAME}")
+      @range_store = PStore.new(File.expand_path("../../../db/#{filename}", __FILE__))
     end
 
     def get(key)
