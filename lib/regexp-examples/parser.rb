@@ -103,8 +103,12 @@ module RegexpExamples
         group = parse_backreference_group(Regexp.last_match(1))
       when rest_of_string =~ /\Ak['<]([\w-]+)['>]/ # Named capture group
         @current_position += (Regexp.last_match(1).length + 2)
-        # Check for RELATIVE group number, e.g. /(a)(b)(c)(d) \k<-2>/
-        group_id = (Regexp.last_match(1).to_i < 0) ? (@num_groups + Regexp.last_match(1).to_i + 1) : Regexp.last_match(1)
+        group_id = if Regexp.last_match(1).to_i < 0
+                     # RELATIVE group number, e.g. /(a)(b)(c)(d) \k<-2>/
+                     @num_groups + Regexp.last_match(1).to_i + 1
+                   else
+                     Regexp.last_match(1)
+                   end
         group = parse_backreference_group(group_id)
       when BackslashCharMap.keys.include?(next_char)
         group = CharGroup.new(
@@ -122,8 +126,11 @@ module RegexpExamples
         sequence = Regexp.last_match(1).match(/\h{1,4}/)[0] # Strip off "{" and "}"
         group = parse_single_char_group(parse_unicode_sequence(sequence))
       when rest_of_string =~ /\A(p)\{(\^?)([^}]+)\}/i # Named properties
-        @current_position += (Regexp.last_match(2).length + Regexp.last_match(3).length + 2)
-        is_negative = (Regexp.last_match(1) == 'P') ^ (Regexp.last_match(2) == '^') # Beware of double negatives! E.g. /\P{^Space}/
+        @current_position += (Regexp.last_match(2).length + # 0 or 1, of '^' is present
+                              Regexp.last_match(3).length + # Length of the property name
+                              2) # Length of opening and closing brackets (always 2)
+        # Beware of double negatives! E.g. /\P{^Space}/
+        is_negative = (Regexp.last_match(1) == 'P') ^ (Regexp.last_match(2) == '^')
         group = CharGroup.new(
           if is_negative
             CharSets::Any.dup - NamedPropertyCharMap[Regexp.last_match(3).downcase]
@@ -135,9 +142,13 @@ module RegexpExamples
       when next_char == 'K' # Keep (special lookbehind that CAN be supported safely!)
         group = PlaceHolderGroup.new
       when next_char == 'R' # Linebreak
-        group = CharGroup.new(["\r\n", "\n", "\v", "\f", "\r"], @ignorecase) # A bit hacky...
+        group = CharGroup.new(
+          ["\r\n", "\n", "\v", "\f", "\r"],
+          @ignorecase
+        ) # Using "\r\n" as one character is little bit hacky...
       when next_char == 'g' # Subexpression call
-        fail IllegalSyntaxError, 'Subexpression calls (\\g) cannot be supported, as they are not regular'
+        fail IllegalSyntaxError,
+          'Subexpression calls (\\g) cannot be supported, as they are not regular'
       when next_char =~ /[bB]/ # Anchors
         raise_anchors_exception!
       when next_char =~ /[AG]/ # Start of string
@@ -200,9 +211,11 @@ module RegexpExamples
               return PlaceHolderGroup.new
             end
           when %w(! =).include?(match[2]) # e.g. /(?=lookahead)/, /(?!neglookahead)/
-            fail IllegalSyntaxError, 'Lookaheads are not regular; cannot generate examples'
+            fail IllegalSyntaxError,
+              'Lookaheads are not regular; cannot generate examples'
           when %w(! =).include?(match[3]) # e.g. /(?<=lookbehind)/, /(?<!neglookbehind)/
-            fail IllegalSyntaxError, 'Lookbehinds are not regular; cannot generate examples'
+            fail IllegalSyntaxError,
+              'Lookbehinds are not regular; cannot generate examples'
           else # e.g. /(?<name>namedgroup)/
             @current_position += (match[3].length + 3)
             group_id = match[3]
@@ -317,7 +330,8 @@ module RegexpExamples
     end
 
     def raise_anchors_exception!
-      fail IllegalSyntaxError, "Anchors ('#{next_char}') cannot be supported, as they are not regular"
+      fail IllegalSyntaxError,
+        "Anchors ('#{next_char}') cannot be supported, as they are not regular"
     end
 
     def parse_one_time_repeater(group)
