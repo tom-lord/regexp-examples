@@ -39,7 +39,7 @@ module RegexpExamples
     end
 
     def hex_to_unicode(hex)
-      eval("?\\u{#{hex}}")
+      [hex.to_i(16)].pack('U')
     end
   end
 end

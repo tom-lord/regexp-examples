@@ -120,7 +120,7 @@ module RegexpExamples
         group = parse_single_char_group(parse_control_character(Regexp.last_match(2)))
       when rest_of_string =~ /\Ax(\h{1,2})/ # Escape sequence
         @current_position += Regexp.last_match(1).length
-        group = parse_single_char_group(parse_escape_sequence(Regexp.last_match(1)))
+        group = parse_single_char_group(parse_unicode_sequence(Regexp.last_match(1)))
       when rest_of_string =~ /\Au(\h{4}|\{\h{1,4}\})/ # Unicode sequence
         @current_position += Regexp.last_match(1).length
         sequence = Regexp.last_match(1).match(/\h{1,4}/)[0] # Strip off "{" and "}"
@@ -276,12 +276,8 @@ module RegexpExamples
       # eval "?\\C-#{char.chr}" # Doesn't work for e.g. char = "?"
     end
 
-    def parse_escape_sequence(match)
-      eval "?\\x#{match}"
-    end
-
     def parse_unicode_sequence(match)
-      eval "?\\u{#{match}}"
+      [match.to_i(16)].pack('U')
     end
 
     def parse_star_repeater(group)
