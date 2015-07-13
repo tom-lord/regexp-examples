@@ -4,8 +4,11 @@ RSpec.describe Regexp, '#examples' do
       it "examples for /#{regexp.source}/" do
         regexp_examples = regexp.examples(max_group_results: 99_999)
 
-        expect(regexp_examples).not_to be_empty, "No examples were generated for regexp: /#{regexp.source}/"
-        regexp_examples.each { |example| expect(example).to match(/\A(?:#{regexp.source})\z/) }
+        expect(regexp_examples).not_to be_empty,
+          "No examples were generated for regexp: /#{regexp.source}/"
+        regexp_examples.each do |example|
+          expect(example).to match(/\A(?:#{regexp.source})\z/)
+        end
         # Note: /\A...\z/ is used to prevent misleading examples from passing the test.
         # For example, we don't want things like:
         # /a*/.examples to include "xyz"
@@ -121,7 +124,7 @@ RSpec.describe Regexp, '#examples' do
         /(ref1) (ref2) \1 \2/,
         /((ref2)ref1) \1 \2/,
         /((ref1and2)) \1 \2/,
-        /(one)(two)(three)(four)(five)(six)(seven)(eight)(nine)(ten) \10\9\8\7\6\5\4\3\2\1/,
+        /(1)(2)(3)(4)(5)(6)(7)(8)(9)(10) \10\9\8\7\6\5\4\3\2\1/,
         /(a?(b?(c?(d?(e?)))))/,
         /(a)? \1/,
         /(a|(b)) \2/,
@@ -186,30 +189,35 @@ RSpec.describe Regexp, '#examples' do
         /\P{Ll}/, # Negation syntax type 2
         /\P{^Ll}/ # Double negation!! (Should cancel out)
       )
-      # An exhaustive set of tests for all named properties!!!
-      # This is useful for verifying the PStore contains correct values for all ruby versions
+      # An exhaustive set of tests for all named properties!!! This is useful
+      # for verifying the PStore contains correct values for all ruby versions
       %w(
-        Alnum Alpha Blank Cntrl Digit Graph Lower Print Punct Space Upper XDigit Word ASCII Any Assigned
-        L Ll Lm Lo Lt Lu M Mn Mc Me N Nd Nl No P Pc Pd Ps Pe Pi Pf Po S Sm Sc Sk So Z Zs Zl Zp C Cc Cf Cn Co
-        Arabic Armenian Balinese Bengali Bopomofo Braille Buginese Buhid Canadian_Aboriginal Cham Cherokee
-        Common Coptic Cyrillic Devanagari Ethiopic Georgian Glagolitic Greek Gujarati Gurmukhi Han Hangul
-        Hanunoo Hebrew Hiragana Inherited Kannada Katakana Kayah_Li Khmer Lao Latin Lepcha Limbu Malayalam
-        Mongolian Myanmar New_Tai_Lue Nko Ogham Ol_Chiki Oriya Phags_Pa Rejang Runic Saurashtra Sinhala
-        Sundanese Syloti_Nagri Syriac Tagalog Tagbanwa Tai_Le Tamil Telugu Thaana Thai Tibetan Tifinagh
-        Vai Yi
+        Alnum Alpha Blank Cntrl Digit Graph Lower Print Punct Space Upper XDigit
+        Word ASCII Any Assigned L Ll Lm Lo Lt Lu M Mn Mc Me N Nd Nl No P Pc Pd
+        Ps Pe Pi Pf Po S Sm Sc Sk So Z Zs Zl Zp C Cc Cf Cn Co Arabic Armenian
+        Balinese Bengali Bopomofo Braille Buginese Buhid Canadian_Aboriginal
+        Cham Cherokee Common Coptic Cyrillic Devanagari Ethiopic Georgian
+        Glagolitic Greek Gujarati Gurmukhi Han Hangul Hanunoo Hebrew Hiragana
+        Inherited Kannada Katakana Kayah_Li Khmer Lao Latin Lepcha Limbu Malayalam
+        Mongolian Myanmar New_Tai_Lue Nko Ogham Ol_Chiki Oriya Phags_Pa Rejang
+        Runic Saurashtra Sinhala Sundanese Syloti_Nagri Syriac Tagalog Tagbanwa
+        Tai_Le Tamil Telugu Thaana Thai Tibetan Tifinagh Vai Yi
       ).each do |property|
         it "examples for /\p{#{property}}/" do
           regexp_examples = /\p{#{property}}/.examples(max_group_results: 99_999)
-          expect(regexp_examples).not_to be_empty, "No examples were generated for regexp: /\p{#{property}}/"
+          expect(regexp_examples).not_to be_empty,
+            "No examples were generated for regexp: /\p{#{property}}/"
           # Just do one big check, for test system performance (~30% faster)
-          # (Otherwise, we are doing up to 128 regex expectations for every single property!!)
+          # (Otherwise, we're doing up to 128 checks on 123 properties!!!)
           expect(regexp_examples.join('')).to match(/\A\p{#{property}}+\z/)
         end
       end
 
       # The following seem to genuinely have no matching examples (!!??!!?!)
-      %w(Cs Carian Cuneiform Cypriot Deseret Gothic Kharoshthi Linear_B Lycian
-         Lydian Old_Italic Old_Persian Osmanya Phoenician Shavian Ugaritic).each do |property|
+      %w(
+        Cs Carian Cuneiform Cypriot Deseret Gothic Kharoshthi Linear_B Lycian
+        Lydian Old_Italic Old_Persian Osmanya Phoenician Shavian Ugaritic
+      ).each do |property|
         examples_are_empty(/\p{#{property}}/)
       end
     end
@@ -324,7 +332,10 @@ RSpec.describe Regexp, '#examples' do
 
       context 'case insensitive' do
         it { expect(/ab/i.examples).to match_array %w(ab aB Ab AB) }
-        it { expect(/a+/i.examples).to match_array %w(a A aa aA Aa AA aaa aaA aAa aAA Aaa AaA AAa AAA) }
+        it do
+          expect(/a+/i.examples)
+            .to match_array %w(a A aa aA Aa AA aaa aaA aAa aAA Aaa AaA AAa AAA)
+        end
         it { expect(/([ab])\1/i.examples).to match_array %w(aa bb AA BB) }
       end
 
@@ -351,7 +362,8 @@ RSpec.describe Regexp, '#examples' do
           it { expect(/a(?i)b(?-i)c/.examples).to match_array %w(abc aBc) }
           it { expect(/a(?x)   b(?-x) c/.examples).to eq %w(ab\ c) }
           it { expect(/(?m)./.examples(max_group_results: 999)).to include "\n" }
-          it { expect(/(?i)(a)-\1/.examples).to match_array %w(a-a A-A) } # Toggle "groups" should not increase backref group count
+          # Toggle "groups" should not increase backref group count:
+          it { expect(/(?i)(a)-\1/.examples).to match_array %w(a-a A-A) }
         end
         context 'subexpression' do
           it { expect(/a(?i:b)c/.examples).to match_array %w(abc aBc) }
