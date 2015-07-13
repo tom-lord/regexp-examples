@@ -22,30 +22,30 @@ module RegexpExamples
       @charset = []
       @negative = false
       parse_first_chars
-      until next_char == "]" do
+      until next_char == ']'
         case next_char
-        when "["
+        when '['
           @current_position += 1
           sub_group_parser = self.class.new(rest_of_string, is_sub_group: true)
           @charset.concat sub_group_parser.result
           @current_position += sub_group_parser.length
-        when "-"
-          if regexp_string[@current_position + 1] == "]" # e.g. /[abc-]/ -- not a range!
-            @charset << "-"
+        when '-'
+          if regexp_string[@current_position + 1] == ']' # e.g. /[abc-]/ -- not a range!
+            @charset << '-'
             @current_position += 1
           else
             @current_position += 1
-            @charset.concat (@charset.last .. parse_checking_backlash.first).to_a
+            @charset.concat (@charset.last..parse_checking_backlash.first).to_a
             @current_position += 1
           end
-        when "&"
-          if regexp_string[@current_position + 1] == "&"
+        when '&'
+          if regexp_string[@current_position + 1] == '&'
             @current_position += 2
             sub_group_parser = self.class.new(rest_of_string, is_sub_group: @is_sub_group)
             @charset &= sub_group_parser.result
             @current_position += (sub_group_parser.length - 1)
           else
-            @charset << "&"
+            @charset << '&'
             @current_position += 1
           end
         else
@@ -67,28 +67,29 @@ module RegexpExamples
     end
 
     private
+
     def parse_first_chars
       if next_char == '^'
         @negative = true
         @current_position += 1
       end
-      
+
       case rest_of_string
       when /\A[-\]]/ # e.g. /[]]/ (match "]") or /[-]/ (match "-")
         @charset << next_char
         @current_position += 1
       when /\A:(\^?)([^:]+):\]/ # e.g. [[:alpha:]] - POSIX group
         if @is_sub_group
-          chars = $1.empty? ? POSIXCharMap[$2] : (CharSets::Any - POSIXCharMap[$2])
+          chars = Regexp.last_match(1).empty? ? POSIXCharMap[Regexp.last_match(2)] : (CharSets::Any - POSIXCharMap[Regexp.last_match(2)])
           @charset.concat chars
-          @current_position += ($1.length + $2.length + 2)
+          @current_position += (Regexp.last_match(1).length + Regexp.last_match(2).length + 2)
         end
       end
     end
 
     # Always returns an Array, for consistency
     def parse_checking_backlash
-      if next_char == "\\"
+      if next_char == '\\'
         @current_position += 1
         parse_after_backslash
       else
@@ -116,4 +117,3 @@ module RegexpExamples
     end
   end
 end
-

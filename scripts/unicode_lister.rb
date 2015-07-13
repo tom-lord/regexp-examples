@@ -34,14 +34,14 @@ NamedGroups = %w(
 def calculate_ranges(matching_codes)
   return [] if matching_codes.empty?
   first = matching_codes.shift
-  matching_codes.inject([first..first]) do |r,x|
+  matching_codes.inject([first..first]) do |r, x|
     if r.last.last.succ != x
       r << (x..x) # Start new range
     else
       r[0..-2] << (r.last.first..x) # Update last range
     end
   end
-    .map { |range| range.size == 1 ? range.first : range} # Replace `int..int` with `int`
+    .map { |range| range.size == 1 ? range.first : range } # Replace `int..int` with `int`
 end
 
 count = 0
@@ -53,13 +53,12 @@ store.transaction do
     # Only generating first 128 matches, for performance...
     # (I have tried this with generating ALL examples, and it makes the ruby gem
     # painfully slow and bloated... Especially the test suite.)
-    matching_codes = [(0..55295), (57344..65535)].map(&:to_a).flatten.lazy
-      .select { |x| /\p{#{name}}/ =~ eval("?\\u{#{x.to_s(16)}}") }
-      .first(128)
+    matching_codes = [(0..55_295), (57_344..65_535)].map(&:to_a).flatten.lazy
+                     .find { |x| /\p{#{name}}/ =~ eval("?\\u{#{x.to_s(16)}}") }
+    (128)
     store[name.downcase] = calculate_ranges(matching_codes)
     puts "(#{count}/#{NamedGroups.length}) Finished property: #{name}"
   end
-  puts "*"*50
+  puts '*' * 50
   puts "Finished! Result stored in: ./db/#{filename}"
 end
-

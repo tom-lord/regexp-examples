@@ -6,7 +6,7 @@ module RegexpExamples
       full_examples.map do |full_example|
         begin
           while full_example.match(/__(\w+?)__/)
-            full_example.sub!(/__(\w+?)__/, find_backref_for(full_example, $1))
+            full_example.sub!(/__(\w+?)__/, find_backref_for(full_example, Regexp.last_match(1)))
           end
           full_example
         rescue BackrefNotFound
@@ -18,6 +18,7 @@ module RegexpExamples
     end
 
     private
+
     def find_backref_for(full_example, group_id)
       full_example.all_subgroups.detect do |subgroup|
         subgroup.group_id == group_id
@@ -29,10 +30,8 @@ module RegexpExamples
       if octal_chars =~ /\A[01]?[0-7]{1,2}\z/ && octal_chars.to_i >= 10
         Integer(octal_chars, 8).chr
       else
-        raise(BackrefNotFound)
+        fail(BackrefNotFound)
       end
     end
-
   end
-
 end

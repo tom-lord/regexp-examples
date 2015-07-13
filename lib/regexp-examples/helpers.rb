@@ -8,7 +8,7 @@ module RegexpExamples
   def self.permutations_of_strings(arrays_of_strings)
     first = arrays_of_strings.shift
     return first if arrays_of_strings.empty?
-    first.product( permutations_of_strings(arrays_of_strings) ).map do |result|
+    first.product(permutations_of_strings(arrays_of_strings)).map do |result|
       join_preserving_capture_groups(result)
     end
   end
@@ -16,8 +16,8 @@ module RegexpExamples
   def self.join_preserving_capture_groups(result)
     result.flatten!
     subgroups = result
-      .map(&:all_subgroups)
-      .flatten
+                .map(&:all_subgroups)
+                .flatten
 
     # Only save the LAST group from repeated capture groups, e.g. /([ab]){2}/
     subgroups.delete_if do |subgroup|
@@ -35,12 +35,12 @@ module RegexpExamples
   end
 
   private
+
   def self.generic_map_result(repeaters, method)
     repeaters
-      .map {|repeater| repeater.public_send(method)}
+      .map { |repeater| repeater.public_send(method) }
       .instance_eval do |partial_results|
         RegexpExamples.permutations_of_strings(partial_results)
       end
   end
 end
-

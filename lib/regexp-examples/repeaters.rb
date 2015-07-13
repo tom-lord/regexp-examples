@@ -10,7 +10,7 @@ module RegexpExamples
       results = []
       min_repeats.upto(max_repeats) do |repeats|
         if repeats.zero?
-          results << [ GroupResult.new('') ]
+          results << [GroupResult.new('')]
         else
           results << RegexpExamples.permutations_of_strings(
             [group_results] * repeats
@@ -23,8 +23,8 @@ module RegexpExamples
     def random_result
       result = []
       rand(min_repeats..max_repeats).times { result << group.random_result }
-      result << [ GroupResult.new('') ] if result.empty? # in case of 0.times
-      RegexpExamples::permutations_of_strings(result)
+      result << [GroupResult.new('')] if result.empty? # in case of 0.times
+      RegexpExamples.permutations_of_strings(result)
     end
   end
 
@@ -74,9 +74,9 @@ module RegexpExamples
     end
 
     private
+
     def smallest(x, y)
       (x < y) ? x : y
     end
   end
 end
-

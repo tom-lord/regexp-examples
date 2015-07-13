@@ -7,9 +7,7 @@ module RegexpExamples
     def initialize(result, group_id = nil, subgroups = [])
       @group_id = group_id
       @subgroups = subgroups
-      if result.respond_to?(:group_id)
-        @subgroups = result.all_subgroups
-      end
+      @subgroups = result.all_subgroups if result.respond_to?(:group_id)
       super(result)
     end
 
@@ -37,7 +35,7 @@ module RegexpExamples
       if ignorecase
         group_result_array = force_if_lazy(group_result)
         group_result_array
-          .concat( group_result_array.map(&:swapcase) )
+          .concat(group_result_array.map(&:swapcase))
           .uniq
       else
         group_result
@@ -59,6 +57,7 @@ module RegexpExamples
       @char = char
       @ignorecase = ignorecase
     end
+
     def result
       [GroupResult.new(@char)]
     end
@@ -88,7 +87,6 @@ module RegexpExamples
         GroupResult.new(result)
       end
     end
-
   end
 
   class DotGroup
@@ -122,10 +120,11 @@ module RegexpExamples
     end
 
     private
+
     # Generates the result of each contained group
     # and adds the filled group of each result to itself
     def result_by_method(method)
-      strings = @groups.map {|repeater| repeater.public_send(method)}
+      strings = @groups.map { |repeater| repeater.public_send(method) }
       RegexpExamples.permutations_of_strings(strings).map do |result|
         GroupResult.new(result, group_id)
       end
@@ -152,6 +151,7 @@ module RegexpExamples
     end
 
     private
+
     def result_by_method(method)
       left_result = RegexpExamples.public_send(method, @left_repeaters)
       right_result = RegexpExamples.public_send(method, @right_repeaters)
@@ -169,8 +169,7 @@ module RegexpExamples
     end
 
     def result
-      [ GroupResult.new("__#{@id}__") ]
+      [GroupResult.new("__#{@id}__")]
     end
   end
-
 end

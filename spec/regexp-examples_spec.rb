@@ -1,8 +1,8 @@
-RSpec.describe Regexp, "#examples" do
+RSpec.describe Regexp, '#examples' do
   def self.examples_exist_and_match(*regexps)
     regexps.each do |regexp|
       it "examples for /#{regexp.source}/" do
-        regexp_examples = regexp.examples(max_group_results: 99999)
+        regexp_examples = regexp.examples(max_group_results: 99_999)
 
         expect(regexp_examples).not_to be_empty, "No examples were generated for regexp: /#{regexp.source}/"
         regexp_examples.each { |example| expect(example).to match(/\A(?:#{regexp.source})\z/) }
@@ -17,7 +17,7 @@ RSpec.describe Regexp, "#examples" do
   def self.examples_raise_illegal_syntax_error(*regexps)
     regexps.each do |regexp|
       it "examples for /#{regexp.source}/" do
-        expect{regexp.examples}.to raise_error RegexpExamples::IllegalSyntaxError
+        expect { regexp.examples }.to raise_error RegexpExamples::IllegalSyntaxError
       end
     end
   end
@@ -31,7 +31,7 @@ RSpec.describe Regexp, "#examples" do
   end
 
   context 'returns matching strings' do
-    context "for basic repeaters" do
+    context 'for basic repeaters' do
       examples_exist_and_match(
         /a/,   # "one-time repeater"
         /a*/,  # greedy
@@ -58,7 +58,7 @@ RSpec.describe Regexp, "#examples" do
       )
     end
 
-    context "for basic groups" do
+    context 'for basic groups' do
       examples_exist_and_match(
         /[a]/,
         /(a)/,
@@ -67,7 +67,7 @@ RSpec.describe Regexp, "#examples" do
       )
     end
 
-    context "for complex char groups (square brackets)" do
+    context 'for complex char groups (square brackets)' do
       examples_exist_and_match(
         /[abc]/,
         /[a-c]/,
@@ -93,7 +93,7 @@ RSpec.describe Regexp, "#examples" do
       )
     end
 
-    context "for complex multi groups" do
+    context 'for complex multi groups' do
       examples_exist_and_match(
         /(normal)/,
         /(?:nocapture)/,
@@ -103,19 +103,19 @@ RSpec.describe Regexp, "#examples" do
       )
     end
 
-    context "for escaped characters" do
+    context 'for escaped characters' do
       all_letters = Array('a'..'z') | Array('A'..'Z')
       special_letters = %w(b c g p u x z A B C G M P Z)
       valid_letters = all_letters - special_letters
 
       valid_letters.each do |char|
         backslash_char = "\\#{char}"
-        examples_exist_and_match( /#{backslash_char}/ )
+        examples_exist_and_match(/#{backslash_char}/)
       end
-      examples_exist_and_match( /[\b]/ )
+      examples_exist_and_match(/[\b]/)
     end
 
-    context "for backreferences" do
+    context 'for backreferences' do
       examples_exist_and_match(
         /(repeat) \1/,
         /(ref1) (ref2) \1 \2/,
@@ -130,14 +130,14 @@ RSpec.describe Regexp, "#examples" do
       )
     end
 
-    context "for escaped octal characters" do
+    context 'for escaped octal characters' do
       examples_exist_and_match(
         /\10\20\30\40\50/,
         /\177123/ # Should work for numbers up to 177
       )
     end
 
-    context "for complex patterns" do
+    context 'for complex patterns' do
       # Longer combinations of the above
       examples_exist_and_match(
         /https?:\/\/(www\.)github\.com/,
@@ -151,7 +151,7 @@ RSpec.describe Regexp, "#examples" do
       )
     end
 
-    context "for illegal syntax" do
+    context 'for illegal syntax' do
       examples_raise_illegal_syntax_error(
         /(?=lookahead)/,
         /(?!neglookahead)/,
@@ -168,7 +168,7 @@ RSpec.describe Regexp, "#examples" do
       )
     end
 
-    context "ignore start/end anchors if at start/end" do
+    context 'ignore start/end anchors if at start/end' do
       examples_exist_and_match(
         /\Astart/,
         /\Glast-match/,
@@ -179,7 +179,7 @@ RSpec.describe Regexp, "#examples" do
       )
     end
 
-    context "for named properties" do
+    context 'for named properties' do
       examples_exist_and_match(
         /\p{AlPhA}/, # Case insensitivity
         /\p{^Ll}/, # Negation syntax type 1
@@ -199,7 +199,7 @@ RSpec.describe Regexp, "#examples" do
         Vai Yi
       ).each do |property|
         it "examples for /\p{#{property}}/" do
-          regexp_examples = /\p{#{property}}/.examples(max_group_results: 99999)
+          regexp_examples = /\p{#{property}}/.examples(max_group_results: 99_999)
           expect(regexp_examples).not_to be_empty, "No examples were generated for regexp: /\p{#{property}}/"
           # Just do one big check, for test system performance (~30% faster)
           # (Otherwise, we are doing up to 128 regex expectations for every single property!!)
@@ -212,10 +212,9 @@ RSpec.describe Regexp, "#examples" do
          Lydian Old_Italic Old_Persian Osmanya Phoenician Shavian Ugaritic).each do |property|
         examples_are_empty(/\p{#{property}}/)
       end
-
     end
 
-    context "for control characters" do
+    context 'for control characters' do
       examples_exist_and_match(
         /\ca/,
         /\cZ/,
@@ -228,7 +227,7 @@ RSpec.describe Regexp, "#examples" do
       )
     end
 
-    context "for escape sequences" do
+    context 'for escape sequences' do
       examples_exist_and_match(
         /\x42/,
         /\x1D/,
@@ -237,15 +236,15 @@ RSpec.describe Regexp, "#examples" do
       )
     end
 
-    context "for unicode sequences" do
+    context 'for unicode sequences' do
       examples_exist_and_match(
-      /\u6829/,
-      /\uabcd/,
-      /\u{42}word/
+        /\u6829/,
+        /\uabcd/,
+        /\u{42}word/
       )
     end
 
-    context "for empty character sets" do
+    context 'for empty character sets' do
       examples_are_empty(
         /[^\d\D]/,
         /[^\w\W]/,
@@ -259,14 +258,14 @@ RSpec.describe Regexp, "#examples" do
       )
     end
 
-    context "for comment groups" do
+    context 'for comment groups' do
       examples_exist_and_match(
         /a(?#comment)b/,
         /a(?#ugly backslashy\ comment\\\))b/
       )
     end
 
-    context "for POSIX groups" do
+    context 'for POSIX groups' do
       examples_exist_and_match(
         /[[:alnum:]]/,
         /[[:alpha:]]/,
@@ -286,26 +285,26 @@ RSpec.describe Regexp, "#examples" do
       )
     end
 
-    context "exact examples match" do
+    context 'exact examples match' do
       # More rigorous tests to assert that ALL examples are being listed
-      context "default config options" do
+      context 'default config options' do
         # Simple examples
-        it { expect(/[ab]{2}/.examples).to match_array ["aa", "ab", "ba", "bb"] }
-        it { expect(/(a|b){2}/.examples).to match_array ["aa", "ab", "ba", "bb"] }
-        it { expect(/a+|b?/.examples).to match_array ["a", "aa", "aaa", "", "b"] }
+        it { expect(/[ab]{2}/.examples).to match_array %w(aa ab ba bb) }
+        it { expect(/(a|b){2}/.examples).to match_array %w(aa ab ba bb) }
+        it { expect(/a+|b?/.examples).to match_array ['a', 'aa', 'aaa', '', 'b'] }
 
         # a{1}? should be equivalent to (?:a{1})?, i.e. NOT a "non-greedy quantifier"
-        it { expect(/a{1}?/.examples).to match_array ["", "a"] }
+        it { expect(/a{1}?/.examples).to match_array ['', 'a'] }
       end
 
-      context "backreferences and escaped octal combined" do
+      context 'backreferences and escaped octal combined' do
         it do
           expect(/(a)(b)(c)(d)(e)(f)(g)(h)(i)(j)? \10\9\8\7\6\5\4\3\2\1/.examples)
-            .to match_array ["abcdefghi \x08ihgfedcba", "abcdefghij jihgfedcba"]
+            .to match_array ["abcdefghi \x08ihgfedcba", 'abcdefghij jihgfedcba']
         end
       end
 
-      context "max_repeater_variance config option" do
+      context 'max_repeater_variance config option' do
         it do
           expect(/a+/.examples(max_repeater_variance: 5))
             .to match_array %w(a aa aaa aaaa aaaaa aaaaaa)
@@ -316,25 +315,25 @@ RSpec.describe Regexp, "#examples" do
         end
       end
 
-      context "max_group_results config option" do
+      context 'max_group_results config option' do
         it do
           expect(/\d/.examples(max_group_results: 10))
             .to match_array %w(0 1 2 3 4 5 6 7 8 9)
         end
       end
 
-      context "case insensitive" do
+      context 'case insensitive' do
         it { expect(/ab/i.examples).to match_array %w(ab aB Ab AB) }
         it { expect(/a+/i.examples).to match_array %w(a A aa aA Aa AA aaa aaA aAa aAA Aaa AaA AAa AAA) }
         it { expect(/([ab])\1/i.examples).to match_array %w(aa bb AA BB) }
       end
 
-      context "multiline" do
+      context 'multiline' do
         it { expect(/./.examples(max_group_results: 999)).not_to include "\n" }
         it { expect(/./m.examples(max_group_results: 999)).to include "\n" }
       end
 
-      context "exteded form" do
+      context 'exteded form' do
         it { expect(/a b c/x.examples).to eq %w(abc) }
         it { expect(/a#comment/x.examples).to eq %w(a) }
         it do
@@ -347,20 +346,19 @@ RSpec.describe Regexp, "#examples" do
         end
       end
 
-      context "options toggling" do
-        context "rest of string" do
-          it { expect(/a(?i)b(?-i)c/.examples).to match_array %w{abc aBc}}
-          it { expect(/a(?x)   b(?-x) c/.examples).to eq %w{ab\ c}}
+      context 'options toggling' do
+        context 'rest of string' do
+          it { expect(/a(?i)b(?-i)c/.examples).to match_array %w(abc aBc) }
+          it { expect(/a(?x)   b(?-x) c/.examples).to eq %w(ab\ c) }
           it { expect(/(?m)./.examples(max_group_results: 999)).to include "\n" }
-          it { expect(/(?i)(a)-\1/.examples).to match_array %w{a-a A-A}} # Toggle "groups" should not increase backref group count
+          it { expect(/(?i)(a)-\1/.examples).to match_array %w(a-a A-A) } # Toggle "groups" should not increase backref group count
         end
-        context "subexpression" do
-          it { expect(/a(?i:b)c/.examples).to match_array %w{abc aBc}}
-          it { expect(/a(?i:b(?-i:c))/.examples).to match_array %w{abc aBc}}
-          it { expect(/a(?-i:b)c/i.examples).to match_array %w{abc abC Abc AbC}}
+        context 'subexpression' do
+          it { expect(/a(?i:b)c/.examples).to match_array %w(abc aBc) }
+          it { expect(/a(?i:b(?-i:c))/.examples).to match_array %w(abc aBc) }
+          it { expect(/a(?-i:b)c/i.examples).to match_array %w(abc abC Abc AbC) }
         end
       end
     end
-
   end
 end

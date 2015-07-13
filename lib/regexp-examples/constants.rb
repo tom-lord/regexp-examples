@@ -72,10 +72,10 @@ module RegexpExamples
   POSIXCharMap = {
     'alnum'  => CharSets::Upper | CharSets::Lower | CharSets::Digit,
     'alpha'  => CharSets::Upper | CharSets::Lower,
-    'blank'  => [" ", "\t"],
+    'blank'  => [' ', "\t"],
     'cntrl'  => CharSets::Control,
     'digit'  => CharSets::Digit,
-    'graph'  => (CharSets::Any - CharSets::Control) - [" "], #  Visible chars
+    'graph'  => (CharSets::Any - CharSets::Control) - [' '], #  Visible chars
     'lower'  => CharSets::Lower,
     'print'  => CharSets::Any - CharSets::Control,
     'punct'  => CharSets::Punct,
@@ -87,5 +87,4 @@ module RegexpExamples
   }.freeze
 
   NamedPropertyCharMap = UnicodeCharRanges.new
-
 end

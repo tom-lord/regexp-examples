@@ -1,4 +1,4 @@
-RSpec.describe Regexp, "#random_example" do
+RSpec.describe Regexp, '#random_example' do
   def self.random_example_matches(*regexps)
     regexps.each do |regexp|
       it "random example for /#{regexp.source}/" do
@@ -10,7 +10,7 @@ RSpec.describe Regexp, "#random_example" do
     end
   end
 
-  context "smoke tests" do
+  context 'smoke tests' do
     # Just a few "smoke tests", to ensure the basic method isn't broken.
     # Testing of the RegexpExamples::Parser class is all covered by Regexp#examples test already.
     random_example_matches(

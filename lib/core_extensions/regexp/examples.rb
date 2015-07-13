@@ -17,6 +17,7 @@ module CoreExtensions
       end
 
       private
+
       def examples_by_method(method)
         full_examples = RegexpExamples.public_send(
           method,
@@ -30,4 +31,3 @@ end
 
 # Regexp#include is private for ruby 2.0 and below
 Regexp.send(:include, CoreExtensions::Regexp::Examples)
-
