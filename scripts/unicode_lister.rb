@@ -54,8 +54,8 @@ store.transaction do
     # (I have tried this with generating ALL examples, and it makes the ruby gem
     # painfully slow and bloated... Especially the test suite.)
     matching_codes = [(0..55_295), (57_344..65_535)].map(&:to_a).flatten.lazy
-                     .find { |x| /\p{#{name}}/ =~ eval("?\\u{#{x.to_s(16)}}") }
-    (128)
+                     .select { |x| /\p{#{name}}/ =~ eval("?\\u{#{x.to_s(16)}}") }
+                     .first(128)
     store[name.downcase] = calculate_ranges(matching_codes)
     puts "(#{count}/#{NamedGroups.length}) Finished property: #{name}"
   end
