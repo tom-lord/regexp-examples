@@ -23,17 +23,22 @@ module RegexpExamples
     end
   end
 
+  module ForceLazyEnumerators
+    def force_if_lazy(arr_or_enum)
+      arr_or_enum.respond_to?(:force) ? arr_or_enum.force : arr_or_enum
+    end
+  end
+
   module GroupWithIgnoreCase
+    include ForceLazyEnumerators
     attr_reader :ignorecase
     def result
       group_result = super
       if ignorecase
-        Enumerator.new do |ignorecase_group_result|
-          group_result.each do |gr|
-            ignorecase_group_result << gr
-            ignorecase_group_result << gr.swapcase
-          end
-        end.lazy
+        group_result_array = force_if_lazy(group_result)
+        group_result_array
+          .concat( group_result_array.map(&:swapcase) )
+          .uniq
       else
         group_result
       end
@@ -41,8 +46,9 @@ module RegexpExamples
   end
 
   module RandomResultBySample
+    include ForceLazyEnumerators
     def random_result
-      result.force.sample(1)
+      force_if_lazy(result).sample(1)
     end
   end
 
@@ -54,7 +60,7 @@ module RegexpExamples
       @ignorecase = ignorecase
     end
     def result
-      [GroupResult.new(@char)].lazy
+      [GroupResult.new(@char)]
     end
   end
 
@@ -65,7 +71,7 @@ module RegexpExamples
   class PlaceHolderGroup
     include RandomResultBySample
     def result
-      [GroupResult.new('')].lazy
+      [GroupResult.new('')]
     end
   end
 
@@ -163,7 +169,7 @@ module RegexpExamples
     end
 
     def result
-      [ GroupResult.new("__#{@id}__") ].lazy
+      [ GroupResult.new("__#{@id}__") ]
     end
   end
 
