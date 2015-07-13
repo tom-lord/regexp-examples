@@ -142,11 +142,12 @@ module RegexpExamples
     end
 
     def random_result
-      # TODO: This logic is flawed in terms of choosing a truly "random" example!
-      # E.g. /a|b|c|d/.random_example will choose a letter with the following probabilities:
+      # TODO: This logic is flawed in terms of choosing a truly "random" example! E.g.
+      # /a|b|c|d/.random_example will choose a letter with the following probabilities:
       # a = 50%, b = 25%, c = 12.5%, d = 12.5%
       # In order to fix this, I must either apply some weighted selection logic,
-      # or change how the OrGroup examples are generated - i.e. make this class work with >2 repeaters
+      # or change how the OrGroup examples are generated
+      # - i.e. make this class work with >2 repeaters
       result_by_method(:map_random_result).sample(1)
     end
 
