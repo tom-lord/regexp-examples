@@ -2,6 +2,7 @@
 [![Gem Version](https://badge.fury.io/rb/regexp-examples.svg)](http://badge.fury.io/rb/regexp-examples)
 [![Build Status](https://travis-ci.org/tom-lord/regexp-examples.svg?branch=master)](https://travis-ci.org/tom-lord/regexp-examples/builds)
 [![Coverage Status](https://coveralls.io/repos/tom-lord/regexp-examples/badge.svg?branch=master)](https://coveralls.io/r/tom-lord/regexp-examples?branch=master)
+[![Code Climate](https://codeclimate.com/github/tom-lord/regexp-examples/badges/gpa.svg)](https://codeclimate.com/github/tom-lord/regexp-examples)
 
 Extends the Regexp class with the methods: `Regexp#examples` and `Regexp#random_example`
 
@@ -111,7 +112,7 @@ Some of the most obscure regexp features are not even mentioned in the ruby docs
 ## Impossible features ("illegal syntax")
 
 The following features in the regex language can never be properly implemented into this gem because, put simply, they are not technically "regular"!
-If you'd like to understand this in more detail, check out what I had to say in [my blog post](http://tom-lord.weebly.com/blog/reverse-engineering-regular-expressions) about this gem!
+If you'd like to understand this in more detail, check out what I had to say in [my blog post](http://tom-lord.weebly.com/blog/reverse-engineering-regular-expressions) about this gem.
 
 Using any of the following will raise a RegexpExamples::IllegalSyntax exception:
 
