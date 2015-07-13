@@ -21,12 +21,18 @@ module RegexpExamples
     end
   end
 
+  # A helper method for mixing in to Group classes...
+  # Needed because sometimes (for performace) group results are lazy enumerators;
+  # Meanwhile other times (again, for performance!) group results are just arrays
   module ForceLazyEnumerators
     def force_if_lazy(arr_or_enum)
       arr_or_enum.respond_to?(:force) ? arr_or_enum.force : arr_or_enum
     end
   end
 
+  # A helper method for mixing in to Group classes...
+  # Needed for generating a complete results set when the ignorecase
+  # regexp option has been set
   module GroupWithIgnoreCase
     include ForceLazyEnumerators
     attr_reader :ignorecase
@@ -43,6 +49,9 @@ module RegexpExamples
     end
   end
 
+  # A helper method for mixing in to Group classes...
+  # Uses Array#sample to randomly choose one result from all
+  # possible examples
   module RandomResultBySample
     include ForceLazyEnumerators
     def random_result
@@ -50,6 +59,8 @@ module RegexpExamples
     end
   end
 
+  # The most "basic" possible group.
+  # For example, /x/ contains one SingleCharGroup
   class SingleCharGroup
     include RandomResultBySample
     prepend GroupWithIgnoreCase
@@ -74,6 +85,11 @@ module RegexpExamples
     end
   end
 
+  # The most generic type of group, which contains 0 or more characters.
+  # Technically, this is the ONLY type of group that is truly necessary
+  # However, having others both improves performance through various optimisations,
+  # and clarifies the code's intention.
+  # The most common example of CharGroups is: /[abc]/
   class CharGroup
     include RandomResultBySample
     prepend GroupWithIgnoreCase
@@ -89,6 +105,8 @@ module RegexpExamples
     end
   end
 
+  # A special case of CharGroup, for the pattern /./
+  # (For example, we never need to care about ignorecase here!)
   class DotGroup
     include RandomResultBySample
     attr_reader :multiline
@@ -104,6 +122,9 @@ module RegexpExamples
     end
   end
 
+  # A collection of other groups. Basically any regex that contains
+  # brackets will be parsed using one of these. The simplest example is:
+  # /(a)/ - Which is a MultiGroup, containing one SingleCharGroup
   class MultiGroup
     attr_reader :group_id
     def initialize(groups, group_id)
@@ -131,6 +152,12 @@ module RegexpExamples
     end
   end
 
+  # A boolean "or" group.
+  # It really is boolean: The implementation is to pass in 2 set of
+  # (repeaters of) groups. The simplest example is: /a|b/
+  # If you have more than one boolean "or" operator, then this is
+  # constructed using multiple *boolean* OrGroups, e.g.
+  # /a|b|c|d/ is treated like /((a|b)|c)|d/
   class OrGroup
     def initialize(left_repeaters, right_repeaters)
       @left_repeaters = left_repeaters
@@ -162,6 +189,11 @@ module RegexpExamples
     end
   end
 
+  # This is a bit magic...
+  # We substitute backreferences with PLACEHOLDERS. These are then, later,
+  # replaced by the appropriate value. (See BackReferenceReplacer)
+  # The simplest example is /(a) \1/ - So, we temporarily treat the "result"
+  # of /\1/ as being "__1__". It later gets updated.
   class BackReferenceGroup
     include RandomResultBySample
     attr_reader :id
