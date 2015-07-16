@@ -15,7 +15,7 @@ module RegexpExamples
       repeaters = []
       until end_of_regexp
         group = parse_group(repeaters)
-        return [OneTimeRepeater.new(group)] if group.is_a? OrGroup
+        return [group] if group.is_a? OrGroup
         @current_position += 1
         repeaters << parse_repeater(group)
       end
