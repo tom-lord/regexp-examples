@@ -4,8 +4,9 @@ RSpec.describe Regexp, '#examples' do
       it "examples for /#{regexp.source}/" do
         regexp_examples = regexp.examples(max_group_results: 99_999)
 
-        expect(regexp_examples).not_to be_empty,
-          "No examples were generated for regexp: /#{regexp.source}/"
+        expect(regexp_examples)
+          .not_to be_empty,
+            "No examples were generated for regexp: /#{regexp.source}/"
         regexp_examples.each do |example|
           expect(example).to match(/\A(?:#{regexp.source})\z/)
         end
@@ -205,8 +206,9 @@ RSpec.describe Regexp, '#examples' do
       ).each do |property|
         it "examples for /\p{#{property}}/" do
           regexp_examples = /\p{#{property}}/.examples(max_group_results: 99_999)
-          expect(regexp_examples).not_to be_empty,
-            "No examples were generated for regexp: /\p{#{property}}/"
+          expect(regexp_examples)
+            .not_to be_empty,
+              "No examples were generated for regexp: /\p{#{property}}/"
           # Just do one big check, for test system performance (~30% faster)
           # (Otherwise, we're doing up to 128 checks on 123 properties!!!)
           expect(regexp_examples.join('')).to match(/\A\p{#{property}}+\z/)
@@ -300,6 +302,10 @@ RSpec.describe Regexp, '#examples' do
         it { expect(/[ab]{2}/.examples).to match_array %w(aa ab ba bb) }
         it { expect(/(a|b){2}/.examples).to match_array %w(aa ab ba bb) }
         it { expect(/a+|b?/.examples).to match_array ['a', 'aa', 'aaa', '', 'b'] }
+
+        # Only display unique examples:
+        it { expect(/a|a|b|b/.examples).to match_array ['a', 'b'] }
+        it { expect(/[ccdd]/.examples).to match_array ['c', 'd'] }
 
         # a{1}? should be equivalent to (?:a{1})?, i.e. NOT a "non-greedy quantifier"
         it { expect(/a{1}?/.examples).to match_array ['', 'a'] }

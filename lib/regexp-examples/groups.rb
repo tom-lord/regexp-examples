@@ -153,15 +153,17 @@ module RegexpExamples
   end
 
   # A boolean "or" group.
-  # It really is boolean: The implementation is to pass in 2 set of
-  # (repeaters of) groups. The simplest example is: /a|b/
-  # If you have more than one boolean "or" operator, then this is
-  # constructed using multiple *boolean* OrGroups, e.g.
-  # /a|b|c|d/ is treated like /((a|b)|c)|d/
+  # The implementation is to pass in 2 set of (repeaters of) groups.
+  # The simplest example is: /a|b/
+  # If you have more than one boolean "or" operator, then this is initially
+  # parsed as an OrGroup containing another OrGroup. However, in order to avoid
+  # probability distribution issues in Regexp#random_example, this then gets
+  # simplified down to one OrGroup containing 3+ repeaters.
   class OrGroup
+    attr_reader :repeaters_list
+
     def initialize(left_repeaters, right_repeaters)
-      @left_repeaters = left_repeaters
-      @right_repeaters = right_repeaters
+      @repeaters_list = [left_repeaters, *merge_if_orgroup(right_repeaters)]
     end
 
     def result
@@ -169,22 +171,27 @@ module RegexpExamples
     end
 
     def random_result
-      # TODO: This logic is flawed in terms of choosing a truly "random" example! E.g.
-      # /a|b|c|d/.random_example will choose a letter with the following probabilities:
-      # a = 50%, b = 25%, c = 12.5%, d = 12.5%
-      # In order to fix this, I must either apply some weighted selection logic,
-      # or change how the OrGroup examples are generated
-      # - i.e. make this class work with >2 repeaters
       result_by_method(:map_random_result).sample(1)
     end
 
     private
 
     def result_by_method(method)
-      left_result = RegexpExamples.public_send(method, @left_repeaters)
-      right_result = RegexpExamples.public_send(method, @right_repeaters)
-      left_result.concat(right_result).flatten.uniq.map do |result|
-        GroupResult.new(result)
+      repeaters_list.map do |repeaters|
+        RegexpExamples.public_send(method, repeaters)
+      end
+        .inject(:concat)
+        .map do |result|
+          GroupResult.new(result)
+        end
+        .uniq
+    end
+
+    def merge_if_orgroup(repeaters)
+      if repeaters.size == 1 && repeaters.first.is_a?(OrGroup)
+        repeaters.first.repeaters_list
+      else
+        [repeaters]
       end
     end
   end

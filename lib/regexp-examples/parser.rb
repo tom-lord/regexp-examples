@@ -15,7 +15,7 @@ module RegexpExamples
       repeaters = []
       until end_of_regexp
         group = parse_group(repeaters)
-        return [OneTimeRepeater.new(group)] if group.is_a? OrGroup
+        return [group] if group.is_a? OrGroup
         @current_position += 1
         repeaters << parse_repeater(group)
       end
@@ -148,7 +148,7 @@ module RegexpExamples
         ) # Using "\r\n" as one character is little bit hacky...
       when next_char == 'g' # Subexpression call
         fail IllegalSyntaxError,
-          'Subexpression calls (\\g) cannot be supported, as they are not regular'
+             'Subexpression calls (\\g) cannot be supported, as they are not regular'
       when next_char =~ /[bB]/ # Anchors
         raise_anchors_exception!
       when next_char =~ /[AG]/ # Start of string
@@ -159,6 +159,7 @@ module RegexpExamples
         end
       when next_char =~ /[zZ]/ # End of string
         if @current_position == (regexp_string.length - 1)
+          # TODO: /\Z/ should be treated as /\n?/
           group = PlaceHolderGroup.new
         else
           raise_anchors_exception!
@@ -212,10 +213,10 @@ module RegexpExamples
             end
           when %w(! =).include?(match[2]) # e.g. /(?=lookahead)/, /(?!neglookahead)/
             fail IllegalSyntaxError,
-              'Lookaheads are not regular; cannot generate examples'
+                 'Lookaheads are not regular; cannot generate examples'
           when %w(! =).include?(match[3]) # e.g. /(?<=lookbehind)/, /(?<!neglookbehind)/
             fail IllegalSyntaxError,
-              'Lookbehinds are not regular; cannot generate examples'
+                 'Lookbehinds are not regular; cannot generate examples'
           else # e.g. /(?<name>namedgroup)/
             @current_position += (match[3].length + 3)
             group_id = match[3]
@@ -237,12 +238,14 @@ module RegexpExamples
     end
 
     def regexp_options_toggle(on, off)
-      @ignorecase = true if on.include? 'i'
-      @ignorecase = false if off.include? 'i'
-      @multiline = true if on.include? 'm'
-      @multiline = false if off.include? 'm'
-      @extended = true if on.include? 'x'
-      @extended = false if off.include? 'x'
+      regexp_option_toggle(on, off, '@ignorecase', 'i')
+      regexp_option_toggle(on, off, '@multiline', 'm')
+      regexp_option_toggle(on, off, '@extended', 'x')
+    end
+
+    def regexp_option_toggle(on, off, var, char)
+      instance_variable_set(var, true) if on.include? char
+      instance_variable_set(var, false) if off.include? char
     end
 
     def parse_char_group
@@ -327,7 +330,7 @@ module RegexpExamples
 
     def raise_anchors_exception!
       fail IllegalSyntaxError,
-        "Anchors ('#{next_char}') cannot be supported, as they are not regular"
+           "Anchors ('#{next_char}') cannot be supported, as they are not regular"
     end
 
     def parse_one_time_repeater(group)
