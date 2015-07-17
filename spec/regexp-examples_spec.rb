@@ -303,6 +303,10 @@ RSpec.describe Regexp, '#examples' do
         it { expect(/(a|b){2}/.examples).to match_array %w(aa ab ba bb) }
         it { expect(/a+|b?/.examples).to match_array ['a', 'aa', 'aaa', '', 'b'] }
 
+        # Only display unique examples:
+        it { expect(/a|a|b|b/.examples).to match_array ['a', 'b'] }
+        it { expect(/[ccdd]/.examples).to match_array ['c', 'd'] }
+
         # a{1}? should be equivalent to (?:a{1})?, i.e. NOT a "non-greedy quantifier"
         it { expect(/a{1}?/.examples).to match_array ['', 'a'] }
       end
