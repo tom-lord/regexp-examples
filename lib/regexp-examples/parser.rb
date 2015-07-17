@@ -148,7 +148,7 @@ module RegexpExamples
         ) # Using "\r\n" as one character is little bit hacky...
       when next_char == 'g' # Subexpression call
         fail IllegalSyntaxError,
-          'Subexpression calls (\\g) cannot be supported, as they are not regular'
+             'Subexpression calls (\\g) cannot be supported, as they are not regular'
       when next_char =~ /[bB]/ # Anchors
         raise_anchors_exception!
       when next_char =~ /[AG]/ # Start of string
@@ -212,10 +212,10 @@ module RegexpExamples
             end
           when %w(! =).include?(match[2]) # e.g. /(?=lookahead)/, /(?!neglookahead)/
             fail IllegalSyntaxError,
-              'Lookaheads are not regular; cannot generate examples'
+                 'Lookaheads are not regular; cannot generate examples'
           when %w(! =).include?(match[3]) # e.g. /(?<=lookbehind)/, /(?<!neglookbehind)/
             fail IllegalSyntaxError,
-              'Lookbehinds are not regular; cannot generate examples'
+                 'Lookbehinds are not regular; cannot generate examples'
           else # e.g. /(?<name>namedgroup)/
             @current_position += (match[3].length + 3)
             group_id = match[3]
@@ -327,7 +327,7 @@ module RegexpExamples
 
     def raise_anchors_exception!
       fail IllegalSyntaxError,
-        "Anchors ('#{next_char}') cannot be supported, as they are not regular"
+           "Anchors ('#{next_char}') cannot be supported, as they are not regular"
     end
 
     def parse_one_time_repeater(group)
