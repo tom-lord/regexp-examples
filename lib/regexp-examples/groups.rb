@@ -159,9 +159,10 @@ module RegexpExamples
   # constructed using multiple *boolean* OrGroups, e.g.
   # /a|b|c|d/ is treated like /((a|b)|c)|d/
   class OrGroup
+    attr_reader :repeaters_list
+
     def initialize(left_repeaters, right_repeaters)
-      @left_repeaters = left_repeaters
-      @right_repeaters = right_repeaters
+      @repeaters_list = [left_repeaters, *merge_if_orgroup(right_repeaters)]
     end
 
     def result
@@ -181,10 +182,20 @@ module RegexpExamples
     private
 
     def result_by_method(method)
-      left_result = RegexpExamples.public_send(method, @left_repeaters)
-      right_result = RegexpExamples.public_send(method, @right_repeaters)
-      left_result.concat(right_result).flatten.uniq.map do |result|
-        GroupResult.new(result)
+      repeaters_list.map do |repeaters|
+        RegexpExamples.public_send(method, repeaters)
+      end
+        .inject(:concat)
+        .map do |result|
+          GroupResult.new(result)
+        end
+    end
+
+    def merge_if_orgroup(repeaters)
+      if repeaters.size == 1 && repeaters.first.is_a?(OrGroup)
+        repeaters.first.repeaters_list
+      else
+        [repeaters]
       end
     end
   end
