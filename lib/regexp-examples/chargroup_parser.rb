@@ -25,29 +25,11 @@ module RegexpExamples
       until next_char == ']'
         case next_char
         when '['
-          @current_position += 1
-          sub_group_parser = self.class.new(rest_of_string, is_sub_group: true)
-          @charset.concat sub_group_parser.result
-          @current_position += sub_group_parser.length
+          parse_sub_group_concat
         when '-'
-          if regexp_string[@current_position + 1] == ']' # e.g. /[abc-]/ -- not a range!
-            @charset << '-'
-            @current_position += 1
-          else
-            @current_position += 1
-            @charset.concat (@charset.last..parse_checking_backlash.first).to_a
-            @current_position += 1
-          end
+          parse_after_hyphen
         when '&'
-          if regexp_string[@current_position + 1] == '&'
-            @current_position += 2
-            sub_group_parser = self.class.new(rest_of_string, is_sub_group: true)
-            @charset &= sub_group_parser.result
-            @current_position += (sub_group_parser.length - 1)
-          else
-            @charset << '&'
-            @current_position += 1
-          end
+          parse_after_ampersand
         else
           @charset.concat parse_checking_backlash
           @current_position += 1
@@ -113,6 +95,40 @@ module RegexpExamples
         ["\b"]
       else
         [next_char]
+      end
+    end
+
+    def parse_sub_group_concat
+      @current_position += 1
+      sub_group_parser = self.class.new(rest_of_string, is_sub_group: true)
+      @charset.concat sub_group_parser.result
+      @current_position += sub_group_parser.length
+    end
+
+    def parse_after_ampersand
+      if regexp_string[@current_position + 1] == '&'
+        parse_sub_group_intersect
+      else
+        @charset << '&'
+        @current_position += 1
+      end
+    end
+
+    def parse_sub_group_intersect
+      @current_position += 2
+      sub_group_parser = self.class.new(rest_of_string, is_sub_group: true)
+      @charset &= sub_group_parser.result
+      @current_position += (sub_group_parser.length - 1)
+    end
+
+    def parse_after_hyphen
+      if regexp_string[@current_position + 1] == ']' # e.g. /[abc-]/ -- not a range!
+        @charset << '-'
+        @current_position += 1
+      else
+        @current_position += 1
+        @charset.concat (@charset.last..parse_checking_backlash.first).to_a
+        @current_position += 1
       end
     end
 
