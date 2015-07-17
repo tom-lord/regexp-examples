@@ -238,12 +238,14 @@ module RegexpExamples
     end
 
     def regexp_options_toggle(on, off)
-      @ignorecase = true if on.include? 'i'
-      @ignorecase = false if off.include? 'i'
-      @multiline = true if on.include? 'm'
-      @multiline = false if off.include? 'm'
-      @extended = true if on.include? 'x'
-      @extended = false if off.include? 'x'
+      regexp_option_toggle(on, off, '@ignorecase', 'i')
+      regexp_option_toggle(on, off, '@multiline', 'm')
+      regexp_option_toggle(on, off, '@extended', 'x')
+    end
+
+    def regexp_option_toggle(on, off, var, char)
+      instance_variable_set(var, true) if on.include? char
+      instance_variable_set(var, false) if off.include? char
     end
 
     def parse_char_group
