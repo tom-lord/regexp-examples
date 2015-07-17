@@ -184,6 +184,7 @@ module RegexpExamples
         .map do |result|
           GroupResult.new(result)
         end
+        .uniq
     end
 
     def merge_if_orgroup(repeaters)
