@@ -159,6 +159,7 @@ module RegexpExamples
         end
       when next_char =~ /[zZ]/ # End of string
         if @current_position == (regexp_string.length - 1)
+          # TODO: /\Z/ should be treated as /\n?/
           group = PlaceHolderGroup.new
         else
           raise_anchors_exception!
