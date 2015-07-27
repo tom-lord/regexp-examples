@@ -65,7 +65,7 @@ module RegexpExamples
 
     def parse_caret
       if @current_position == 0
-        return PlaceHolderGroup.new # Ignore the "illegal" character
+        PlaceHolderGroup.new # Ignore the "illegal" character
       else
         raise_anchors_exception!
       end
@@ -73,7 +73,7 @@ module RegexpExamples
 
     def parse_dollar
       if @current_position == (regexp_string.length - 1)
-        return PlaceHolderGroup.new # Ignore the "illegal" character
+        PlaceHolderGroup.new # Ignore the "illegal" character
       else
         raise_anchors_exception!
       end
