@@ -27,25 +27,24 @@ module RegexpExamples
     def parse_group(repeaters)
       case next_char
       when '('
-        group = parse_multi_group
+        parse_multi_group
       when '['
-        group = parse_char_group
+        parse_char_group
       when '.'
-        group = parse_dot_group
+        parse_dot_group
       when '|'
-        group = parse_or_group(repeaters)
+        parse_or_group(repeaters)
       when '\\'
-        group = parse_after_backslash_group
+        parse_after_backslash_group
       when '^'
-        group = parse_caret
+        parse_caret
       when '$'
-        group = parse_dollar
+        parse_dollar
       when /[#\s]/
-        group = parse_extended_whitespace
+        parse_extended_whitespace
       else
-        group = parse_single_char_group(next_char)
+        parse_single_char_group(next_char)
       end
-      group
     end
 
     def parse_repeater(group)
@@ -83,11 +82,10 @@ module RegexpExamples
     def parse_extended_whitespace
       if @extended
         skip_whitespace
-        group = PlaceHolderGroup.new # Ignore the whitespace/comment
+        PlaceHolderGroup.new # Ignore the whitespace/comment
       else
-        group = parse_single_char_group(next_char)
+        parse_single_char_group(next_char)
       end
-      group
     end
 
     def skip_whitespace
@@ -99,38 +97,37 @@ module RegexpExamples
       @current_position += 1
       case
       when rest_of_string =~ /\A(\d{1,3})/
-        group = parse_regular_backreference_group(Regexp.last_match(1))
+        parse_regular_backreference_group(Regexp.last_match(1))
       when rest_of_string =~ /\Ak['<]([\w-]+)['>]/
-        group = parse_named_backreference_group(Regexp.last_match(1))
+        parse_named_backreference_group(Regexp.last_match(1))
       when BackslashCharMap.keys.include?(next_char)
-        group = parse_backslash_special_char
+        parse_backslash_special_char
       when rest_of_string =~ /\A(c|C-)(.)/
-        group = parse_backslash_control_char(Regexp.last_match(1), Regexp.last_match(2))
+        parse_backslash_control_char(Regexp.last_match(1), Regexp.last_match(2))
       when rest_of_string =~ /\Ax(\h{1,2})/
-        group = parse_backslash_escape_sequence(Regexp.last_match(1))
+        parse_backslash_escape_sequence(Regexp.last_match(1))
       when rest_of_string =~ /\Au(\h{4}|\{\h{1,4}\})/
-        group = parse_backslash_unicode_sequence(Regexp.last_match(1))
+        parse_backslash_unicode_sequence(Regexp.last_match(1))
       when rest_of_string =~ /\A(p)\{(\^?)([^}]+)\}/i
-        group = parse_backslash_named_property(
+        parse_backslash_named_property(
           Regexp.last_match(1), Regexp.last_match(2), Regexp.last_match(3)
         )
       when next_char == 'K' # Keep (special lookbehind that CAN be supported safely!)
-        group = PlaceHolderGroup.new
+        PlaceHolderGroup.new
       when next_char == 'R'
-        group = parse_backslash_linebreak
+        parse_backslash_linebreak
       when next_char == 'g'
-        group = parse_backslash_subexpresion_call
+        parse_backslash_subexpresion_call
       when next_char =~ /[bB]/
-        group = parse_backslash_anchor
+        parse_backslash_anchor
       when next_char =~ /[AG]/
-        group = parse_backslash_start_of_string
+        parse_backslash_start_of_string
       when next_char =~ /[zZ]/
         # TODO: /\Z/ should be treated as /\n?/
-        group = parse_backslash_end_of_string
+        parse_backslash_end_of_string
       else
-        group = parse_single_char_group(next_char)
+        parse_single_char_group(next_char)
       end
-      group
     end
 
     def parse_regular_backreference_group(group_id)
