@@ -61,17 +61,16 @@ module RegexpExamples
     def parse_repeater(group)
       case next_char
       when '*'
-        repeater = parse_star_repeater(group)
+        parse_star_repeater(group)
       when '+'
-        repeater = parse_plus_repeater(group)
+        parse_plus_repeater(group)
       when '?'
-        repeater = parse_question_mark_repeater(group)
+        parse_question_mark_repeater(group)
       when '{'
-        repeater = parse_range_repeater(group)
+        parse_range_repeater(group)
       else
-        repeater = parse_one_time_repeater(group)
+        parse_one_time_repeater(group)
       end
-      repeater
     end
 
     def parse_one_time_repeater(group)
