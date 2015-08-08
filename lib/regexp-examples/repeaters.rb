@@ -6,7 +6,7 @@ module RegexpExamples
     end
 
     def result
-      group_results = group.result.first(RegexpExamples.MaxGroupResults)
+      group_results = group.result.first(RegexpExamples.max_group_results)
       results = []
       min_repeats.upto(max_repeats) do |repeats|
         if repeats.zero?
@@ -40,7 +40,7 @@ module RegexpExamples
     def initialize(group)
       super
       @min_repeats = 0
-      @max_repeats = RegexpExamples.MaxRepeaterVariance
+      @max_repeats = RegexpExamples.max_repeater_variance
     end
   end
 
@@ -48,7 +48,7 @@ module RegexpExamples
     def initialize(group)
       super
       @min_repeats = 1
-      @max_repeats = RegexpExamples.MaxRepeaterVariance + 1
+      @max_repeats = RegexpExamples.max_repeater_variance + 1
     end
   end
 
@@ -65,9 +65,9 @@ module RegexpExamples
       super(group)
       @min_repeats = min || 0
       if max # e.g. {1,100} --> Treat as {1,3} or similar, to prevent a huge number of results
-        @max_repeats = smallest(max, @min_repeats + RegexpExamples.MaxRepeaterVariance)
+        @max_repeats = smallest(max, @min_repeats + RegexpExamples.max_repeater_variance)
       elsif has_comma # e.g. {2,} --> Treat as {2,4} or similar
-        @max_repeats = @min_repeats + RegexpExamples.MaxRepeaterVariance
+        @max_repeats = @min_repeats + RegexpExamples.max_repeater_variance
       else # e.g. {3} --> Treat as {3,3}
         @max_repeats = @min_repeats
       end
