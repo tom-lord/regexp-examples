@@ -14,7 +14,10 @@ module RegexpExamples
       full_examples.map do |full_example|
         begin
           while full_example.match(/__(\w+?)__/)
-            full_example.sub!(/__(\w+?)__/, find_backref_for(full_example, Regexp.last_match(1)))
+            full_example.sub!(
+              /__(\w+?)__/,
+              find_backref_for(full_example, Regexp.last_match(1))
+            )
           end
           full_example
         rescue BackrefNotFound

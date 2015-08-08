@@ -21,8 +21,8 @@ module RegexpExamples
                 .flatten
 
     # Only save the LAST group from repeated capture groups, e.g. /([ab]){2}/
-    subgroups.delete_if do |subgroup|
-      subgroups.count { |other_subgroup| other_subgroup.group_id == subgroup.group_id } > 1
+    subgroups.delete_if do |subgroup1|
+      subgroups.count { |subgroup2| subgroup1.group_id == subgroup2.group_id } > 1
     end
     GroupResult.new(result.join, nil, subgroups)
   end

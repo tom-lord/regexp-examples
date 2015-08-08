@@ -78,9 +78,9 @@ module RegexpExamples
     def initialize(group, min, has_comma, max)
       super(group)
       @min_repeats = min || 0
-      if max # e.g. {1,100} --> Treat as {1,3} or similar, to prevent a huge number of results
+      if max # e.g. {1,100} --> Treat as {1,3} (by default max_repeater_variance)
         @max_repeats = smallest(max, @min_repeats + RegexpExamples.max_repeater_variance)
-      elsif has_comma # e.g. {2,} --> Treat as {2,4} or similar
+      elsif has_comma # e.g. {2,} --> Treat as {2,4} (by default max_repeater_variance)
         @max_repeats = @min_repeats + RegexpExamples.max_repeater_variance
       else # e.g. {3} --> Treat as {3,3}
         @max_repeats = @min_repeats
