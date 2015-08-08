@@ -124,7 +124,7 @@ module RegexpExamples
         @current_position += 1
       else
         @current_position += 1
-        @charset.concat (@charset.last..parse_checking_backlash.first).to_a
+        @charset.concat((@charset.last..parse_checking_backlash.first).to_a)
         @current_position += 1
       end
     end
