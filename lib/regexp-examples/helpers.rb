@@ -1,3 +1,4 @@
+# :nodoc:
 module RegexpExamples
   # Given an array of arrays of strings, returns all possible perutations
   # for strings, created by joining one element from each array

@@ -1,4 +1,8 @@
 module RegexpExamples
+  # An abstract base class for all other repeater groups.
+  # Since all repeaters (quantifiers) are really just shorthand syntaxes for the generic:
+  # `/.{a,b}/`, the methods for generating "between `a` and `b` results" are fully
+  # generalised here.
   class BaseRepeater
     attr_reader :group, :min_repeats, :max_repeats
     def initialize(group)
@@ -28,6 +32,9 @@ module RegexpExamples
     end
   end
 
+  # When there is "no repeater", we interpret this as a "one time repeater".
+  # For example, `/a/` is a "OneTimeRepeater" of "a"
+  # Equivalent to `/a{1}/`
   class OneTimeRepeater < BaseRepeater
     def initialize(group)
       super
@@ -36,6 +43,8 @@ module RegexpExamples
     end
   end
 
+  # When a klein star is used, e.g. `/a*/`
+  # Equivalent to `/a{0,}/`
   class StarRepeater < BaseRepeater
     def initialize(group)
       super
@@ -44,6 +53,8 @@ module RegexpExamples
     end
   end
 
+  # When a plus is used, e.g. `/a+/`
+  # Equivalent to `/a{1,}/`
   class PlusRepeater < BaseRepeater
     def initialize(group)
       super
@@ -52,6 +63,8 @@ module RegexpExamples
     end
   end
 
+  # When a question mark is used, e.g. `/a?/`
+  # Equivalent to `/a{0,1}/`
   class QuestionMarkRepeater < BaseRepeater
     def initialize(group)
       super
@@ -60,6 +73,7 @@ module RegexpExamples
     end
   end
 
+  # When a range is used, e.g. `/a{1}/`, `/a{1,}/`, `/a{1,3}/`, `/a{,3}/`
   class RangeRepeater < BaseRepeater
     def initialize(group, min, has_comma, max)
       super(group)
