@@ -1,4 +1,6 @@
+# :nodoc:
 module RegexpExamples
+  # Configuration settings to limit the number/length of Regexp examples generated
   class ResultCountLimiters
     # The maximum variance for any given repeater, to prevent a huge/infinite number of
     # examples from being listed. For example, if @@max_repeater_variance = 2 then:
@@ -31,6 +33,8 @@ module RegexpExamples
     ResultCountLimiters.max_group_results
   end
 
+  # Definitions of various special characters, used in regular expressions.
+  # For example, `/\h/.examples` will return the value of `Hex` in this module
   module CharSets
     Lower        = Array('a'..'z')
     Upper        = Array('A'..'Z')

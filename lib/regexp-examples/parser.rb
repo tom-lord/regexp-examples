@@ -3,8 +3,12 @@ require_relative 'parser_helpers/parse_after_backslash_group_helper'
 require_relative 'parser_helpers/parse_multi_group_helper'
 require_relative 'parser_helpers/parse_repeater_helper'
 
+# :nodoc:
 module RegexpExamples
   IllegalSyntaxError = Class.new(StandardError)
+  # A Regexp parser, used to build a structured collection of objects that represents
+  # the regular expression.
+  # This object can then be used to generate strings that match the regular expression.
   class Parser
     include ParseGroupHelper
     include ParseAfterBackslashGroupHelper

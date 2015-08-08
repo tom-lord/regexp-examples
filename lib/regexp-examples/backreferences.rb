@@ -1,4 +1,12 @@
 module RegexpExamples
+  # A helper class to fill-in backrefences AFTER the example(s) have been generated.
+  # In a nutshell, this works by doing the following:
+  # * Given a regex that contains a capute group and backreference, e.g. `/(a|b) \1/`
+  # * After generating examples, the backreference is tored as a placeholder:
+  #   `["a __1__", "b __1__"]`
+  # * This class is used to fill in each placeholder accordingly:
+  #   `["a a", "b b"]`
+  # * Also, beware of octal groups and cases where the backref invalidates the example!!
   class BackReferenceReplacer
     BackrefNotFound = Class.new(StandardError)
 

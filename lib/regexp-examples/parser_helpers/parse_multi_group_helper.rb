@@ -1,4 +1,5 @@
 module RegexpExamples
+  # A collection of related helper methods, utilised by the `Parser` class
   module ParseMultiGroupHelper
     protected
 
