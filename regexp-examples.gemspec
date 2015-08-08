@@ -3,9 +3,10 @@ require File.expand_path('../lib/regexp-examples/version', __FILE__)
 Gem::Specification.new do |s|
   s.name             = 'regexp-examples'
   s.version          = RegexpExamples::VERSION
-  s.summary          = "Extends the Regexp class with '#examples'"
+  s.summary          = "Extends the Regexp class with '#examples' and '#random_example'"
   s.description      =
-    'Regexp#examples returns a list of strings that are matched by the regex'
+    'Regexp#examples returns a list of "all" strings that are matched by the regex. '\
+      + 'Regexp#random_example returns one, random string that matches.'
   s.authors          = ['Tom Lord']
   s.email            = 'lord.thom@gmail.com'
   s.files            = `git ls-files -z`.split("\x0")
