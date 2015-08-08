@@ -135,7 +135,7 @@ RSpec.describe Regexp, '#examples' do
     context 'for complex patterns' do
       # Longer combinations of the above
       examples_exist_and_match(
-        /https?:\/\/(www\.)github\.com/,
+        %r{https?://(www\.)github\.com},
         /(I(N(C(E(P(T(I(O(N)))))))))*/,
         /[\w]{1}/,
         /((a?b*c+)) \1/,
