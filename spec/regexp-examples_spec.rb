@@ -3,17 +3,8 @@ RSpec.describe Regexp, '#examples' do
     regexps.each do |regexp|
       it "examples for /#{regexp.source}/" do
         regexp_examples = regexp.examples(max_group_results: 99_999)
-
-        expect(regexp_examples)
-          .not_to be_empty,
-                  "No examples were generated for regexp: /#{regexp.source}/"
-        regexp_examples.each do |example|
-          expect(example).to match(/\A(?:#{regexp.source})\z/)
-        end
-        # Note: /\A...\z/ is used to prevent misleading examples from passing the test.
-        # For example, we don't want things like:
-        # /a*/.examples to include "xyz"
-        # /a|b/.examples to include "bad"
+        examples_exist(regexp, regexp_examples)
+        examples_match(regexp, regexp_examples)
       end
     end
   end
