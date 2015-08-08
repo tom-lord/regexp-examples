@@ -10,7 +10,8 @@ module RegexpExamples
   # [[a-f]&&[d-z]] - set intersection (should match "d", "f" or "f")
   # [[^:alpha:]&&[\n]a-c] - all of the above!!!! (should match "\n")
   class ChargroupParser
-    attr_reader :regexp_string
+    attr_reader :regexp_string, :current_position
+    alias_method :length, :current_position
     def initialize(regexp_string, is_sub_group: false)
       @regexp_string = regexp_string
       @is_sub_group = is_sub_group
@@ -38,10 +39,6 @@ module RegexpExamples
 
       @charset.uniq!
       @current_position += 1 # To account for final "]"
-    end
-
-    def length
-      @current_position
     end
 
     def result
