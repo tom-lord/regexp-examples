@@ -9,7 +9,7 @@ require_relative '../lib/regexp-examples/unicode_char_ranges'
 
 # Taken from ruby documentation:
 # http://ruby-doc.org//core-2.2.0/Regexp.html#class-Regexp-label-Character+Properties
-NamedGroups = %w(
+NAMED_GROUPS = %w(
   Alnum Alpha Blank Cntrl Digit Graph Lower Print Punct Space Upper XDigit Word ASCII
   Any Assigned
 
@@ -52,7 +52,7 @@ count = 0
 filename = "./db/#{RegexpExamples::UnicodeCharRanges::STORE_FILENAME}"
 store = PStore.new(filename)
 store.transaction do
-  NamedGroups.each do |name|
+  NAMED_GROUPS.each do |name|
     count += 1
     # Only generating first 128 matches, for performance...
     # (I have tried this with generating ALL examples, and it makes the ruby gem
@@ -61,7 +61,7 @@ store.transaction do
                      .select { |x| /\p{#{name}}/ =~ eval("?\\u{#{x.to_s(16)}}") }
                      .first(128)
     store[name.downcase] = calculate_ranges(matching_codes)
-    puts "(#{count}/#{NamedGroups.length}) Finished property: #{name}"
+    puts "(#{count}/#{NAMED_GROUPS.length}) Finished property: #{name}"
   end
   puts '*' * 50
   puts "Finished! Result stored in: #{filename}"
