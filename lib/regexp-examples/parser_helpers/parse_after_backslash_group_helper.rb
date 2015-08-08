@@ -1,6 +1,7 @@
 module RegexpExamples
   module ParseAfterBackslashGroupHelper
-  protected
+    protected
+
     def parse_after_backslash_group
       @current_position += 1
       case
@@ -37,7 +38,6 @@ module RegexpExamples
         parse_single_char_group(next_char)
       end
     end
-
 
     def parse_regular_backreference_group(group_id)
       @current_position += (group_id.length - 1) # In case of 10+ backrefs!
@@ -116,7 +116,7 @@ module RegexpExamples
 
     def parse_backslash_subexpresion_call
       fail IllegalSyntaxError,
-        'Subexpression calls (\\g) cannot be supported, as they are not regular'
+           'Subexpression calls (\\g) cannot be supported, as they are not regular'
     end
 
     def parse_backslash_anchor
@@ -145,4 +145,3 @@ module RegexpExamples
     end
   end
 end
-

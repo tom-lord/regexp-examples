@@ -1,6 +1,7 @@
 module RegexpExamples
   module ParseMultiGroupHelper
     protected
+
     def parse_multi_group
       # TODO: Clean up this ugly mess of a method!
       @current_position += 1
@@ -69,7 +70,6 @@ module RegexpExamples
       group
     end
 
-
     def regexp_options_toggle(on, off)
       regexp_option_toggle(on, off, '@ignorecase', 'i')
       regexp_option_toggle(on, off, '@multiline', 'm')
@@ -82,4 +82,3 @@ module RegexpExamples
     end
   end
 end
-

@@ -1,6 +1,7 @@
 module RegexpExamples
   module ParseGroupHelper
     protected
+
     def parse_caret
       if @current_position == 0
         PlaceHolderGroup.new # Ignore the "illegal" character
@@ -54,4 +55,3 @@ module RegexpExamples
     end
   end
 end
-
