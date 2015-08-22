@@ -7,7 +7,7 @@ module RegexpExamples
   # [^abc]         - negated group
   # [[a][bc]]      - sub-groups (should match "a", "b" or "c")
   # [[:lower:]]    - POSIX group
-  # [[a-f]&&[d-z]] - set intersection (should match "d", "f" or "f")
+  # [[a-f]&&[d-z]] - set intersection (should match "d", "e" or "f")
   # [[^:alpha:]&&[\n]a-c] - all of the above!!!! (should match "\n")
   class ChargroupParser
     attr_reader :regexp_string, :current_position
