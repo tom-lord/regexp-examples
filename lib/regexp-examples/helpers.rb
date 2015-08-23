@@ -15,9 +15,8 @@ module RegexpExamples
   end
 
   def self.join_preserving_capture_groups(result)
-    result.flatten!
     subgroups = result
-                .map(&:all_subgroups)
+                .flat_map(&:all_subgroups)
                 .flatten
 
     # Only save the LAST group from repeated capture groups, e.g. /([ab]){2}/
