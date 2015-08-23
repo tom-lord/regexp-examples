@@ -40,9 +40,9 @@ module RegexpExamples
     def parse_char_group
       @current_position += 1 # Skip past opening "["
       chargroup_parser = ChargroupParser.new(rest_of_string)
-      parsed_chars = chargroup_parser.result
+      chargroup_parser.parse
       @current_position += (chargroup_parser.length - 1) # Step back to closing "]"
-      CharGroup.new(parsed_chars, @ignorecase)
+      CharGroup.new(chargroup_parser.result, @ignorecase)
     end
 
     def parse_dot_group

@@ -21,12 +21,11 @@ module RegexpExamples
       @regexp_string = regexp_string
       @is_sub_group = is_sub_group
       @current_position = 0
-      parse
+      @charset = []
+      @negative = false
     end
 
     def parse
-      @charset = []
-      @negative = false
       parse_first_chars
       until next_char == ']'
         case next_char
@@ -98,6 +97,7 @@ module RegexpExamples
     def parse_sub_group_concat
       @current_position += 1
       sub_group_parser = self.class.new(rest_of_string, is_sub_group: true)
+      sub_group_parser.parse
       @charset.concat sub_group_parser.result
       @current_position += sub_group_parser.length
     end
@@ -114,6 +114,7 @@ module RegexpExamples
     def parse_sub_group_intersect
       @current_position += 2
       sub_group_parser = self.class.new(rest_of_string, is_sub_group: true)
+      sub_group_parser.parse
       @charset &= sub_group_parser.result
       @current_position += (sub_group_parser.length - 1)
     end
