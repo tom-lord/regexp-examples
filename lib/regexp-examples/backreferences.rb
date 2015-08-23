@@ -9,8 +9,9 @@ module RegexpExamples
   # * Also, beware of octal groups and cases where the backref invalidates the example!!
   class BackReferenceReplacer
     # Named capture groups can only contain alphanumeric chars, and hyphens
-    PLACEHOLDER_REGEX = %r{#{RegexpExamples::BackReferenceGroup::PLACEHOLDER_FORMAT \
-                             % "([a-zA-Z0-9-]+)"}}
+    PLACEHOLDER_REGEX = Regexp.new(
+      RegexpExamples::BackReferenceGroup::PLACEHOLDER_FORMAT % '([a-zA-Z0-9-]+)'
+    )
 
     def substitute_backreferences(full_examples)
       full_examples.map do |full_example|
