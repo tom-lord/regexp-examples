@@ -168,13 +168,10 @@ module RegexpExamples
     private
 
     def result_by_method(method)
-      repeaters_list.map do |repeaters|
-        RegexpExamples.public_send(method, repeaters)
-      end
+      repeaters_list
+        .map { |repeaters| RegexpExamples.public_send(method, repeaters) }
         .inject(:concat)
-        .map do |result|
-          GroupResult.new(result)
-        end
+        .map { |result| GroupResult.new(result) }
         .uniq
     end
 
