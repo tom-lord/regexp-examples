@@ -5,9 +5,3 @@ rvm:
   - 2.2.0
   - 2.2.2
   - ruby-head
-matrix:
-  allow_failures:
-    # One (ruby 2.3-dev) test fails, due to a change of behaviour in Array#delete_if,
-    # but I don't know if this is intentional. I'll fix it once the behaviour change is documented.
-    # For now, I don't really care if 2.3-dev tests all pass.
-    - rvm: ruby-head

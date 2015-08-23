@@ -15,14 +15,13 @@ module RegexpExamples
   end
 
   def self.join_preserving_capture_groups(result)
+    # Only save the LAST group from repeated capture groups, e.g. /([ab]){2}/
+    # (Hence the need for "reverse"!)
     subgroups = result
                 .flat_map(&:all_subgroups)
-                .flatten
+                .reverse
+                .uniq(&:group_id)
 
-    # Only save the LAST group from repeated capture groups, e.g. /([ab]){2}/
-    subgroups.delete_if do |subgroup1|
-      subgroups.count { |subgroup2| subgroup1.group_id == subgroup2.group_id } > 1
-    end
     GroupResult.new(result.join, nil, subgroups)
   end
 
