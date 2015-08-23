@@ -17,18 +17,22 @@ module RegexpExamples
         # For instance, one "full example" from /(a|(b)) \2/: "a __2__"
         # should be rejected because the backref (\2) does not exist
         catch(:backref_not_found) do
-          while full_example.match(PLACEHOLDER_REGEX)
-            full_example.sub!(
-              PLACEHOLDER_REGEX,
-              find_backref_for(full_example, Regexp.last_match(1))
-            )
-          end
-          full_example
+          substitute_backrefs_one_at_a_time(full_example)
         end
       end.compact
     end
 
     private
+
+    def substitute_backrefs_one_at_a_time(full_example)
+      while full_example.match(PLACEHOLDER_REGEX) do
+        full_example.sub!(
+          PLACEHOLDER_REGEX,
+          find_backref_for(full_example, Regexp.last_match(1))
+        )
+      end
+      full_example
+    end
 
     def find_backref_for(full_example, group_id)
       full_example.all_subgroups.detect do |subgroup|
