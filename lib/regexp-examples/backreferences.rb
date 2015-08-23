@@ -26,7 +26,7 @@ module RegexpExamples
     private
 
     def substitute_backrefs_one_at_a_time(full_example)
-      while full_example.match(PLACEHOLDER_REGEX) do
+      while full_example.match(PLACEHOLDER_REGEX)
         full_example.sub!(
           PLACEHOLDER_REGEX,
           find_backref_for(full_example, Regexp.last_match(1))
