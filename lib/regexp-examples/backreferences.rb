@@ -41,8 +41,8 @@ module RegexpExamples
     end
 
     def octal_char_for(octal_chars)
-      # For octal characters in the range \10 - \177
-      if octal_chars =~ /\A[01]?[0-7]{1,2}\z/ && octal_chars.to_i >= 10
+      # For octal characters in the range \00 - \177
+      if octal_chars =~ /\A[01]?[0-7]{1,2}\z/ && octal_chars.length > 1
         Integer(octal_chars, 8).chr
       else
         throw :backref_not_found
