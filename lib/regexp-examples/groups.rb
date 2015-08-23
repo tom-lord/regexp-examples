@@ -6,8 +6,7 @@ module RegexpExamples
     attr_reader :group_id, :subgroups
     def initialize(result, group_id = nil, subgroups = [])
       @group_id = group_id
-      @subgroups = subgroups
-      @subgroups = result.all_subgroups if result.respond_to?(:group_id)
+      @subgroups = result.respond_to?(:group_id) ? result.all_subgroups : subgroups
       super(result)
     end
 
