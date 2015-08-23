@@ -1,3 +1,5 @@
+require_relative 'parser_helpers/charset_negation_helper'
+
 module RegexpExamples
   # A "sub-parser", for char groups in a regular expression
   # Some examples of what this class needs to parse:
@@ -10,8 +12,11 @@ module RegexpExamples
   # [[a-f]&&[d-z]] - set intersection (should match "d", "e" or "f")
   # [[^:alpha:]&&[\n]a-c] - all of the above!!!! (should match "\n")
   class ChargroupParser
+    include CharsetNegationHelper
+
     attr_reader :regexp_string, :current_position
     alias_method :length, :current_position
+
     def initialize(regexp_string, is_sub_group: false)
       @regexp_string = regexp_string
       @is_sub_group = is_sub_group
@@ -42,7 +47,7 @@ module RegexpExamples
     end
 
     def result
-      @negative ? (CharSets::Any - @charset) : @charset
+      negate_if(@charset, @negative)
     end
 
     private
@@ -63,12 +68,7 @@ module RegexpExamples
     end
 
     def parse_posix_group(negation_flag, name)
-      chars = if negation_flag.empty?
-                POSIXCharMap[name]
-              else
-                CharSets::Any - POSIXCharMap[name]
-              end
-      @charset.concat chars
+      @charset.concat negate_if(POSIXCharMap[name], !negation_flag.empty?)
       @current_position += (negation_flag.length + # 0 or 1, if '^' is present
                             name.length +
                             2) # Length of opening and closing colons (always 2)

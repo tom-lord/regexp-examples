@@ -99,11 +99,7 @@ module RegexpExamples
       # Beware of double negatives! E.g. /\P{^Space}/
       is_negative = (p_negation == 'P') ^ (caret_negation == '^')
       CharGroup.new(
-        if is_negative
-          CharSets::Any.dup - NamedPropertyCharMap[property_name.downcase]
-        else
-          NamedPropertyCharMap[property_name.downcase]
-        end,
+        negate_if(NamedPropertyCharMap[property_name.downcase], is_negative),
         @ignorecase
       )
     end

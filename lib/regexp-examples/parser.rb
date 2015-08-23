@@ -2,6 +2,7 @@ require_relative 'parser_helpers/parse_group_helper'
 require_relative 'parser_helpers/parse_after_backslash_group_helper'
 require_relative 'parser_helpers/parse_multi_group_helper'
 require_relative 'parser_helpers/parse_repeater_helper'
+require_relative 'parser_helpers/charset_negation_helper'
 
 # :nodoc:
 module RegexpExamples
@@ -14,6 +15,7 @@ module RegexpExamples
     include ParseAfterBackslashGroupHelper
     include ParseMultiGroupHelper
     include ParseRepeaterHelper
+    include CharsetNegationHelper
 
     attr_reader :regexp_string
 
