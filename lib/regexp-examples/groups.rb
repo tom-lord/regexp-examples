@@ -131,24 +131,16 @@ module RegexpExamples
       @group_id = group_id
     end
 
-    def result
-      result_by_method(:result)
-    end
-
-    def random_result
-      result_by_method(:random_result)
-    end
-
-    private
-
     # Generates the result of each contained group
     # and adds the filled group of each result to itself
-    def result_by_method(method)
-      strings = @groups.map { |repeater| repeater.public_send(method) }
+    def result
+      strings = @groups.map { |repeater| repeater.public_send(__method__) }
       RegexpExamples.permutations_of_strings(strings).map do |result|
         GroupResult.new(result, group_id)
       end
     end
+
+    alias_method :random_result, :result
   end
 
   # A boolean "or" group.
