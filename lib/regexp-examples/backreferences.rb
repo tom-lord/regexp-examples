@@ -8,14 +8,16 @@ module RegexpExamples
   #   `["a a", "b b"]`
   # * Also, beware of octal groups and cases where the backref invalidates the example!!
   class BackReferenceReplacer
+    PLACEHOLDER_REGEX = %r{#{RegexpExamples::BackReferenceGroup::PLACEHOLDER_FORMAT % "(\\w+?)"}}
+
     def substitute_backreferences(full_examples)
       full_examples.map do |full_example|
         # For instance, one "full example" from /(a|(b)) \2/: "a __2__"
         # should be rejected because the backref (\2) does not exist
         catch(:backref_not_found) do
-          while full_example.match(/__(\w+?)__/)
+          while full_example.match(PLACEHOLDER_REGEX)
             full_example.sub!(
-              /__(\w+?)__/,
+              PLACEHOLDER_REGEX,
               find_backref_for(full_example, Regexp.last_match(1))
             )
           end

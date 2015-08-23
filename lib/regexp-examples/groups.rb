@@ -194,13 +194,14 @@ module RegexpExamples
   # of /\1/ as being "__1__". It later gets updated.
   class BackReferenceGroup
     include RandomResultBySample
+    PLACEHOLDER_FORMAT = "__%s__"
     attr_reader :id
     def initialize(id)
       @id = id
     end
 
     def result
-      [GroupResult.new("__#{@id}__")]
+      [GroupResult.new(PLACEHOLDER_FORMAT % @id)]
     end
   end
 end
