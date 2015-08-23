@@ -11,7 +11,7 @@ module RegexpExamples
     end
 
     def all_subgroups
-      [self, subgroups].flatten.reject { |subgroup| subgroup.group_id.nil? }
+      [self, subgroups].flatten.keep_if(&:group_id)
     end
 
     def swapcase
