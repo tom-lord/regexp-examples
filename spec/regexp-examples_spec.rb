@@ -128,6 +128,7 @@ RSpec.describe Regexp, '#examples' do
     context 'for escaped octal characters' do
       examples_exist_and_match(
         /\10\20\30\40\50/,
+        /\00\07\100\177/,
         /\177123/ # Should work for numbers up to 177
       )
     end
