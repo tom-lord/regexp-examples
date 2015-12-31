@@ -1,4 +1,8 @@
 module RegexpExamples
+  # An abstract base class for all other repeater groups.
+  # Since all repeaters (quantifiers) are really just shorthand syntaxes for the generic:
+  # `/.{a,b}/`, the methods for generating "between `a` and `b` results" are fully
+  # generalised here.
   class BaseRepeater
     attr_reader :group, :min_repeats, :max_repeats
     def initialize(group)
@@ -6,7 +10,7 @@ module RegexpExamples
     end
 
     def result
-      group_results = group.result.first(RegexpExamples.MaxGroupResults)
+      group_results = group.result.first(RegexpExamples.max_group_results)
       results = []
       min_repeats.upto(max_repeats) do |repeats|
         if repeats.zero?
@@ -28,6 +32,9 @@ module RegexpExamples
     end
   end
 
+  # When there is "no repeater", we interpret this as a "one time repeater".
+  # For example, `/a/` is a "OneTimeRepeater" of "a"
+  # Equivalent to `/a{1}/`
   class OneTimeRepeater < BaseRepeater
     def initialize(group)
       super
@@ -36,22 +43,28 @@ module RegexpExamples
     end
   end
 
+  # When a klein star is used, e.g. `/a*/`
+  # Equivalent to `/a{0,}/`
   class StarRepeater < BaseRepeater
     def initialize(group)
       super
       @min_repeats = 0
-      @max_repeats = RegexpExamples.MaxRepeaterVariance
+      @max_repeats = RegexpExamples.max_repeater_variance
     end
   end
 
+  # When a plus is used, e.g. `/a+/`
+  # Equivalent to `/a{1,}/`
   class PlusRepeater < BaseRepeater
     def initialize(group)
       super
       @min_repeats = 1
-      @max_repeats = RegexpExamples.MaxRepeaterVariance + 1
+      @max_repeats = RegexpExamples.max_repeater_variance + 1
     end
   end
 
+  # When a question mark is used, e.g. `/a?/`
+  # Equivalent to `/a{0,1}/`
   class QuestionMarkRepeater < BaseRepeater
     def initialize(group)
       super
@@ -60,14 +73,15 @@ module RegexpExamples
     end
   end
 
+  # When a range is used, e.g. `/a{1}/`, `/a{1,}/`, `/a{1,3}/`, `/a{,3}/`
   class RangeRepeater < BaseRepeater
     def initialize(group, min, has_comma, max)
       super(group)
       @min_repeats = min || 0
-      if max # e.g. {1,100} --> Treat as {1,3} or similar, to prevent a huge number of results
-        @max_repeats = smallest(max, @min_repeats + RegexpExamples.MaxRepeaterVariance)
-      elsif has_comma # e.g. {2,} --> Treat as {2,4} or similar
-        @max_repeats = @min_repeats + RegexpExamples.MaxRepeaterVariance
+      if max # e.g. {1,100} --> Treat as {1,3} (by default max_repeater_variance)
+        @max_repeats = smallest(max, @min_repeats + RegexpExamples.max_repeater_variance)
+      elsif has_comma # e.g. {2,} --> Treat as {2,4} (by default max_repeater_variance)
+        @max_repeats = @min_repeats + RegexpExamples.max_repeater_variance
       else # e.g. {3} --> Treat as {3,3}
         @max_repeats = @min_repeats
       end

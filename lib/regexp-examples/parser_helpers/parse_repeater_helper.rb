@@ -1,6 +1,8 @@
 module RegexpExamples
+  # A collection of related helper methods, utilised by the `Parser` class
   module ParseRepeaterHelper
     protected
+
     def parse_star_repeater(group)
       @current_position += 1
       parse_reluctant_or_possessive_repeater
@@ -47,4 +49,3 @@ module RegexpExamples
     end
   end
 end
-

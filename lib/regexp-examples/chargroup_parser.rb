@@ -1,3 +1,5 @@
+require_relative 'parser_helpers/charset_negation_helper'
+
 module RegexpExamples
   # A "sub-parser", for char groups in a regular expression
   # Some examples of what this class needs to parse:
@@ -7,20 +9,23 @@ module RegexpExamples
   # [^abc]         - negated group
   # [[a][bc]]      - sub-groups (should match "a", "b" or "c")
   # [[:lower:]]    - POSIX group
-  # [[a-f]&&[d-z]] - set intersection (should match "d", "f" or "f")
+  # [[a-f]&&[d-z]] - set intersection (should match "d", "e" or "f")
   # [[^:alpha:]&&[\n]a-c] - all of the above!!!! (should match "\n")
   class ChargroupParser
-    attr_reader :regexp_string
+    include CharsetNegationHelper
+
+    attr_reader :regexp_string, :current_position
+    alias_method :length, :current_position
+
     def initialize(regexp_string, is_sub_group: false)
       @regexp_string = regexp_string
       @is_sub_group = is_sub_group
       @current_position = 0
-      parse
+      @charset = []
+      @negative = false
     end
 
     def parse
-      @charset = []
-      @negative = false
       parse_first_chars
       until next_char == ']'
         case next_char
@@ -40,12 +45,8 @@ module RegexpExamples
       @current_position += 1 # To account for final "]"
     end
 
-    def length
-      @current_position
-    end
-
     def result
-      @negative ? (CharSets::Any - @charset) : @charset
+      negate_if(@charset, @negative)
     end
 
     private
@@ -66,12 +67,7 @@ module RegexpExamples
     end
 
     def parse_posix_group(negation_flag, name)
-      chars = if negation_flag.empty?
-                POSIXCharMap[name]
-              else
-                CharSets::Any - POSIXCharMap[name]
-              end
-      @charset.concat chars
+      @charset.concat negate_if(POSIXCharMap[name], !negation_flag.empty?)
       @current_position += (negation_flag.length + # 0 or 1, if '^' is present
                             name.length +
                             2) # Length of opening and closing colons (always 2)
@@ -101,6 +97,7 @@ module RegexpExamples
     def parse_sub_group_concat
       @current_position += 1
       sub_group_parser = self.class.new(rest_of_string, is_sub_group: true)
+      sub_group_parser.parse
       @charset.concat sub_group_parser.result
       @current_position += sub_group_parser.length
     end
@@ -117,6 +114,7 @@ module RegexpExamples
     def parse_sub_group_intersect
       @current_position += 2
       sub_group_parser = self.class.new(rest_of_string, is_sub_group: true)
+      sub_group_parser.parse
       @charset &= sub_group_parser.result
       @current_position += (sub_group_parser.length - 1)
     end
@@ -127,7 +125,7 @@ module RegexpExamples
         @current_position += 1
       else
         @current_position += 1
-        @charset.concat (@charset.last..parse_checking_backlash.first).to_a
+        @charset.concat((@charset.last..parse_checking_backlash.first).to_a)
         @current_position += 1
       end
     end

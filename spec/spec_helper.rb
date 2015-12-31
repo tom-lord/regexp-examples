@@ -2,9 +2,19 @@ require 'coveralls'
 Coveralls.wear!
 
 require './lib/regexp-examples.rb'
+require 'helpers'
 require 'pry'
 
+# Several of these tests (intentionally) use "weird" regex patterns,
+# that spam annoying warnings when running.
+# E.g. warning: invalid back reference: /\k/
+# and  warning: character class has ']' without escape: /[]]/ 
+# This config disables those warnings.
+$VERBOSE = nil
+
 RSpec.configure do |config|
+  config.include Helpers
+
   config.expect_with :rspec do |expectations|
     # This option will default to `true` in RSpec 4. It makes the `description`
     # and `failure_message` of custom matchers include text for helper methods

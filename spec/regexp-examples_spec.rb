@@ -3,17 +3,8 @@ RSpec.describe Regexp, '#examples' do
     regexps.each do |regexp|
       it "examples for /#{regexp.source}/" do
         regexp_examples = regexp.examples(max_group_results: 99_999)
-
-        expect(regexp_examples)
-          .not_to be_empty,
-            "No examples were generated for regexp: /#{regexp.source}/"
-        regexp_examples.each do |example|
-          expect(example).to match(/\A(?:#{regexp.source})\z/)
-        end
-        # Note: /\A...\z/ is used to prevent misleading examples from passing the test.
-        # For example, we don't want things like:
-        # /a*/.examples to include "xyz"
-        # /a|b/.examples to include "bad"
+        examples_exist(regexp, regexp_examples)
+        examples_match(regexp, regexp_examples)
       end
     end
   end
@@ -137,6 +128,7 @@ RSpec.describe Regexp, '#examples' do
     context 'for escaped octal characters' do
       examples_exist_and_match(
         /\10\20\30\40\50/,
+        /\00\07\100\177/,
         /\177123/ # Should work for numbers up to 177
       )
     end
@@ -144,7 +136,7 @@ RSpec.describe Regexp, '#examples' do
     context 'for complex patterns' do
       # Longer combinations of the above
       examples_exist_and_match(
-        /https?:\/\/(www\.)github\.com/,
+        %r{https?://(www\.)github\.com},
         /(I(N(C(E(P(T(I(O(N)))))))))*/,
         /[\w]{1}/,
         /((a?b*c+)) \1/,
@@ -208,7 +200,7 @@ RSpec.describe Regexp, '#examples' do
           regexp_examples = /\p{#{property}}/.examples(max_group_results: 99_999)
           expect(regexp_examples)
             .not_to be_empty,
-              "No examples were generated for regexp: /\p{#{property}}/"
+                    "No examples were generated for regexp: /\p{#{property}}/"
           # Just do one big check, for test system performance (~30% faster)
           # (Otherwise, we're doing up to 128 checks on 123 properties!!!)
           expect(regexp_examples.join('')).to match(/\A\p{#{property}}+\z/)
@@ -304,8 +296,8 @@ RSpec.describe Regexp, '#examples' do
         it { expect(/a+|b?/.examples).to match_array ['a', 'aa', 'aaa', '', 'b'] }
 
         # Only display unique examples:
-        it { expect(/a|a|b|b/.examples).to match_array ['a', 'b'] }
-        it { expect(/[ccdd]/.examples).to match_array ['c', 'd'] }
+        it { expect(/a|a|b|b/.examples).to match_array %w(a b) }
+        it { expect(/[ccdd]/.examples).to match_array %w(c d) }
 
         # a{1}? should be equivalent to (?:a{1})?, i.e. NOT a "non-greedy quantifier"
         it { expect(/a{1}?/.examples).to match_array ['', 'a'] }

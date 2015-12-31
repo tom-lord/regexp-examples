@@ -1,4 +1,6 @@
+# :nodoc:
 module RegexpExamples
+  # Configuration settings to limit the number/length of Regexp examples generated
   class ResultCountLimiters
     # The maximum variance for any given repeater, to prevent a huge/infinite number of
     # examples from being listed. For example, if @@max_repeater_variance = 2 then:
@@ -7,30 +9,32 @@ module RegexpExamples
     # .{2,} is equivalent to .{2,4}
     # .{,3} is equivalent to .{0,2}
     # .{3,8} is equivalent to .{3,5}
-    MaxRepeaterVarianceDefault = 2
+    MAX_REPEATER_VARIANCE_DEFAULT = 2
 
     # Maximum number of characters returned from a char set, to reduce output spam
     # For example, if @@max_group_results = 5 then:
     # \d is equivalent to [01234]
     # \w is equivalent to [abcde]
-    MaxGroupResultsDefault = 5
+    MAX_GROUP_RESULTS_DEFAULT = 5
 
     class << self
       attr_reader :max_repeater_variance, :max_group_results
       def configure!(max_repeater_variance, max_group_results = nil)
-        @max_repeater_variance = (max_repeater_variance || MaxRepeaterVarianceDefault)
-        @max_group_results = (max_group_results || MaxGroupResultsDefault)
+        @max_repeater_variance = (max_repeater_variance || MAX_REPEATER_VARIANCE_DEFAULT)
+        @max_group_results = (max_group_results || MAX_GROUP_RESULTS_DEFAULT)
       end
     end
   end
 
-  def self.MaxRepeaterVariance
+  def self.max_repeater_variance
     ResultCountLimiters.max_repeater_variance
   end
-  def self.MaxGroupResults
+  def self.max_group_results
     ResultCountLimiters.max_group_results
   end
 
+  # Definitions of various special characters, used in regular expressions.
+  # For example, `/\h/.examples` will return the value of `Hex` in this module
   module CharSets
     Lower        = Array('a'..'z')
     Upper        = Array('A'..'Z')

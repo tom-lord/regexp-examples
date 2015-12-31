@@ -1,3 +1,4 @@
+# :nodoc:
 module RegexpExamples
   # Given an array of arrays of strings, returns all possible perutations
   # for strings, created by joining one element from each array
@@ -14,15 +15,13 @@ module RegexpExamples
   end
 
   def self.join_preserving_capture_groups(result)
-    result.flatten!
-    subgroups = result
-                .map(&:all_subgroups)
-                .flatten
-
     # Only save the LAST group from repeated capture groups, e.g. /([ab]){2}/
-    subgroups.delete_if do |subgroup|
-      subgroups.count { |other_subgroup| other_subgroup.group_id == subgroup.group_id } > 1
-    end
+    # (Hence the need for "reverse"!)
+    subgroups = result
+                .flat_map(&:all_subgroups)
+                .reverse
+                .uniq(&:group_id)
+
     GroupResult.new(result.join, nil, subgroups)
   end
 

@@ -1,6 +1,8 @@
 module RegexpExamples
+  # A collection of related helper methods, utilised by the `Parser` class
   module ParseAfterBackslashGroupHelper
-  protected
+    protected
+
     def parse_after_backslash_group
       @current_position += 1
       case
@@ -37,7 +39,6 @@ module RegexpExamples
         parse_single_char_group(next_char)
       end
     end
-
 
     def parse_regular_backreference_group(group_id)
       @current_position += (group_id.length - 1) # In case of 10+ backrefs!
@@ -98,11 +99,7 @@ module RegexpExamples
       # Beware of double negatives! E.g. /\P{^Space}/
       is_negative = (p_negation == 'P') ^ (caret_negation == '^')
       CharGroup.new(
-        if is_negative
-          CharSets::Any.dup - NamedPropertyCharMap[property_name.downcase]
-        else
-          NamedPropertyCharMap[property_name.downcase]
-        end,
+        negate_if(NamedPropertyCharMap[property_name.downcase], is_negative),
         @ignorecase
       )
     end
@@ -116,7 +113,7 @@ module RegexpExamples
 
     def parse_backslash_subexpresion_call
       fail IllegalSyntaxError,
-        'Subexpression calls (\\g) cannot be supported, as they are not regular'
+           'Subexpression calls (\\g) cannot be supported, as they are not regular'
     end
 
     def parse_backslash_anchor
@@ -145,4 +142,3 @@ module RegexpExamples
     end
   end
 end
-

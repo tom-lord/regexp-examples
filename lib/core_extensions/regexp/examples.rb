@@ -1,5 +1,8 @@
 module CoreExtensions
   module Regexp
+    # A wrapper module to namespace/isolate the Regexp#examples and Regexp#random_exanple
+    # monkey patches.
+    # No core classes are extended in any way, other than the above two methods.
     module Examples
       def examples(**config_options)
         RegexpExamples::ResultCountLimiters.configure!(

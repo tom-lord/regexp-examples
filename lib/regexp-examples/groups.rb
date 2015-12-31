@@ -6,13 +6,12 @@ module RegexpExamples
     attr_reader :group_id, :subgroups
     def initialize(result, group_id = nil, subgroups = [])
       @group_id = group_id
-      @subgroups = subgroups
-      @subgroups = result.all_subgroups if result.respond_to?(:group_id)
+      @subgroups = result.respond_to?(:group_id) ? result.all_subgroups : subgroups
       super(result)
     end
 
     def all_subgroups
-      [self, subgroups].flatten.reject { |subgroup| subgroup.group_id.nil? }
+      [self, subgroups].flatten.keep_if(&:group_id)
     end
 
     def swapcase
@@ -132,24 +131,16 @@ module RegexpExamples
       @group_id = group_id
     end
 
-    def result
-      result_by_method(:result)
-    end
-
-    def random_result
-      result_by_method(:random_result)
-    end
-
-    private
-
     # Generates the result of each contained group
     # and adds the filled group of each result to itself
-    def result_by_method(method)
-      strings = @groups.map { |repeater| repeater.public_send(method) }
+    def result
+      strings = @groups.map { |repeater| repeater.public_send(__method__) }
       RegexpExamples.permutations_of_strings(strings).map do |result|
         GroupResult.new(result, group_id)
       end
     end
+
+    alias_method :random_result, :result
   end
 
   # A boolean "or" group.
@@ -177,13 +168,10 @@ module RegexpExamples
     private
 
     def result_by_method(method)
-      repeaters_list.map do |repeaters|
-        RegexpExamples.public_send(method, repeaters)
-      end
+      repeaters_list
+        .map { |repeaters| RegexpExamples.public_send(method, repeaters) }
         .inject(:concat)
-        .map do |result|
-          GroupResult.new(result)
-        end
+        .map { |result| GroupResult.new(result) }
         .uniq
     end
 
@@ -203,13 +191,14 @@ module RegexpExamples
   # of /\1/ as being "__1__". It later gets updated.
   class BackReferenceGroup
     include RandomResultBySample
+    PLACEHOLDER_FORMAT = '__%s__'
     attr_reader :id
     def initialize(id)
       @id = id
     end
 
     def result
-      [GroupResult.new("__#{@id}__")]
+      [GroupResult.new(PLACEHOLDER_FORMAT % @id)]
     end
   end
 end
