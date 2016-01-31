@@ -158,18 +158,18 @@ module RegexpExamples
     end
 
     def result
-      result_by_method(:map_results)
+      result_by_method(:result)
     end
 
     def random_result
-      result_by_method(:map_random_result).sample(1)
+      result_by_method(:random_result).sample(1)
     end
 
     private
 
     def result_by_method(method)
       repeaters_list
-        .map { |repeaters| RegexpExamples.public_send(method, repeaters) }
+        .map { |repeaters| RegexpExamples.generic_map_result(repeaters, method) }
         .inject(:concat)
         .map { |result| GroupResult.new(result) }
         .uniq

@@ -25,16 +25,6 @@ module RegexpExamples
     GroupResult.new(result.join, nil, subgroups)
   end
 
-  def self.map_results(repeaters)
-    generic_map_result(repeaters, :result)
-  end
-
-  def self.map_random_result(repeaters)
-    generic_map_result(repeaters, :random_result)
-  end
-
-  private
-
   def self.generic_map_result(repeaters, method)
     repeaters
       .map { |repeater| repeater.public_send(method) }
