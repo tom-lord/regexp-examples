@@ -168,8 +168,10 @@ module RegexpExamples
     private
 
     def result_by_method(method)
+      max_results_limiter = MaxResultsLimiterBySum.new
       repeaters_list
         .map { |repeaters| RegexpExamples.generic_map_result(repeaters, method) }
+        .map { |result| max_results_limiter.limit_results(result)}
         .inject(:concat)
         .map { |result| GroupResult.new(result) }
         .uniq

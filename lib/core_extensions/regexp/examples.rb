@@ -6,15 +6,16 @@ module CoreExtensions
     module Examples
       def examples(**config_options)
         RegexpExamples::ResultCountLimiters.configure!(
-          config_options[:max_repeater_variance],
-          config_options[:max_group_results]
+          max_repeater_variance: config_options[:max_repeater_variance],
+          max_group_results: config_options[:max_group_results],
+          max_results_limit: config_options[:max_results_limit]
         )
         examples_by_method(:result)
       end
 
       def random_example(**config_options)
         RegexpExamples::ResultCountLimiters.configure!(
-          config_options[:max_repeater_variance]
+          max_repeater_variance: config_options[:max_repeater_variance]
         )
         examples_by_method(:random_result).first
       end

@@ -17,11 +17,17 @@ module RegexpExamples
     # \w is equivalent to [abcde]
     MAX_GROUP_RESULTS_DEFAULT = 5
 
+    # Maximum number of results to be generated, for Regexp#examples
+    # This is to prevent the system "freezing" when given instructions like:
+    # /[ab]{30}/.examples
+    # (Which would attempt to generate 2**30 == 1073741824 examples!!!)
+    MAX_RESULTS_LIMIT_DEFAULT = 10000
     class << self
-      attr_reader :max_repeater_variance, :max_group_results
-      def configure!(max_repeater_variance, max_group_results = nil)
+      attr_reader :max_repeater_variance, :max_group_results, :max_results_limit
+      def configure!(max_repeater_variance: nil, max_group_results: nil, max_results_limit: nil)
         @max_repeater_variance = (max_repeater_variance || MAX_REPEATER_VARIANCE_DEFAULT)
         @max_group_results = (max_group_results || MAX_GROUP_RESULTS_DEFAULT)
+        @max_results_limit = (max_results_limit || MAX_RESULTS_LIMIT_DEFAULT)
       end
     end
   end
@@ -31,6 +37,9 @@ module RegexpExamples
   end
   def self.max_group_results
     ResultCountLimiters.max_group_results
+  end
+  def self.max_results_limit
+    ResultCountLimiters.max_results_limit
   end
 
   # Definitions of various special characters, used in regular expressions.

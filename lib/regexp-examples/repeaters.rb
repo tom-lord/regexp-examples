@@ -12,14 +12,16 @@ module RegexpExamples
     def result
       group_results = group.result.first(RegexpExamples.max_group_results)
       results = []
+      max_results_limiter = MaxResultsLimiterBySum.new
       min_repeats.upto(max_repeats) do |repeats|
-        if repeats.zero?
-          results << [GroupResult.new('')]
-        else
-          results << RegexpExamples.permutations_of_strings(
-            [group_results] * repeats
-          )
-        end
+        result = if repeats.zero?
+                   [GroupResult.new('')]
+                 else
+                   RegexpExamples.permutations_of_strings(
+                     [group_results] * repeats
+                   )
+                 end
+        results << max_results_limiter.limit_results(result)
       end
       results.flatten.uniq
     end
