@@ -15,7 +15,7 @@ or a huge number of possible matches, such as `/.\w/`, then only a subset of the
 
 For more detail on this, see [configuration options](#configuration-options).
 
-If you'd like to understand how/why this gem works, please check out my [blog post](http://tom-lord.weebly.com/blog/reverse-engineering-regular-expressions) about it!
+If you'd like to understand how/why this gem works, please check out my [blog post](http://tom-lord.weebly.com/blog/reverse-engineering-regular-expressions) about it.
 
 ## Usage
 
@@ -86,12 +86,12 @@ Long answer:
   * Non-capture groups, e.g. `/(?:foo)/`
   * Comment groups, e.g. `/foo(?#comment)bar/`
 * Control characters, e.g. `/\ca/`, `/\cZ/`, `/\C-9/`
-* Escape sequences, e.g. `/\x42/`, `/\x5word/`, `/#{"\x80".force_encoding("ASCII-8BIT")}/`
+* Escape sequences, e.g. `/\x42/`, `/\x5word/`, `/#{"\x80".force\_encoding("ASCII-8BIT")}/`
 * Unicode characters, e.g. `/\u0123/`, `/\uabcd/`, `/\u{789}/`
 * Octal characters, e.g. `/\10/`, `/\177/`
 * Named properties, e.g. `/\p{L}/` ("Letter"), `/\p{Arabic}/` ("Arabic character")
-, `/\p{^Ll}/` ("Not a lowercase letter"), `/\P{^Canadian_Aboriginal}/` ("Not not a Canadian aboriginal character")
-  * ...Even between different ruby versions!! (e.g. `/\p{Arabic}/.examples(max_group_results: 999)` will give you a different answer in ruby v2.1.x and v2.2.x)
+, `/\p{^Ll}/` ("Not a lowercase letter"), `/\P{^Canadian\_Aboriginal}/` ("Not not a Canadian aboriginal character")
+  * ...Even between different ruby versions!! (e.g. `/\p{Arabic}/.examples(max\_group\_results: 999)` will give you a different answer in ruby v2.1.x and v2.2.x)
 * **Arbitrarily complex combinations of all the above!**
 
 * Regexp options can also be used:
@@ -102,12 +102,12 @@ Long answer:
 
 ## Bugs and Not-Yet-Supported syntax
 
-* There are some (rare) edge cases where backreferences do not work properly, e.g. `/(a*)a* \1/.examples` - which includes "aaaa aa". This is because each repeater is not context-aware, so the "greediness" logic is flawed. (E.g. in this case, the second `a*` should always evaluate to an empty string, because the previous `a*` was greedy!) However, patterns like this are highly unusual...
+* There are some (rare) edge cases where backreferences do not work properly, e.g. `/(a\*)a\* \1/.examples` - which includes "aaaa aa". This is because each repeater is not context-aware, so the "greediness" logic is flawed. (E.g. in this case, the second `a\*` should always evaluate to an empty string, because the previous `a\*` was greedy!) However, patterns like this are highly unusual...
 
 Since the Regexp language is so vast, it's quite likely I've missed something (please raise an issue if you find something)! The only missing feature that I'm currently aware of is:
 * Conditional capture groups, e.g. `/(group1)? (?(1)yes|no)/.examples` (which *should* return: `["group1 yes", " no"]`)
 
-Some of the most obscure regexp features are not even mentioned in the ruby docs! However, full documentation on all the intricate obscurities in the ruby (version 2.x) regexp parser can be found [here](https://raw.githubusercontent.com/k-takata/Onigmo/master/doc/RE).
+Some of the most obscure regexp features are not even mentioned in the ruby docs. However, full documentation on all the intricate obscurities in the ruby (version 2.x) regexp parser can be found [here](https://raw.githubusercontent.com/k-takata/Onigmo/master/doc/RE).
 
 ## Impossible features ("illegal syntax")
 
@@ -116,61 +116,65 @@ If you'd like to understand this in more detail, check out what I had to say in 
 
 Using any of the following will raise a RegexpExamples::IllegalSyntax exception:
 
-* Lookarounds, e.g. `/foo(?=bar)/`, `/foo(?!bar)/`, `/(?<=foo)bar/`, `/(?<!foo)bar/`
+* Lookarounds, e.g. `/foo(?=bar)/`, `/foo(?!bar)/`, `/(?<=foo)bar/`, `/(?<\!foo)bar/`
 * [Anchors](http://ruby-doc.org/core-2.2.0/Regexp.html#class-Regexp-label-Anchors) (`\b`, `\B`, `\G`, `^`, `\A`, `$`, `\z`, `\Z`), e.g. `/\bword\b/`, `/line1\n^line2/`
   * However, a special case has been made to allow `^`, `\A` and `\G` at the start of a pattern; and to allow `$`, `\z` and `\Z` at the end of pattern. In such cases, the characters are effectively just ignored.
-* Subexpression calls (`\g`), e.g. `/(?<name> ... \g<name>* )/`
+* Subexpression calls (`\g`), e.g. `/(?<name> ... \g<name>\* )/`
 
-(Note: Backreferences are not really "regular" either, but I got these to work with a bit of hackery!)
+(Note: Backreferences are not really "regular" either, but I got these to work with a bit of hackery.)
 
 ##Configuration Options
 
-When generating examples, the gem uses 2 configurable values to limit how many examples are listed:
+When generating examples, the gem uses 3 configurable values to limit how many examples are listed:
 
-* `max_repeater_variance` (default = `2`) restricts how many examples to return for each repeater. For example:
-  * `.*` is equivalent to `.{0,2}`
+* `max\_repeater\_variance` (default = `2`) restricts how many examples to return for each repeater. For example:
+  * `.\*` is equivalent to `.{0,2}`
   * `.+` is equivalent to `.{1,3}`
   * `.{2,}` is equivalent to `.{2,4}`
   * `.{,3}` is equivalent to `.{0,2}`
   * `.{3,8}` is equivalent to `.{3,5}`
 
-* `max_group_results` (default = `5`) restricts how many characters to return for each "set". For example:
+* `max\_group\_results` (default = `5`) restricts how many characters to return for each "set". For example:
   * `\d` is equivalent to `[01234]`
   * `\w` is equivalent to `[abcde]`
   * `[h-s]` is equivalent to `[hijkl]`
   * `(1|2|3|4|5|6|7|8)` is equivalent to `[12345]`
 
-`Rexexp#examples` makes use of *both* these options; `Rexexp#random_example` only uses `max_repeater_variance`, since the other option is redundant!
+* `max\_results\_limit` (default = `10000`) restricts the maximum number of results that can possibly be generated. For example:
+  * `/(crazy){1,999} B\*I\*G\* regex/.examples.length <= 10000` -- Attempting this will NOT freeze your system
+
+`Rexexp#examples` makes use of *all* these options; `Rexexp#random\_example` only uses `max\_repeater\_variance`, since the other options are redundant.
 
 To use an alternative value, simply pass the configuration option as follows:
 
 ```ruby
-/a*/.examples(max_repeater_variance: 5)
+/a*/.examples(max\_repeater\_variance: 5)
   #=> [''. 'a', 'aa', 'aaa', 'aaaa' 'aaaaa']
-/[F-X]/.examples(max_group_results: 10)
+/[F-X]/.examples(max\_group\_results: 10)
   #=> ['F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O']
-/.*/.random_example(max_repeater_variance: 50)
+/[ab]{10}/.examples(max\_results\_limit: 64).length == 64 # NOT 1024
+/[slow]{9}/.examples(max\_results\_limit: 9999999).length == 4 \*\* 9 == 262144 # Warning - this will take a while!
+/.\*/.random\_example(max\_repeater\_variance: 50)
   #=> "A very unlikely result!"
 ```
 
-_**WARNING**: Choosing huge numbers for `Regexp#examples` and/or a sufficiently "complex" regex, could easily cause your system to freeze!_
+A sensible use case might be, for example, to generate all 1-5 digit strings:
 
-For example, if you try to generate a list of _all_ 5-letter words: `/\w{5}/.examples(max_group_results: 999)`, then since there are actually `63` "word" characters (upper/lower case letters, numbers and "\_"), this will try to generate `63**5 #=> 992436543` (almost 1 _billion_) examples!
+```ruby
+/\d{1,5}/.examples(max\_repeater\_variance: 4, max\_group\_results: 10, max\_results\_limit: 100000)
+  #=> ['0', '1', '2', ..., '99998', '99999']
+```
 
-In other words, think twice before playing around with this config!
+Due to code optimisation, `Regexp#random\_example` runs pretty fast even on very complex patterns.
+(I.e. It's a _lot_ faster than using `/pattern/.exammples.sample(1)`.)
+For instance, the following takes no more than ~ 1 second on my machine:
 
-A more sensible use case might be, for example, to generate all 1-4 digit strings:
-
-`/\d{1,4}/.examples(max_repeater_variance: 3, max_group_results: 10)`
-
-Due to code optimisation, this is not something you need to worry about (much) for `Regexp#random_example`. For instance, the following takes no more than ~ 1 second on my machine:
-
-`/.*\w+\d{100}/.random_example(max_repeater_variance: 1000)`
+`/.\*\w+\d{100}/.random\_example(max\_repeater\_variance: 1000)`
 
 ## TODO
 
-* Performance improvements:
-  * (Maybe?) add a `max_examples` configuration option and use lazy evaluation, to ensure the method never "freezes".
+* Make regexp#examples always return up to `max\_results\_limit` - currenty, it usually "aborts" before this limit is reached.
+* `\z` should be interpreted like `\n?\z`, not just `\z` like it is currently.
 
 ## Contributing
 
