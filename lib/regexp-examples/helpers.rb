@@ -26,10 +26,8 @@ module RegexpExamples
   end
 
   def self.generic_map_result(repeaters, method)
-    repeaters
-      .map { |repeater| repeater.public_send(method) }
-      .instance_eval do |partial_results|
-        RegexpExamples.permutations_of_strings(partial_results)
-      end
+    permutations_of_strings(
+      repeaters.map { |repeater| repeater.public_send(method) }
+    )
   end
 end
