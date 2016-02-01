@@ -46,6 +46,24 @@ If you'd like to understand how/why this gem works, please check out my [blog po
 /written by tom lord/i.random_example #=> "WrITtEN bY tOM LORD"
 ```
 
+## Supported ruby versions
+* MRI 2.0.x
+* MRI 2.1.x
+* MRI 2.2.x
+* MRI 2.3.x
+* MRI 2.4.0-dev
+
+MRI ≤ 1.9.3 are not supported. This is primarily because MRI 2.0.0 introduced a new
+regexp engine (`Oniguruma` was replaced by `Onigmo`). Whilst *most* of this gem could
+be made to work with MRI 1.9.x (or even 1.8.x), I feel the changes are too significant
+to implement backwards compatability (especially since [long-term support for MRI
+1.9.3 has now ended](https://www.ruby-lang.org/en/news/2014/01/10/ruby-1-9-3-will-end-on-2015/)).
+
+For example, named properties (e.g. `/\p{Alpha}/`) are illegal syntax on MRI 1.9.3.
+
+Other implementations, such as JRuby, could probably work fine -
+but I haven't fully tried/tested it. Pull requests are welcome.
+
 ## Installation
 
 Add this line to your application's Gemfile:
