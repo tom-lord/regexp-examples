@@ -192,7 +192,7 @@ For instance, the following takes no more than ~ 1 second on my machine:
 ## TODO
 
 * Make regexp#examples always return up to `max_results_limit` - currenty, it usually "aborts" before this limit is reached.
-* `\z` should be interpreted like `\n?\z`, not just `\z` like it is currently.
+* `\Z` should be interpreted like `\n?\z`, not just `\z` like it is currently.
 
 ## Contributing
 
