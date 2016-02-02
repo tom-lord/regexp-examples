@@ -159,7 +159,8 @@ When generating examples, the gem uses 3 configurable values to limit how many e
   * `(1|2|3|4|5|6|7|8)` is equivalent to `[12345]`
 
 * `max_results_limit` (default = `10000`) restricts the maximum number of results that can possibly be generated. For example:
-  * `/(crazy){1,999} B*I*G* regex/.examples.length <= 10000` -- Attempting this will NOT freeze your system
+  * `/c+r+a+z+y+ * B+I+G+ * r+e+g+e+x+/i.examples.length <= 10000` -- Attempting this will NOT freeze your system, even though
+  (by the above rules) this "should" attempt to generate **117546246144** examples.
 
 `Rexexp#examples` makes use of *all* these options; `Rexexp#random_example` only uses `max_repeater_variance`, since the other options are redundant.
 
