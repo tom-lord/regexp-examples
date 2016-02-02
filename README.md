@@ -184,7 +184,7 @@ A sensible use case might be, for example, to generate all 1-5 digit strings:
 ```
 
 Due to code optimisation, `Regexp#random_example` runs pretty fast even on very complex patterns.
-(I.e. It's a _lot_ faster than using `/pattern/.exammples.sample(1)`.)
+(I.e. It's typically a _lot_ faster than using `/pattern/.examples.sample(1)`.)
 For instance, the following takes no more than ~ 1 second on my machine:
 
 `/.*\w+\d{100}/.random_example(max_repeater_variance: 1000)`
