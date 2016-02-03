@@ -118,33 +118,6 @@ Long answer:
   * Extended form examples: `/line1 #comment \n line2/x.examples #=> ["line1line2"]`
   * Options toggling supported: `/before(?imx-imx)after/`, `/before(?imx-imx:subexpr)after/`
 
-## Bugs and TODOs
-
-There are no known important bugs with this library. However, there are a few obscure issues that you *may* encounter:
-
-* Conditional capture groups, e.g. `/(group1)? (?(1)yes|no)/.examples` are not yet supported. (This example *should* return: `["group1 yes", " no"]`)
-* `\Z` should be interpreted like `\n?\z`; it's currently just interpreted like `\z`. (This basically just means you'll be missing a few examples.)
-* Ideally, `regexp#examples` should always return up to `max_results_limit`. Currenty, it usually "aborts" before this limit is reached.
-(I.e. the exact number of examples generated can be hard to predict, for complex patterns.)
-* There are some (rare) edge cases where backreferences do not work properly, e.g. `/(a*)a* \1/.examples` - which includes `"aaaa aa"`. This is because each repeater is not context-aware, so the "greediness" logic is flawed. (E.g. in this case, the second `a*` should always evaluate to an empty string, because the previous `a*` was greedy.) However, patterns like this are highly unusual...
-
-Some of the most obscure regexp features are not even mentioned in [the ruby docs](ruby-doc.org/core/Regexp.html). However, full documentation on all the intricate obscurities in the ruby (version 2.x) regexp parser can be found [here](https://raw.githubusercontent.com/k-takata/Onigmo/master/doc/RE).
-
-## Impossible features ("illegal syntax")
-
-The following features in the regex language can never be properly implemented into this gem because, put simply, they are not technically "regular"!
-If you'd like to understand this in more detail, check out what I had to say in [my blog post](http://tom-lord.weebly.com/blog/reverse-engineering-regular-expressions) about this gem.
-
-Using any of the following will raise a `RegexpExamples::IllegalSyntax` exception:
-
-* Lookarounds, e.g. `/foo(?=bar)/`, `/foo(?!bar)/`, `/(?<=foo)bar/`, `/(?<!foo)bar/`
-* [Anchors](http://ruby-doc.org/core-2.2.0/Regexp.html#class-Regexp-label-Anchors) (`\b`, `\B`, `\G`, `^`, `\A`, `$`, `\z`, `\Z`), e.g. `/\bword\b/`, `/line1\n^line2/`
-  * Anchors are really just special cases of lookarounds!
-  * However, a special case has been made to allow `^`, `\A` and `\G` at the start of a pattern; and to allow `$`, `\z` and `\Z` at the end of pattern. In such cases, the characters are effectively just ignored.
-* Subexpression calls (`\g`), e.g. `/(?<name> ... \g<name>* )/`
-
-(Note: Backreferences are not really "regular" either, but I got these to work with a bit of hackery.)
-
 ##Configuration Options
 
 When generating examples, the gem uses 3 configurable values to limit how many examples are listed:
@@ -193,6 +166,38 @@ Due to code optimisation, `Regexp#random_example` runs pretty fast even on very 
 For instance, the following takes no more than ~ 1 second on my machine:
 
 `/.*\w+\d{100}/.random_example(max_repeater_variance: 1000)`
+
+## Bugs and TODOs
+
+There are no known major bugs with this library. However, there are a few obscure issues that you *may* encounter:
+
+* Conditional capture groups, e.g. `/(group1)? (?(1)yes|no)/.examples` are not yet supported. (This example *should* return: `["group1 yes", " no"]`)
+* `\Z` should be interpreted like `\n?\z`; it's currently just interpreted like `\z`. (This basically just means you'll be missing a few examples.)
+* Ideally, `regexp#examples` should always return up to `max_results_limit`. Currenty, it usually "aborts" before this limit is reached.
+ (I.e. the exact number of examples generated can be hard to predict, for complex patterns.)
+* There are some (rare) edge cases where backreferences do not work properly, e.g. `/(a*)a* \1/.examples`
+ - which includes `"aaaa aa"`. This is because each repeater is not context-aware, so the "greediness" logic is flawed.
+ (E.g. in this case, the second `a*` should always evaluate to an empty string, because the previous `a*` was greedy.)
+ However, patterns like this are highly unusual...
+
+Some of the most obscure regexp features are not even mentioned in [the ruby docs](ruby-doc.org/core/Regexp.html).
+However, full documentation on all the intricate obscurities in the ruby (version 2.x) regexp parser can be found
+[here](https://raw.githubusercontent.com/k-takata/Onigmo/master/doc/RE).
+
+## Impossible features ("illegal syntax")
+
+The following features in the regex language can never be properly implemented into this gem because, put simply, they are not technically "regular"!
+If you'd like to understand this in more detail, check out what I had to say in [my blog post](http://tom-lord.weebly.com/blog/reverse-engineering-regular-expressions) about this gem.
+
+Using any of the following will raise a `RegexpExamples::IllegalSyntax` exception:
+
+* Lookarounds, e.g. `/foo(?=bar)/`, `/foo(?!bar)/`, `/(?<=foo)bar/`, `/(?<!foo)bar/`
+* [Anchors](http://ruby-doc.org/core-2.2.0/Regexp.html#class-Regexp-label-Anchors) (`\b`, `\B`, `\G`, `^`, `\A`, `$`, `\z`, `\Z`), e.g. `/\bword\b/`, `/line1\n^line2/`
+  * Anchors are really just special cases of lookarounds!
+  * However, a special case has been made to allow `^`, `\A` and `\G` at the start of a pattern; and to allow `$`, `\z` and `\Z` at the end of pattern. In such cases, the characters are effectively just ignored.
+* Subexpression calls (`\g`), e.g. `/(?<name> ... \g<name>* )/`
+
+(Note: Backreferences are not really "regular" either, but I got these to work with a bit of hackery.)
 
 ## Contributing
 
