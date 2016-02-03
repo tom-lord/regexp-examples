@@ -118,14 +118,17 @@ Long answer:
   * Extended form examples: `/line1 #comment \n line2/x.examples #=> ["line1line2"]`
   * Options toggling supported: `/before(?imx-imx)after/`, `/before(?imx-imx:subexpr)after/`
 
-## Bugs and Not-Yet-Supported syntax
+## Bugs and TODOs
 
-* There are some (rare) edge cases where backreferences do not work properly, e.g. `/(a*)a* \1/.examples` - which includes `"aaaa aa"`. This is because each repeater is not context-aware, so the "greediness" logic is flawed. (E.g. in this case, the second `a*` should always evaluate to an empty string, because the previous `a*` was greedy!) However, patterns like this are highly unusual...
+There are no known important bugs with this library. However, there are a few obscure issues that you *may* encounter:
 
-Since the Regexp language is so vast, it's quite likely I've missed something (please raise an issue if you find something)! The only missing feature that I'm currently aware of is:
-* Conditional capture groups, e.g. `/(group1)? (?(1)yes|no)/.examples` (which *should* return: `["group1 yes", " no"]`)
+* Conditional capture groups, e.g. `/(group1)? (?(1)yes|no)/.examples` are not yet supported. (This example *should* return: `["group1 yes", " no"]`)
+* `\Z` should be interpreted like `\n?\z`; it's currently just interpreted like `\z`. (This basically just means you'll be missing a few examples.)
+* Ideally, `regexp#examples` should always return up to `max_results_limit`. Currenty, it usually "aborts" before this limit is reached.
+(I.e. the exact number of examples generated can be hard to predict, for complex patterns.)
+* There are some (rare) edge cases where backreferences do not work properly, e.g. `/(a*)a* \1/.examples` - which includes `"aaaa aa"`. This is because each repeater is not context-aware, so the "greediness" logic is flawed. (E.g. in this case, the second `a*` should always evaluate to an empty string, because the previous `a*` was greedy.) However, patterns like this are highly unusual...
 
-Some of the most obscure regexp features are not even mentioned in the ruby docs. However, full documentation on all the intricate obscurities in the ruby (version 2.x) regexp parser can be found [here](https://raw.githubusercontent.com/k-takata/Onigmo/master/doc/RE).
+Some of the most obscure regexp features are not even mentioned in [the ruby docs](ruby-doc.org/core/Regexp.html). However, full documentation on all the intricate obscurities in the ruby (version 2.x) regexp parser can be found [here](https://raw.githubusercontent.com/k-takata/Onigmo/master/doc/RE).
 
 ## Impossible features ("illegal syntax")
 
@@ -189,11 +192,6 @@ Due to code optimisation, `Regexp#random_example` runs pretty fast even on very 
 For instance, the following takes no more than ~ 1 second on my machine:
 
 `/.*\w+\d{100}/.random_example(max_repeater_variance: 1000)`
-
-## TODO
-
-* Make `regexp#examples` always return up to `max_results_limit` - currenty, it usually "aborts" before this limit is reached.
-* `\Z` should be interpreted like `\n?\z`, not just `\z` like it is currently.
 
 ## Contributing
 
