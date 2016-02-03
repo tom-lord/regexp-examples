@@ -175,8 +175,8 @@ There are no known major bugs with this library. However, there are a few obscur
 * `\Z` should be interpreted like `\n?\z`; it's currently just interpreted like `\z`. (This basically just means you'll be missing a few examples.)
 * Ideally, `regexp#examples` should always return up to `max_results_limit`. Currenty, it usually "aborts" before this limit is reached.
  (I.e. the exact number of examples generated can be hard to predict, for complex patterns.)
-* There are some (rare) edge cases where backreferences do not work properly, e.g. `/(a*)a* \1/.examples`
- - which includes `"aaaa aa"`. This is because each repeater is not context-aware, so the "greediness" logic is flawed.
+* There are some (rare) edge cases where backreferences do not work properly, e.g. `/(a*)a* \1/.examples` -
+ which includes `"aaaa aa"`. This is because each repeater is not context-aware, so the "greediness" logic is flawed.
  (E.g. in this case, the second `a*` should always evaluate to an empty string, because the previous `a*` was greedy.)
  However, patterns like this are highly unusual...
 
