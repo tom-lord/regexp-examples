@@ -139,6 +139,7 @@ Using any of the following will raise a `RegexpExamples::IllegalSyntax` exceptio
 
 * Lookarounds, e.g. `/foo(?=bar)/`, `/foo(?!bar)/`, `/(?<=foo)bar/`, `/(?<!foo)bar/`
 * [Anchors](http://ruby-doc.org/core-2.2.0/Regexp.html#class-Regexp-label-Anchors) (`\b`, `\B`, `\G`, `^`, `\A`, `$`, `\z`, `\Z`), e.g. `/\bword\b/`, `/line1\n^line2/`
+  * Anchors are really just special cases of lookarounds!
   * However, a special case has been made to allow `^`, `\A` and `\G` at the start of a pattern; and to allow `$`, `\z` and `\Z` at the end of pattern. In such cases, the characters are effectively just ignored.
 * Subexpression calls (`\g`), e.g. `/(?<name> ... \g<name>* )/`
 
