@@ -179,6 +179,8 @@ There are no known major bugs with this library. However, there are a few obscur
  which includes `"aaaa aa"`. This is because each repeater is not context-aware, so the "greediness" logic is flawed.
  (E.g. in this case, the second `a*` should always evaluate to an empty string, because the previous `a*` was greedy.)
  However, patterns like this are highly unusual...
+* Nested repeat operators are incorrectly parsed, e.g. `/b{2}{3}/` - which *should* be interpreted like `/b{6}/`. (However, there is probably no reason
+ to ever write regexes like this!)
 
 Some of the most obscure regexp features are not even mentioned in [the ruby docs](ruby-doc.org/core/Regexp.html).
 However, full documentation on all the intricate obscurities in the ruby (version 2.x) regexp parser can be found
