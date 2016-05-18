@@ -19,6 +19,8 @@ If you'd like to understand how/why this gem works, please check out my [blog po
 
 ## Usage
 
+#### Regexp#examples
+
 ```ruby
 /a*/.examples #=> ['', 'a', 'aa']
 /ab+/.examples #=> ['ab', 'abb', 'abbb']
@@ -36,11 +38,15 @@ If you'd like to understand how/why this gem works, please check out my [blog po
   |
   \u{28}\u2310\u25a0\u{5f}\u25a0\u{29}
 /x.examples #=> ["(•_•)", "( •_•)>⌐■-■ ", "(⌐■_■)"]
+```
 
-###################################################################################
+#### Regexp#random_example
 
-# Obviously, you will get different results if you try these yourself!
+Obviously, you will get different (random) results if you try these yourself!
+
+```ruby
 /\w{10}@(hotmail|gmail)\.com/.random_example #=> "TTsJsiwzKS@gmail.com"
+/5[1-5][0-9]{14}/.random_example #=> "5224028604559821" (A valid MasterCard number)
 /\p{Greek}{80}/.random_example
   #=> "ΖΆΧͷᵦμͷηϒϰΟᵝΔ΄θϔζΌψΨεκᴪΓΕπι϶ονϵΓϹᵦΟπᵡήϴϜΦϚϴϑ͵ϴΉϺ͵ϹϰϡᵠϝΤΏΨϹϊϻαώΞΰϰΑͼΈΘͽϙͽξΆΆΡΡΉΓς"
 /written by tom lord/i.random_example #=> "WrITtEN bY tOM LORD"
