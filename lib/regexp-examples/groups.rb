@@ -21,26 +21,16 @@ module RegexpExamples
   end
 
   # A helper method for mixing in to Group classes...
-  # Needed because sometimes (for performace) group results are lazy enumerators;
-  # Meanwhile other times (again, for performance!) group results are just arrays
-  module ForceLazyEnumerators
-    def force_if_lazy(arr_or_enum)
-      arr_or_enum.respond_to?(:force) ? arr_or_enum.force : arr_or_enum
-    end
-  end
-
-  # A helper method for mixing in to Group classes...
   # Needed for generating a complete results set when the ignorecase
   # regexp option has been set
   module GroupWithIgnoreCase
-    include ForceLazyEnumerators
     attr_reader :ignorecase
     def result
       group_result = super
       if ignorecase
-        group_result_array = force_if_lazy(group_result)
-        group_result_array
-          .concat(group_result_array.map(&:swapcase))
+        group_result
+          .to_a # In case of lazy enumerator
+          .concat(group_result.to_a.map(&:swapcase))
           .uniq
       else
         group_result
@@ -52,9 +42,10 @@ module RegexpExamples
   # Uses Array#sample to randomly choose one result from all
   # possible examples
   module RandomResultBySample
-    include ForceLazyEnumerators
     def random_result
-      force_if_lazy(result).sample(1)
+      result
+        .to_a # In case of lazy enumerator
+        .sample(1)
     end
   end
 

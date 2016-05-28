@@ -17,7 +17,7 @@ module CoreExtensions
         RegexpExamples::ResultCountLimiters.configure!(
           max_repeater_variance: config_options[:max_repeater_variance]
         )
-        examples_by_method(:random_result).first
+        examples_by_method(:random_result).sample(1).first
       end
 
       private

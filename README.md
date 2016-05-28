@@ -4,7 +4,7 @@
 [![Coverage Status](https://coveralls.io/repos/tom-lord/regexp-examples/badge.svg?branch=master)](https://coveralls.io/r/tom-lord/regexp-examples?branch=master)
 [![Code Climate](https://codeclimate.com/github/tom-lord/regexp-examples/badges/gpa.svg)](https://codeclimate.com/github/tom-lord/regexp-examples)
 
-Extends the Regexp class with the methods: `Regexp#examples` and `Regexp#random_example`
+Extends the `Regexp` class with the methods: `Regexp#examples` and `Regexp#random_example`
 
 `Regexp#examples` generates a list of all\* strings that will match the given regular expression.
 
@@ -18,6 +18,8 @@ For more detail on this, see [configuration options](#configuration-options).
 If you'd like to understand how/why this gem works, please check out my [blog post](http://tom-lord.weebly.com/blog/reverse-engineering-regular-expressions) about it.
 
 ## Usage
+
+#### Regexp#examples
 
 ```ruby
 /a*/.examples #=> ['', 'a', 'aa']
@@ -36,11 +38,15 @@ If you'd like to understand how/why this gem works, please check out my [blog po
   |
   \u{28}\u2310\u25a0\u{5f}\u25a0\u{29}
 /x.examples #=> ["(•_•)", "( •_•)>⌐■-■ ", "(⌐■_■)"]
+```
 
-###################################################################################
+#### Regexp#random_example
 
-# Obviously, you will get different results if you try these yourself!
+Obviously, you will get different (random) results if you try these yourself!
+
+```ruby
 /\w{10}@(hotmail|gmail)\.com/.random_example #=> "TTsJsiwzKS@gmail.com"
+/5[1-5][0-9]{14}/.random_example #=> "5224028604559821" (A valid MasterCard number)
 /\p{Greek}{80}/.random_example
   #=> "ΖΆΧͷᵦμͷηϒϰΟᵝΔ΄θϔζΌψΨεκᴪΓΕπι϶ονϵΓϹᵦΟπᵡήϴϜΦϚϴϑ͵ϴΉϺ͵ϹϰϡᵠϝΤΏΨϹϊϻαώΞΰϰΑͼΈΘͽϙͽξΆΆΡΡΉΓς"
 /written by tom lord/i.random_example #=> "WrITtEN bY tOM LORD"
@@ -118,29 +124,6 @@ Long answer:
   * Extended form examples: `/line1 #comment \n line2/x.examples #=> ["line1line2"]`
   * Options toggling supported: `/before(?imx-imx)after/`, `/before(?imx-imx:subexpr)after/`
 
-## Bugs and Not-Yet-Supported syntax
-
-* There are some (rare) edge cases where backreferences do not work properly, e.g. `/(a*)a* \1/.examples` - which includes "aaaa aa". This is because each repeater is not context-aware, so the "greediness" logic is flawed. (E.g. in this case, the second `a*` should always evaluate to an empty string, because the previous `a*` was greedy!) However, patterns like this are highly unusual...
-
-Since the Regexp language is so vast, it's quite likely I've missed something (please raise an issue if you find something)! The only missing feature that I'm currently aware of is:
-* Conditional capture groups, e.g. `/(group1)? (?(1)yes|no)/.examples` (which *should* return: `["group1 yes", " no"]`)
-
-Some of the most obscure regexp features are not even mentioned in the ruby docs. However, full documentation on all the intricate obscurities in the ruby (version 2.x) regexp parser can be found [here](https://raw.githubusercontent.com/k-takata/Onigmo/master/doc/RE).
-
-## Impossible features ("illegal syntax")
-
-The following features in the regex language can never be properly implemented into this gem because, put simply, they are not technically "regular"!
-If you'd like to understand this in more detail, check out what I had to say in [my blog post](http://tom-lord.weebly.com/blog/reverse-engineering-regular-expressions) about this gem.
-
-Using any of the following will raise a RegexpExamples::IllegalSyntax exception:
-
-* Lookarounds, e.g. `/foo(?=bar)/`, `/foo(?!bar)/`, `/(?<=foo)bar/`, `/(?<!foo)bar/`
-* [Anchors](http://ruby-doc.org/core-2.2.0/Regexp.html#class-Regexp-label-Anchors) (`\b`, `\B`, `\G`, `^`, `\A`, `$`, `\z`, `\Z`), e.g. `/\bword\b/`, `/line1\n^line2/`
-  * However, a special case has been made to allow `^`, `\A` and `\G` at the start of a pattern; and to allow `$`, `\z` and `\Z` at the end of pattern. In such cases, the characters are effectively just ignored.
-* Subexpression calls (`\g`), e.g. `/(?<name> ... \g<name>* )/`
-
-(Note: Backreferences are not really "regular" either, but I got these to work with a bit of hackery.)
-
 ##Configuration Options
 
 When generating examples, the gem uses 3 configurable values to limit how many examples are listed:
@@ -159,7 +142,8 @@ When generating examples, the gem uses 3 configurable values to limit how many e
   * `(1|2|3|4|5|6|7|8)` is equivalent to `[12345]`
 
 * `max_results_limit` (default = `10000`) restricts the maximum number of results that can possibly be generated. For example:
-  * `/(crazy){1,999} B*I*G* regex/.examples.length <= 10000` -- Attempting this will NOT freeze your system
+  * `/c+r+a+z+y+ * B+I+G+ * r+e+g+e+x+/i.examples.length <= 10000` -- Attempting this will NOT freeze your system, even though
+  (by the above rules) this "should" attempt to generate **117546246144** examples.
 
 `Rexexp#examples` makes use of *all* these options; `Rexexp#random_example` only uses `max_repeater_variance`, since the other options are redundant.
 
@@ -189,10 +173,39 @@ For instance, the following takes no more than ~ 1 second on my machine:
 
 `/.*\w+\d{100}/.random_example(max_repeater_variance: 1000)`
 
-## TODO
+## Bugs and TODOs
 
-* Make regexp#examples always return up to `max_results_limit` - currenty, it usually "aborts" before this limit is reached.
-* `\Z` should be interpreted like `\n?\z`, not just `\z` like it is currently.
+There are no known major bugs with this library. However, there are a few obscure issues that you *may* encounter:
+
+* Conditional capture groups, e.g. `/(group1)? (?(1)yes|no)/.examples` are not yet supported. (This example *should* return: `["group1 yes", " no"]`)
+* `\Z` should be interpreted like `\n?\z`; it's currently just interpreted like `\z`. (This basically just means you'll be missing a few examples.)
+* Ideally, `regexp#examples` should always return up to `max_results_limit`. Currenty, it usually "aborts" before this limit is reached.
+ (I.e. the exact number of examples generated can be hard to predict, for complex patterns.)
+* There are some (rare) edge cases where backreferences do not work properly, e.g. `/(a*)a* \1/.examples` -
+ which includes `"aaaa aa"`. This is because each repeater is not context-aware, so the "greediness" logic is flawed.
+ (E.g. in this case, the second `a*` should always evaluate to an empty string, because the previous `a*` was greedy.)
+ However, patterns like this are highly unusual...
+* Nested repeat operators are incorrectly parsed, e.g. `/b{2}{3}/` - which *should* be interpreted like `/b{6}/`. (However, there is probably no reason
+ to ever write regexes like this!)
+
+Some of the most obscure regexp features are not even mentioned in [the ruby docs](ruby-doc.org/core/Regexp.html).
+However, full documentation on all the intricate obscurities in the ruby (version 2.x) regexp parser can be found
+[here](https://raw.githubusercontent.com/k-takata/Onigmo/master/doc/RE).
+
+## Impossible features ("illegal syntax")
+
+The following features in the regex language can never be properly implemented into this gem because, put simply, they are not technically "regular"!
+If you'd like to understand this in more detail, check out what I had to say in [my blog post](http://tom-lord.weebly.com/blog/reverse-engineering-regular-expressions) about this gem.
+
+Using any of the following will raise a `RegexpExamples::IllegalSyntax` exception:
+
+* Lookarounds, e.g. `/foo(?=bar)/`, `/foo(?!bar)/`, `/(?<=foo)bar/`, `/(?<!foo)bar/`
+* [Anchors](http://ruby-doc.org/core-2.2.0/Regexp.html#class-Regexp-label-Anchors) (`\b`, `\B`, `\G`, `^`, `\A`, `$`, `\z`, `\Z`), e.g. `/\bword\b/`, `/line1\n^line2/`
+  * Anchors are really just special cases of lookarounds!
+  * However, a special case has been made to allow `^`, `\A` and `\G` at the start of a pattern; and to allow `$`, `\z` and `\Z` at the end of pattern. In such cases, the characters are effectively just ignored.
+* Subexpression calls (`\g`), e.g. `/(?<name> ... \g<name>* )/`
+
+(Note: Backreferences are not really "regular" either, but I got these to work with a bit of hackery.)
 
 ## Contributing
 
