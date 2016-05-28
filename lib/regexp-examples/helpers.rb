@@ -19,7 +19,8 @@ module RegexpExamples
   end
 
   def self.join_preserving_capture_groups(result)
-    # Only save the LAST group from repeated capture groups, e.g. /([ab]){2}/
+    # Only save the LAST group from repeated capture groups, because
+    # e.g. /([ab]){2} \1/.examples should NOT include "ab a"
     # (Hence the need for "reverse"!)
     subgroups = result
                 .flat_map(&:all_subgroups)
