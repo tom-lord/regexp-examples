@@ -31,7 +31,7 @@ module RegexpExamples
     def unicode_ranges_file
       db_path = File.join(__dir__, '../../db')
       Dir["#{db_path}/*.pstore"].sort.select do |file|
-        file <= "#{db_path}/unicode_ranges_#{RUBY_VERSION[0..2]}"
+        file <= "#{db_path}/unicode_ranges_#{RUBY_VERSION[0..2]}.pstore"
       end.last
     end
 
