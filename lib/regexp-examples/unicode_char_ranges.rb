@@ -14,8 +14,8 @@ module RegexpExamples
 
     attr_reader :range_store
 
-    def initialize(filename = STORE_FILENAME)
-      @range_store = PStore.new(File.expand_path("../../../db/#{filename}", __FILE__))
+    def initialize
+      @range_store = PStore.new(unicode_ranges_file)
     end
 
     def get(key)
@@ -27,6 +27,13 @@ module RegexpExamples
     alias_method :[], :get
 
     private
+
+    def unicode_ranges_file
+      db_path = File.join(__dir__, '../../db')
+      Dir["#{db_path}/*.pstore"].sort.select do |file|
+        file <= "#{db_path}/unicode_ranges_#{RUBY_VERSION[0..2]}.pstore"
+      end.last
+    end
 
     # TODO: Document example input/output of this method
     # It's pretty simple, but this code is a little confusing!!
