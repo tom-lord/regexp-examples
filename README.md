@@ -57,7 +57,7 @@ Obviously, you will get different (random) results if you try these yourself!
 * MRI 2.1.x
 * MRI 2.2.x
 * MRI 2.3.x
-* MRI 2.4.0-dev
+* MRI 2.4.x
 
 MRI ≤ 1.9.3 are not supported. This is primarily because MRI 2.0.0 introduced a new
 regexp engine (`Oniguruma` was replaced by `Onigmo`). Whilst *most* of this gem could
