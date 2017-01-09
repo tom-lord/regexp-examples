@@ -40,7 +40,7 @@ module RegexpExamples
     def ranges_to_unicode(ranges)
       result = []
       ranges.each do |range|
-        if range.is_a? Fixnum # Small hack to increase data compression
+        if range.is_a? Integer # Small hack to increase data compression
           result << hex_to_unicode(range.to_s(16))
         else
           range.each { |num| result << hex_to_unicode(num.to_s(16)) }
