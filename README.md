@@ -15,7 +15,7 @@ or a huge number of possible matches, such as `/.\w/`, then only a subset of the
 
 For more detail on this, see [configuration options](#configuration-options).
 
-If you'd like to understand how/why this gem works, please check out my [blog post](http://tom-lord.weebly.com/blog/reverse-engineering-regular-expressions) about it.
+If you'd like to understand how/why this gem works, please check out my [blog post](https://tom-lord.github.io/Missy-Elliott's-Encoding-Algorithm/) about it.
 
 ## Usage
 
@@ -195,7 +195,7 @@ However, full documentation on all the intricate obscurities in the ruby (versio
 ## Impossible features ("illegal syntax")
 
 The following features in the regex language can never be properly implemented into this gem because, put simply, they are not technically "regular"!
-If you'd like to understand this in more detail, check out what I had to say in [my blog post](http://tom-lord.weebly.com/blog/reverse-engineering-regular-expressions) about this gem.
+If you'd like to understand this in more detail, check out what I had to say in [my blog post](https://tom-lord.github.io/Missy-Elliott's-Encoding-Algorithm/) about this gem.
 
 Using any of the following will raise a `RegexpExamples::IllegalSyntax` exception:
 
