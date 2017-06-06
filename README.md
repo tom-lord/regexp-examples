@@ -180,13 +180,12 @@ For instance, the following takes no more than ~ 1 second on my machine:
 There are no known major bugs with this library. However, there are a few obscure issues that you *may* encounter:
 
 * Conditional capture groups, e.g. `/(group1)? (?(1)yes|no)/.examples` are not yet supported. (This example *should* return: `["group1 yes", " no"]`)
-* `\Z` should be interpreted like `\n?\z`; it's currently just interpreted like `\z`. (This basically just means you'll be missing a few examples.)
-* Ideally, `regexp#examples` should always return up to `max_results_limit`. Currenty, it usually "aborts" before this limit is reached.
- (I.e. the exact number of examples generated can be hard to predict, for complex patterns.)
 * Nested repeat operators are incorrectly parsed, e.g. `/b{2}{3}/` - which *should* be interpreted like `/b{6}/`. (However, there is probably no reason
  to ever write regexes like this!)
 * A new ["absent operator" (`/(?~exp)/`)](https://medium.com/rubyinside/the-new-absent-operator-in-ruby-s-regular-expressions-7c3ef6cd0b99)
- was added to Ruby version `2.4.0`. This gem does not yet support (or gracefully fail) when used.
+ was added to Ruby version `2.4.1`. This gem does not yet support it (or gracefully fail when used).
+* Ideally, `regexp#examples` should always return up to `max_results_limit`. Currenty, it usually "aborts" before this limit is reached.
+ (I.e. the exact number of examples generated can be hard to predict, for complex patterns.)
 
 Some of the most obscure regexp features are not even mentioned in [the ruby docs](http://ruby-doc.org/core/Regexp.html).
 However, full documentation on all the intricate obscurities in the ruby (version 2.x) regexp parser can be found
