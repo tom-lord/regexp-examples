@@ -303,6 +303,11 @@ RSpec.describe Regexp, '#examples' do
         it { expect(/a{1}?/.examples).to match_array ['', 'a'] }
       end
 
+      context 'end of string' do
+        it { expect(/test\z/.examples).to match_array %w(test) }
+        it { expect(/test\Z/.examples).to match_array ['test', "test\n"] }
+      end
+
       context 'backreferences and escaped octal combined' do
         it do
           expect(/(a)(b)(c)(d)(e)(f)(g)(h)(i)(j)? \10\9\8\7\6\5\4\3\2\1/.examples)
