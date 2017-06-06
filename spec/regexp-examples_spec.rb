@@ -170,8 +170,9 @@ RSpec.describe Regexp, '#examples' do
         /\Glast-match/,
         /^start/,
         /end$/,
-        /end\z/,
-        /end\Z/
+        /end\z/
+        # Cannot test /end\Z/ with the generic method here,
+        # as it's a special case. Tested specially below.
       )
     end
 

@@ -32,7 +32,6 @@ module RegexpExamples
       elsif next_char =~ /[AG]/
         parse_backslash_start_of_string
       elsif next_char =~ /[zZ]/
-        # TODO: /\Z/ should be treated as /\n?/
         parse_backslash_end_of_string
       else
         parse_single_char_group(next_char)
@@ -129,7 +128,11 @@ module RegexpExamples
 
     def parse_backslash_end_of_string
       if @current_position == (regexp_string.length - 1)
-        PlaceHolderGroup.new
+        if next_char == 'z'
+          PlaceHolderGroup.new
+        else # next_char == 'Z'
+          QuestionMarkRepeater.new(SingleCharGroup.new("\n", @ignorecase))
+        end
       else
         raise_anchors_exception!
       end
