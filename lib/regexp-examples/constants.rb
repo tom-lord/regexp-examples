@@ -21,7 +21,7 @@ module RegexpExamples
     # This is to prevent the system "freezing" when given instructions like:
     # /[ab]{30}/.examples
     # (Which would attempt to generate 2**30 == 1073741824 examples!!!)
-    MAX_RESULTS_LIMIT_DEFAULT = 10000
+    MAX_RESULTS_LIMIT_DEFAULT = 10_000
     class << self
       attr_reader :max_repeater_variance, :max_group_results, :max_results_limit
       def configure!(max_repeater_variance: nil, max_group_results: nil, max_results_limit: nil)
@@ -35,9 +35,11 @@ module RegexpExamples
   def self.max_repeater_variance
     ResultCountLimiters.max_repeater_variance
   end
+
   def self.max_group_results
     ResultCountLimiters.max_group_results
   end
+
   def self.max_results_limit
     ResultCountLimiters.max_results_limit
   end
@@ -51,10 +53,10 @@ module RegexpExamples
     # Note: Punct should also include the following chars: $ + < = > ^ ` | ~
     # I.e. Punct = %w(! " # $ % & ' ( ) * + , - . / : ; < = > ? @ [ \\ ] ^ _ ` { | } ~)
     # However, due to a ruby bug (!!) these do not work properly at the moment!
-    Punct        = %w(! " # % & ' ( ) * , - . / : ; ? @ [ \\ ] _ { })
+    Punct        = %w(! " # % & ' ( ) * , - . / : ; ? @ [ \\ ] _ { }).freeze
     Hex          = Array('a'..'f') | Array('A'..'F') | Digit
     Word         = Lower | Upper | Digit | ['_']
-    Whitespace   = [' ', "\t", "\n", "\r", "\v", "\f"]
+    Whitespace   = [' ', "\t", "\n", "\r", "\v", "\f"].freeze
     Control      = (0..31).map(&:chr) | ["\x7f"]
     # Ensure that the "common" characters appear first in the array
     # Also, ensure "\n" comes first, to make it obvious when included

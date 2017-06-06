@@ -44,7 +44,7 @@ module RegexpExamples
   end
 
   # For example:
-  # Needed when generating examples for /[ab]{10}|{cd}{11}/             
+  # Needed when generating examples for /[ab]{10}|{cd}{11}/
   # (here, results_count will reach 1024 + 2048 == 3072)
   class MaxResultsLimiterBySum < MaxResultsLimiter
     def initialize

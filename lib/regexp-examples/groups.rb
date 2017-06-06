@@ -131,7 +131,7 @@ module RegexpExamples
       end
     end
 
-    alias_method :random_result, :result
+    alias random_result result
   end
 
   # A boolean "or" group.
@@ -162,7 +162,7 @@ module RegexpExamples
       max_results_limiter = MaxResultsLimiterBySum.new
       repeaters_list
         .map { |repeaters| RegexpExamples.generic_map_result(repeaters, method) }
-        .map { |result| max_results_limiter.limit_results(result)}
+        .map { |result| max_results_limiter.limit_results(result) }
         .inject(:concat)
         .map { |result| GroupResult.new(result) }
         .uniq
@@ -184,7 +184,7 @@ module RegexpExamples
   # of /\1/ as being "__1__". It later gets updated.
   class BackReferenceGroup
     include RandomResultBySample
-    PLACEHOLDER_FORMAT = '__%s__'
+    PLACEHOLDER_FORMAT = '__%s__'.freeze
     attr_reader :id
     def initialize(id)
       @id = id

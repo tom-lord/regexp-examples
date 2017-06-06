@@ -15,7 +15,7 @@ module RegexpExamples
     include CharsetNegationHelper
 
     attr_reader :regexp_string, :current_position
-    alias_method :length, :current_position
+    alias length current_position
 
     def initialize(regexp_string, is_sub_group: false)
       @regexp_string = regexp_string
@@ -85,10 +85,10 @@ module RegexpExamples
 
     def parse_after_backslash
       case next_char
-      when *BackslashCharMap.keys
-        BackslashCharMap[next_char]
       when 'b'
         ["\b"]
+      when *BackslashCharMap.keys
+        BackslashCharMap[next_char]
       else
         [next_char]
       end

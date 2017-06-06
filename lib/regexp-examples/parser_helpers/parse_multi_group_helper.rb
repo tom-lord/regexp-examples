@@ -28,15 +28,14 @@ module RegexpExamples
             )?
           /x
         ) do |match|
-          case
-          when match[1].nil? # e.g. /(normal)/
+          if match[1].nil? # e.g. /(normal)/
             group_id = @num_groups.to_s
-          when match[2] == ':' # e.g. /(?:nocapture)/
+          elsif match[2] == ':' # e.g. /(?:nocapture)/
             @current_position += 2
-          when match[2] == '#' # e.g. /(?#comment)/
+          elsif match[2] == '#' # e.g. /(?#comment)/
             comment_group = rest_of_string.match(/.*?[^\\](?:\\{2})*\)/)[0]
             @current_position += comment_group.length
-          when match[2] =~ /\A(?=[mix-]+)([mix]*)-?([mix]*)/ # e.g. /(?i-mx)/
+          elsif match[2] =~ /\A(?=[mix-]+)([mix]*)-?([mix]*)/ # e.g. /(?i-mx)/
             regexp_options_toggle(Regexp.last_match(1), Regexp.last_match(2))
             @num_groups -= 1 # Toggle "groups" should not increase backref group count
             @current_position += $&.length + 1
@@ -45,12 +44,12 @@ module RegexpExamples
             else
               return PlaceHolderGroup.new
             end
-          when %w(! =).include?(match[2]) # e.g. /(?=lookahead)/, /(?!neglookahead)/
-            fail IllegalSyntaxError,
-                 'Lookaheads are not regular; cannot generate examples'
-          when %w(! =).include?(match[3]) # e.g. /(?<=lookbehind)/, /(?<!neglookbehind)/
-            fail IllegalSyntaxError,
-                 'Lookbehinds are not regular; cannot generate examples'
+          elsif %w[! =].include?(match[2]) # e.g. /(?=lookahead)/, /(?!neglookahead)/
+            raise IllegalSyntaxError,
+                  'Lookaheads are not regular; cannot generate examples'
+          elsif %w[! =].include?(match[3]) # e.g. /(?<=lookbehind)/, /(?<!neglookbehind)/
+            raise IllegalSyntaxError,
+                  'Lookbehinds are not regular; cannot generate examples'
           else # e.g. /(?<name>namedgroup)/
             @current_position += (match[3].length + 3)
             group_id = match[3]

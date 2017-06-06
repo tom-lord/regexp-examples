@@ -5,34 +5,33 @@ module RegexpExamples
 
     def parse_after_backslash_group
       @current_position += 1
-      case
-      when rest_of_string =~ /\A(\d{1,3})/
+      if rest_of_string =~ /\A(\d{1,3})/
         parse_regular_backreference_group(Regexp.last_match(1))
-      when rest_of_string =~ /\Ak['<]([\w-]+)['>]/
+      elsif rest_of_string =~ /\Ak['<]([\w-]+)['>]/
         parse_named_backreference_group(Regexp.last_match(1))
-      when BackslashCharMap.keys.include?(next_char)
+      elsif BackslashCharMap.keys.include?(next_char)
         parse_backslash_special_char
-      when rest_of_string =~ /\A(c|C-)(.)/
+      elsif rest_of_string =~ /\A(c|C-)(.)/
         parse_backslash_control_char(Regexp.last_match(1), Regexp.last_match(2))
-      when rest_of_string =~ /\Ax(\h{1,2})/
+      elsif rest_of_string =~ /\Ax(\h{1,2})/
         parse_backslash_escape_sequence(Regexp.last_match(1))
-      when rest_of_string =~ /\Au(\h{4}|\{\h{1,4}\})/
+      elsif rest_of_string =~ /\Au(\h{4}|\{\h{1,4}\})/
         parse_backslash_unicode_sequence(Regexp.last_match(1))
-      when rest_of_string =~ /\A(p)\{(\^?)([^}]+)\}/i
+      elsif rest_of_string =~ /\A(p)\{(\^?)([^}]+)\}/i
         parse_backslash_named_property(
           Regexp.last_match(1), Regexp.last_match(2), Regexp.last_match(3)
         )
-      when next_char == 'K' # Keep (special lookbehind that CAN be supported safely!)
+      elsif next_char == 'K' # Keep (special lookbehind that CAN be supported safely!)
         PlaceHolderGroup.new
-      when next_char == 'R'
+      elsif next_char == 'R'
         parse_backslash_linebreak
-      when next_char == 'g'
+      elsif next_char == 'g'
         parse_backslash_subexpresion_call
-      when next_char =~ /[bB]/
+      elsif next_char =~ /[bB]/
         parse_backslash_anchor
-      when next_char =~ /[AG]/
+      elsif next_char =~ /[AG]/
         parse_backslash_start_of_string
-      when next_char =~ /[zZ]/
+      elsif next_char =~ /[zZ]/
         # TODO: /\Z/ should be treated as /\n?/
         parse_backslash_end_of_string
       else
@@ -112,8 +111,8 @@ module RegexpExamples
     end
 
     def parse_backslash_subexpresion_call
-      fail IllegalSyntaxError,
-           'Subexpression calls (\\g) cannot be supported, as they are not regular'
+      raise IllegalSyntaxError,
+            'Subexpression calls (\\g) cannot be supported, as they are not regular'
     end
 
     def parse_backslash_anchor
@@ -137,8 +136,8 @@ module RegexpExamples
     end
 
     def raise_anchors_exception!
-      fail IllegalSyntaxError,
-           "Anchors ('#{next_char}') cannot be supported, as they are not regular"
+      raise IllegalSyntaxError,
+            "Anchors ('#{next_char}') cannot be supported, as they are not regular"
     end
   end
 end

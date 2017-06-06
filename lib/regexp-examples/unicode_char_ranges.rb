@@ -10,7 +10,7 @@ module RegexpExamples
     # Note: Only the first 128 results are listed, for performance.
     # Also, some groups seem to have no matches (weird!)
     # (Don't care about ruby micro version number)
-    STORE_FILENAME = "unicode_ranges_#{RUBY_VERSION[0..2]}.pstore"
+    STORE_FILENAME = "unicode_ranges_#{RUBY_VERSION[0..2]}.pstore".freeze
 
     attr_reader :range_store
 
@@ -24,7 +24,7 @@ module RegexpExamples
       end
     end
 
-    alias_method :[], :get
+    alias [] get
 
     private
 

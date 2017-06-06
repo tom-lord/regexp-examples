@@ -92,7 +92,7 @@ module RegexpExamples
     private
 
     def smallest(x, y)
-      (x < y) ? x : y
+      x < y ? x : y
     end
   end
 end
