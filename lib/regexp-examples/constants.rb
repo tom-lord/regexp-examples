@@ -52,10 +52,8 @@ module RegexpExamples
     Lower        = Array('a'..'z')
     Upper        = Array('A'..'Z')
     Digit        = Array('0'..'9')
-    # Note: Punct should also include the following chars: $ + < = > ^ ` | ~
-    # I.e. Punct = %w(! " # $ % & ' ( ) * + , - . / : ; < = > ? @ [ \\ ] ^ _ ` { | } ~)
-    # However, due to a ruby bug (!!) these do not work properly at the moment!
-    Punct        = %w(! " # % & ' ( ) * , - . / : ; ? @ [ \\ ] _ { }).freeze
+    Punct        = %w[! " # % & ' ( ) * , - . / : ; ? @ [ \\ ] _ { }] \
+                     | (RUBY_VERSION >= '2.4.0' ? %w[$ + < = > ^ ` | ~] : [])
     Hex          = Array('a'..'f') | Array('A'..'F') | Digit
     Word         = Lower | Upper | Digit | ['_']
     Whitespace   = [' ', "\t", "\n", "\r", "\v", "\f"].freeze
