@@ -24,7 +24,9 @@ module RegexpExamples
     MAX_RESULTS_LIMIT_DEFAULT = 10_000
     class << self
       attr_reader :max_repeater_variance, :max_group_results, :max_results_limit
-      def configure!(max_repeater_variance: nil, max_group_results: nil, max_results_limit: nil)
+      def configure!(max_repeater_variance: nil,
+                     max_group_results: nil,
+                     max_results_limit: nil)
         @max_repeater_variance = (max_repeater_variance || MAX_REPEATER_VARIANCE_DEFAULT)
         @max_group_results = (max_group_results || MAX_GROUP_RESULTS_DEFAULT)
         @max_results_limit = (max_results_limit || MAX_RESULTS_LIMIT_DEFAULT)
