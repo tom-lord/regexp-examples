@@ -100,6 +100,8 @@ Long answer:
   * Negation, e.g. `/[^a-z]/`
   * Escaped characters, e.g. `/[\w\s\b]/`
   * POSIX bracket expressions, e.g. `/[[:alnum:]]/`, `/[[:^space:]]/`
+    * ...Taking the current ruby version into account - e.g. the definition of `/[[:punct:]]/`
+      [changed](https://bugs.ruby-lang.org/issues/12577) in version `2.4.0`.
   * Set intersection, e.g. `/[[a-h]&&[f-z]]/`
 * Escaped characters, e.g. `/\n/`, `/\w/`, `/\D/` (and so on...)
 * Capture groups, e.g. `/(group)/`
@@ -183,8 +185,6 @@ There are no known major bugs with this library. However, there are a few obscur
  (I.e. the exact number of examples generated can be hard to predict, for complex patterns.)
 * Nested repeat operators are incorrectly parsed, e.g. `/b{2}{3}/` - which *should* be interpreted like `/b{6}/`. (However, there is probably no reason
  to ever write regexes like this!)
-* The definition of `/[[:punct:]]/` [changed slightly in Ruby version `2.4.0`](https://bugs.ruby-lang.org/issues/12577).
- This gem has not yet incorporated those changes.
 * A new ["absent operator" (`/(?~exp)/`)](https://medium.com/rubyinside/the-new-absent-operator-in-ruby-s-regular-expressions-7c3ef6cd0b99)
  was added to Ruby version `2.4.0`. This gem does not yet support (or gracefully fail) when used.
 
