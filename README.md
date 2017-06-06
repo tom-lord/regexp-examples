@@ -105,7 +105,7 @@ Long answer:
 * Capture groups, e.g. `/(group)/`
   * Including named groups, e.g. `/(?<name>group)/`
   * And backreferences(!!!), e.g. `/(this|that) \1/` `/(?<name>foo) \k<name>/`
-  * ...even for the more "obscure" syntax, e.g. `/(?<future>the) \k'future'/`, `/(a)(b) \k<-1>/``
+  * ...even for the more "obscure" syntax, e.g. `/(?<future>the) \k'future'/`, `/(a)(b) \k<-1>/`
   * ...and even if nested or optional, e.g. `/(even(this(works?))) \1 \2 \3/`, `/what about (this)? \1/`
   * Non-capture groups, e.g. `/(?:foo)/`
   * Comment groups, e.g. `/foo(?#comment)bar/`
@@ -181,12 +181,12 @@ There are no known major bugs with this library. However, there are a few obscur
 * `\Z` should be interpreted like `\n?\z`; it's currently just interpreted like `\z`. (This basically just means you'll be missing a few examples.)
 * Ideally, `regexp#examples` should always return up to `max_results_limit`. Currenty, it usually "aborts" before this limit is reached.
  (I.e. the exact number of examples generated can be hard to predict, for complex patterns.)
-* There are some (rare) edge cases where backreferences do not work properly, e.g. `/(a*)a* \1/.examples` -
- which includes `"aaaa aa"`. This is because each repeater is not context-aware, so the "greediness" logic is flawed.
- (E.g. in this case, the second `a*` should always evaluate to an empty string, because the previous `a*` was greedy.)
- However, patterns like this are highly unusual...
 * Nested repeat operators are incorrectly parsed, e.g. `/b{2}{3}/` - which *should* be interpreted like `/b{6}/`. (However, there is probably no reason
  to ever write regexes like this!)
+* The definition of `/[[:punct:]]/` [changed slightly in Ruby version `2.4.0`](https://bugs.ruby-lang.org/issues/12577).
+ This gem has not yet incorporated those changes.
+* A new ["absent operator" (`/(?~exp)/`)](https://medium.com/rubyinside/the-new-absent-operator-in-ruby-s-regular-expressions-7c3ef6cd0b99)
+ was added to Ruby version `2.4.0`. This gem does not yet support (or gracefully fail) when used.
 
 Some of the most obscure regexp features are not even mentioned in [the ruby docs](http://ruby-doc.org/core/Regexp.html).
 However, full documentation on all the intricate obscurities in the ruby (version 2.x) regexp parser can be found
