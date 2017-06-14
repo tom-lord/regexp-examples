@@ -112,11 +112,11 @@ Long answer:
   * Non-capture groups, e.g. `/(?:foo)/`
   * Comment groups, e.g. `/foo(?#comment)bar/`
 * Control characters, e.g. `/\ca/`, `/\cZ/`, `/\C-9/`
-* Escape sequences, e.g. `/\x42/`, `/\x5word/`, `/#{"\x80".force\_encoding("ASCII-8BIT")}/`
+* Escape sequences, e.g. `/\x42/`, `/\x5word/`, `/#{"\x80".force_encoding("ASCII-8BIT")}/`
 * Unicode characters, e.g. `/\u0123/`, `/\uabcd/`, `/\u{789}/`
 * Octal characters, e.g. `/\10/`, `/\177/`
 * Named properties, e.g. `/\p{L}/` ("Letter"), `/\p{Arabic}/` ("Arabic character")
-, `/\p{^Ll}/` ("Not a lowercase letter"), `/\P{^Canadian\_Aboriginal}/` ("Not not a Canadian aboriginal character")
+, `/\p{^Ll}/` ("Not a lowercase letter"), `/\P{^Canadian_Aboriginal}/` ("Not not a Canadian aboriginal character")
   * ...Even between different ruby versions!! (e.g. `/\p{Arabic}/.examples(max_group_results: 999)` will give you a different answer in ruby v2.1.x and v2.2.x)
 * **Arbitrarily complex combinations of all the above!**
 
@@ -126,7 +126,7 @@ Long answer:
   * Extended form examples: `/line1 #comment \n line2/x.examples #=> ["line1line2"]`
   * Options toggling supported: `/before(?imx-imx)after/`, `/before(?imx-imx:subexpr)after/`
 
-##Configuration Options
+## Configuration Options
 
 When generating examples, the gem uses 3 configurable values to limit how many examples are listed:
 
