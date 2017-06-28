@@ -10,7 +10,7 @@ Extends the `Regexp` class with the methods: `Regexp#examples` and `Regexp#rando
 
 `Regexp#random_example` returns one, random string (from all possible strings!!) that matches the regex.
 
-\* If the regex has an infinite number of possible srings that match it, such as `/a*b+c{2,}/`,
+\* If the regex has an infinite number of possible strings that match it, such as `/a*b+c{2,}/`,
 or a huge number of possible matches, such as `/.\w/`, then only a subset of these will be listed.
 
 For more detail on this, see [configuration options](#configuration-options).
