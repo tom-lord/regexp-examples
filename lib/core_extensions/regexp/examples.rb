@@ -5,19 +5,21 @@ module CoreExtensions
     # No core classes are extended in any way, other than the above two methods.
     module Examples
       def examples(**config_options)
-        RegexpExamples::ResultCountLimiters.configure!(
+        RegexpExamples::ResultCountLimiters.with_configuration(
           max_repeater_variance: config_options[:max_repeater_variance],
           max_group_results: config_options[:max_group_results],
           max_results_limit: config_options[:max_results_limit]
-        )
-        examples_by_method(:result)
+        ) do
+          examples_by_method(:result)
+        end
       end
 
       def random_example(**config_options)
-        RegexpExamples::ResultCountLimiters.configure!(
+        RegexpExamples::ResultCountLimiters.with_configuration(
           max_repeater_variance: config_options[:max_repeater_variance]
-        )
-        examples_by_method(:random_result).sample(1).first
+        ) do
+          examples_by_method(:random_result).sample
+        end
       end
 
       private
