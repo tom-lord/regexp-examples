@@ -12,7 +12,6 @@ Extends the `Regexp` class with the methods: `Regexp#examples` and `Regexp#rando
 
 \* If the regex has an infinite number of possible strings that match it, such as `/a*b+c{2,}/`,
 or a huge number of possible matches, such as `/.\w/`, then only a subset of these will be listed.
-
 For more detail on this, see [configuration options](#configuration-options).
 
 If you'd like to understand how/why this gem works, please check out my [blog post](https://tom-lord.github.io/Reverse-Engineering-Regular-Expressions/) about it.
@@ -149,7 +148,15 @@ When generating examples, the gem uses 3 configurable values to limit how many e
 
 `Rexexp#examples` makes use of *all* these options; `Rexexp#random_example` only uses `max_repeater_variance`, since the other options are redundant.
 
-To use an alternative value, simply pass the configuration option as follows:
+To use an alternative value, you can either define a different default value:
+
+```ruby
+RegexpExamples::ResultCountLimiters.max_repeater_variance = 5
+RegexpExamples::ResultCountLimiters.max_group_results = 10
+RegexpExamples::ResultCountLimiters.max_results_limit = 20000
+```
+
+Or, simply pass the configuration option as a parameter:
 
 ```ruby
 /a*/.examples(max_repeater_variance: 5)
