@@ -1,5 +1,6 @@
 module RegexpExamples
-  class MaxResultsLimiter # Base class
+  # Abstract (base) class to assist limiting Regexp.examples max results
+  class MaxResultsLimiter
     def initialize(initial_results_count)
       @results_count = initial_results_count
     end
