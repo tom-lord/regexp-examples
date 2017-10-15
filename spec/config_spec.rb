@@ -1,4 +1,4 @@
-RSpec.describe RegexpExamples::ResultCountLimiters do
+RSpec.describe RegexpExamples::Config do
 
   describe 'max_repeater_variance' do
     context 'as a passed parameter' do
@@ -38,11 +38,11 @@ RSpec.describe RegexpExamples::ResultCountLimiters do
 
     context 'as a global setting' do
       before do
-        @original = RegexpExamples::ResultCountLimiters.max_results_limit
-        RegexpExamples::ResultCountLimiters.max_results_limit = 5
+        @original = RegexpExamples::Config.max_results_limit
+        RegexpExamples::Config.max_results_limit = 5
       end
       after do
-        RegexpExamples::ResultCountLimiters.max_results_limit = @original
+        RegexpExamples::Config.max_results_limit = @original
       end
 
       it 'sets limit without passing explicitly' do
@@ -66,11 +66,11 @@ RSpec.describe RegexpExamples::ResultCountLimiters do
 
     context 'as a global setting' do
       before do
-        @original = RegexpExamples::ResultCountLimiters.max_repeater_variance
-        RegexpExamples::ResultCountLimiters.max_repeater_variance = 5
+        @original = RegexpExamples::Config.max_repeater_variance
+        RegexpExamples::Config.max_repeater_variance = 5
       end
       after do
-        RegexpExamples::ResultCountLimiters.max_repeater_variance = @original
+        RegexpExamples::Config.max_repeater_variance = @original
       end
 
       it 'sets limit without passing explicitly' do
@@ -94,11 +94,11 @@ RSpec.describe RegexpExamples::ResultCountLimiters do
 
     context 'as a global setting' do
       before do
-        @original = RegexpExamples::ResultCountLimiters.max_group_results
-        RegexpExamples::ResultCountLimiters.max_group_results = 10
+        @original = RegexpExamples::Config.max_group_results
+        RegexpExamples::Config.max_group_results = 10
       end
       after do
-        RegexpExamples::ResultCountLimiters.max_group_results = @original
+        RegexpExamples::Config.max_group_results = @original
       end
 
       it 'sets limit without passing explicitly' do
@@ -107,6 +107,5 @@ RSpec.describe RegexpExamples::ResultCountLimiters do
       end
     end
   end # describe 'max_group_results'
-
 
 end
