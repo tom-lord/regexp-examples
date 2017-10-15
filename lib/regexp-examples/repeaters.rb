@@ -80,21 +80,14 @@ module RegexpExamples
     def initialize(group, min, has_comma, max)
       super(group)
       @min_repeats = min || 0
-      if max # e.g. {1,100} --> Treat as {1,3} (by default max_repeater_variance)
-        @max_repeats = smallest(
-          max, @min_repeats + RegexpExamples::Config.max_repeater_variance
-        )
-      elsif has_comma # e.g. {2,} --> Treat as {2,4} (by default max_repeater_variance)
-        @max_repeats = @min_repeats + RegexpExamples::Config.max_repeater_variance
-      else # e.g. {3} --> Treat as {3,3}
-        @max_repeats = @min_repeats
-      end
-    end
-
-    private
-
-    def smallest(x, y)
-      x < y ? x : y
+      @max_repeats = if !has_comma
+                       @min_repeats
+                     else
+                       [
+                         max,
+                         @min_repeats + RegexpExamples::Config.max_repeater_variance
+                       ].compact.min
+                     end
     end
   end
 end
