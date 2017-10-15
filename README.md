@@ -12,7 +12,6 @@ Extends the `Regexp` class with the methods: `Regexp#examples` and `Regexp#rando
 
 \* If the regex has an infinite number of possible strings that match it, such as `/a*b+c{2,}/`,
 or a huge number of possible matches, such as `/.\w/`, then only a subset of these will be listed.
-
 For more detail on this, see [configuration options](#configuration-options).
 
 If you'd like to understand how/why this gem works, please check out my [blog post](https://tom-lord.github.io/Reverse-Engineering-Regular-Expressions/) about it.
@@ -149,7 +148,9 @@ When generating examples, the gem uses 3 configurable values to limit how many e
 
 `Rexexp#examples` makes use of *all* these options; `Rexexp#random_example` only uses `max_repeater_variance`, since the other options are redundant.
 
-To use an alternative value, simply pass the configuration option as follows:
+### Defining custom configuration values
+
+To use an alternative value, you can either pass the configuration option as a parameter:
 
 ```ruby
 /a*/.examples(max_repeater_variance: 5)
@@ -162,6 +163,24 @@ To use an alternative value, simply pass the configuration option as follows:
   #=> "A very unlikely result!"
 ```
 
+Or, set an alternative value *within a block*:
+
+```ruby
+RegexpExamples::Config.with_configuration(max_repeater_variance: 5) do
+  # ...
+end
+```
+
+Or, globally set a different default value:
+
+```ruby
+# e.g In a rails project, you may wish to place this in
+# config/initializers/regexp_examples.rb
+RegexpExamples::Config.max_repeater_variance = 5
+RegexpExamples::Config.max_group_results = 10
+RegexpExamples::Config.max_results_limit = 20000
+```
+
 A sensible use case might be, for example, to generate all 1-5 digit strings:
 
 ```ruby
@@ -169,11 +188,15 @@ A sensible use case might be, for example, to generate all 1-5 digit strings:
   #=> ['0', '1', '2', ..., '99998', '99999']
 ```
 
+### Configuration Notes
+
 Due to code optimisation, `Regexp#random_example` runs pretty fast even on very complex patterns.
 (I.e. It's typically a _lot_ faster than using `/pattern/.examples.sample(1)`.)
 For instance, the following takes no more than ~ 1 second on my machine:
 
 `/.*\w+\d{100}/.random_example(max_repeater_variance: 1000)`
+
+All forms of configuration mentioned above **are thread safe**.
 
 ## Bugs and TODOs
 

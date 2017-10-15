@@ -1,9 +1,47 @@
 # :nodoc:
 module RegexpExamples
   # Configuration settings to limit the number/length of Regexp examples generated
-  class ResultCountLimiters
+  class Config
+    class << self
+      def with_configuration(**new_config)
+        original_config = config.dup
+
+        begin
+          self.config = new_config
+          result = yield
+        ensure
+          self.config = original_config
+        end
+
+        result
+      end
+
+      # Thread-safe getters and setters
+      %i[max_repeater_variance max_group_results max_results_limit].each do |m|
+        define_method(m) do
+          config[m]
+        end
+        define_method("#{m}=") do |value|
+          config[m] = value
+        end
+      end
+
+      private
+
+      def config=(**args)
+        Thread.current[:regexp_examples_config].merge!(args)
+      end
+
+      def config
+        Thread.current[:regexp_examples_config] ||= {
+          max_repeater_variance: MAX_REPEATER_VARIANCE_DEFAULT,
+          max_group_results: MAX_GROUP_RESULTS_DEFAULT,
+          max_results_limit: MAX_RESULTS_LIMIT_DEFAULT
+        }
+      end
+    end
     # The maximum variance for any given repeater, to prevent a huge/infinite number of
-    # examples from being listed. For example, if @@max_repeater_variance = 2 then:
+    # examples from being listed. For example, if self.max_repeater_variance = 2 then:
     # .* is equivalent to .{0,2}
     # .+ is equivalent to .{1,3}
     # .{2,} is equivalent to .{2,4}
@@ -12,7 +50,7 @@ module RegexpExamples
     MAX_REPEATER_VARIANCE_DEFAULT = 2
 
     # Maximum number of characters returned from a char set, to reduce output spam
-    # For example, if @@max_group_results = 5 then:
+    # For example, if self.max_group_results = 5 then:
     # \d is equivalent to [01234]
     # \w is equivalent to [abcde]
     MAX_GROUP_RESULTS_DEFAULT = 5
@@ -22,28 +60,6 @@ module RegexpExamples
     # /[ab]{30}/.examples
     # (Which would attempt to generate 2**30 == 1073741824 examples!!!)
     MAX_RESULTS_LIMIT_DEFAULT = 10_000
-    class << self
-      attr_reader :max_repeater_variance, :max_group_results, :max_results_limit
-      def configure!(max_repeater_variance: nil,
-                     max_group_results: nil,
-                     max_results_limit: nil)
-        @max_repeater_variance = (max_repeater_variance || MAX_REPEATER_VARIANCE_DEFAULT)
-        @max_group_results = (max_group_results || MAX_GROUP_RESULTS_DEFAULT)
-        @max_results_limit = (max_results_limit || MAX_RESULTS_LIMIT_DEFAULT)
-      end
-    end
-  end
-
-  def self.max_repeater_variance
-    ResultCountLimiters.max_repeater_variance
-  end
-
-  def self.max_group_results
-    ResultCountLimiters.max_group_results
-  end
-
-  def self.max_results_limit
-    ResultCountLimiters.max_results_limit
   end
 
   # Definitions of various special characters, used in regular expressions.
