@@ -25,7 +25,8 @@ module RegexpExamples
 
     def results_allowed_from(partial_results, limiter_method)
       partial_results.first(
-        RegexpExamples.max_results_limit.public_send(limiter_method, @results_count)
+        RegexpExamples::Config.max_results_limit
+          .public_send(limiter_method, @results_count)
       )
     end
   end

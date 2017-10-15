@@ -61,18 +61,6 @@ module RegexpExamples
     self.max_results_limit = MAX_RESULTS_LIMIT_DEFAULT
   end
 
-  def self.max_repeater_variance
-    Config.max_repeater_variance
-  end
-
-  def self.max_group_results
-    Config.max_group_results
-  end
-
-  def self.max_results_limit
-    Config.max_results_limit
-  end
-
   # Definitions of various special characters, used in regular expressions.
   # For example, `/\h/.examples` will return the value of `Hex` in this module
   module CharSets
