@@ -108,4 +108,28 @@ RSpec.describe RegexpExamples::Config do
     end
   end # describe 'max_group_results'
 
+  describe 'thread safety' do
+    it 'uses thread-local global config values' do
+      thread = Thread.new do
+        RegexpExamples::Config.max_group_results = 1
+        expect(/\d/.examples).to eq %w(0)
+      end
+      sleep 0.1 # Give the above thread time to run
+      expect(/\d/.examples).to eq %w(0 1 2 3 4)
+      thread.join
+    end
+
+    it 'uses thread-local block config values' do
+      thread = Thread.new do
+        RegexpExamples::Config.with_configuration(max_group_results: 1) do
+          expect(/\d/.examples).to eq %w(0)
+          sleep 0.2 # Give the below thread time to run while this block is open
+        end
+      end
+      sleep 0.1 # Give the above thread time to run
+      expect(/\d/.examples).to eq %w(0 1 2 3 4)
+      thread.join
+    end
+  end # describe 'thread safety'
+
 end
