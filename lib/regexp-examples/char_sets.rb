@@ -19,14 +19,14 @@ module RegexpExamples
 
     # Map of special regex characters, to their associated character sets
     BackslashCharMap = {
-      'd' => CharSets::Digit,
-      'D' => CharSets::Any - CharSets::Digit,
-      'w' => CharSets::Word,
-      'W' => CharSets::Any - CharSets::Word,
-      's' => CharSets::Whitespace,
-      'S' => CharSets::Any - CharSets::Whitespace,
-      'h' => CharSets::Hex,
-      'H' => CharSets::Any - CharSets::Hex,
+      'd' => Digit,
+      'D' => Any - Digit,
+      'w' => Word,
+      'W' => Any - Word,
+      's' => Whitespace,
+      'S' => Any - Whitespace,
+      'h' => Hex,
+      'H' => Any - Hex,
 
       't' => ["\t"], # tab
       'n' => ["\n"], # new line
@@ -38,20 +38,20 @@ module RegexpExamples
     }.freeze
 
     POSIXCharMap = {
-      'alnum'  => CharSets::Upper | CharSets::Lower | CharSets::Digit,
-      'alpha'  => CharSets::Upper | CharSets::Lower,
+      'alnum'  => Upper | Lower | Digit,
+      'alpha'  => Upper | Lower,
       'blank'  => [' ', "\t"],
-      'cntrl'  => CharSets::Control,
-      'digit'  => CharSets::Digit,
-      'graph'  => (CharSets::Any - CharSets::Control) - [' '], #  Visible chars
-      'lower'  => CharSets::Lower,
-      'print'  => CharSets::Any - CharSets::Control,
-      'punct'  => CharSets::Punct,
-      'space'  => CharSets::Whitespace,
-      'upper'  => CharSets::Upper,
-      'xdigit' => CharSets::Hex,
-      'word'   => CharSets::Word,
-      'ascii'  => CharSets::Any
+      'cntrl'  => Control,
+      'digit'  => Digit,
+      'graph'  => (Any - Control) - [' '], #  Visible chars
+      'lower'  => Lower,
+      'print'  => Any - Control,
+      'punct'  => Punct,
+      'space'  => Whitespace,
+      'upper'  => Upper,
+      'xdigit' => Hex,
+      'word'   => Word,
+      'ascii'  => Any
     }.freeze
 
     NamedPropertyCharMap = UnicodeCharRanges.instance
