@@ -8,7 +8,7 @@ require 'pry'
 # Several of these tests (intentionally) use "weird" regex patterns,
 # that spam annoying warnings when running.
 # E.g. warning: invalid back reference: /\k/
-# and  warning: character class has ']' without escape: /[]]/ 
+# and  warning: character class has ']' without escape: /[]]/
 # This config disables those warnings.
 $VERBOSE = nil
 

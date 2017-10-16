@@ -100,7 +100,7 @@ RSpec.describe Regexp, '#examples' do
 
     context 'for escaped characters' do
       all_letters = Array('a'..'z') | Array('A'..'Z')
-      special_letters = %w(b c g p u x z A B C G M P Z)
+      special_letters = %w[b c g p u x z A B C G M P Z]
       valid_letters = all_letters - special_letters
 
       valid_letters.each do |char|
@@ -185,7 +185,7 @@ RSpec.describe Regexp, '#examples' do
       )
       # An exhaustive set of tests for all named properties!!! This is useful
       # for verifying the PStore contains correct values for all ruby versions
-      %w(
+      %w[
         Alnum Alpha Blank Cntrl Digit Graph Lower Print Punct Space Upper XDigit
         Word ASCII Any Assigned L Ll Lm Lo Lt Lu M Mn Mc Me N Nd Nl No P Pc Pd
         Ps Pe Pi Pf Po S Sm Sc Sk So Z Zs Zl Zp C Cc Cf Cn Co Arabic Armenian
@@ -196,7 +196,7 @@ RSpec.describe Regexp, '#examples' do
         Mongolian Myanmar New_Tai_Lue Nko Ogham Ol_Chiki Oriya Phags_Pa Rejang
         Runic Saurashtra Sinhala Sundanese Syloti_Nagri Syriac Tagalog Tagbanwa
         Tai_Le Tamil Telugu Thaana Thai Tibetan Tifinagh Vai Yi
-      ).each do |property|
+      ].each do |property|
         it "examples for /\p{#{property}}/" do
           regexp_examples = /\p{#{property}}/.examples(max_group_results: 99_999)
           expect(regexp_examples)
@@ -209,10 +209,10 @@ RSpec.describe Regexp, '#examples' do
       end
 
       # The following seem to genuinely have no matching examples (!!??!!?!)
-      %w(
+      %w[
         Cs Carian Cuneiform Cypriot Deseret Gothic Kharoshthi Linear_B Lycian
         Lydian Old_Italic Old_Persian Osmanya Phoenician Shavian Ugaritic
-      ).each do |property|
+      ].each do |property|
         examples_are_empty(/\p{#{property}}/)
       end
     end
@@ -292,21 +292,21 @@ RSpec.describe Regexp, '#examples' do
       # More rigorous tests to assert that ALL examples are being listed
       context 'default config options' do
         # Simple examples
-        it { expect(/[ab]{2}/.examples).to match_array %w(aa ab ba bb) }
-        it { expect(/(a|b){2}/.examples).to match_array %w(aa ab ba bb) }
+        it { expect(/[ab]{2}/.examples).to match_array %w[aa ab ba bb] }
+        it { expect(/(a|b){2}/.examples).to match_array %w[aa ab ba bb] }
         it { expect(/a+|b?/.examples).to match_array ['a', 'aa', 'aaa', '', 'b'] }
 
         # Only display unique examples:
-        it { expect(/a|a|b|b/.examples).to match_array %w(a b) }
-        it { expect(/[ccdd]/.examples).to match_array %w(c d) }
+        it { expect(/a|a|b|b/.examples).to match_array %w[a b] }
+        it { expect(/[ccdd]/.examples).to match_array %w[c d] }
 
         # a{1}? should be equivalent to (?:a{1})?, i.e. NOT a "non-greedy quantifier"
         it { expect(/a{1}?/.examples).to match_array ['', 'a'] }
       end
 
       context 'end of string' do
-        it { expect(/test\z/.examples).to match_array %w(test) }
-        it { expect(/test\Z/.examples).to match_array ['test', "test\n"] }
+        it { expect(/test\z/.examples).to match_array %w[test] }
+        it { expect(/test\Z/.examples).to match_array %W[test test\n] }
       end
 
       context 'backreferences and escaped octal combined' do
@@ -317,12 +317,12 @@ RSpec.describe Regexp, '#examples' do
       end
 
       context 'case insensitive' do
-        it { expect(/ab/i.examples).to match_array %w(ab aB Ab AB) }
+        it { expect(/ab/i.examples).to match_array %w[ab aB Ab AB] }
         it do
           expect(/a+/i.examples)
-            .to match_array %w(a A aa aA Aa AA aaa aaA aAa aAA Aaa AaA AAa AAA)
+            .to match_array %w[a A aa aA Aa AA aaa aaA aAa aAA Aaa AaA AAa AAA]
         end
-        it { expect(/([ab])\1/i.examples).to match_array %w(aa bb AA BB) }
+        it { expect(/([ab])\1/i.examples).to match_array %w[aa bb AA BB] }
       end
 
       context 'multiline' do
@@ -331,30 +331,30 @@ RSpec.describe Regexp, '#examples' do
       end
 
       context 'exteded form' do
-        it { expect(/a b c/x.examples).to eq %w(abc) }
-        it { expect(/a#comment/x.examples).to eq %w(a) }
+        it { expect(/a b c/x.examples).to eq %w[abc] }
+        it { expect(/a#comment/x.examples).to eq %w[a] }
         it do
           expect(
             /
               line1 #comment
               line2 #comment
             /x.examples
-          ).to eq %w(line1line2)
+          ).to eq %w[line1line2]
         end
       end
 
       context 'options toggling' do
         context 'rest of string' do
-          it { expect(/a(?i)b(?-i)c/.examples).to match_array %w(abc aBc) }
-          it { expect(/a(?x)   b(?-x) c/.examples).to eq %w(ab\ c) }
+          it { expect(/a(?i)b(?-i)c/.examples).to match_array %w[abc aBc] }
+          it { expect(/a(?x)   b(?-x) c/.examples).to eq %w[ab\ c] }
           it { expect(/(?m)./.examples(max_group_results: 999)).to include "\n" }
           # Toggle "groups" should not increase backref group count:
-          it { expect(/(?i)(a)-\1/.examples).to match_array %w(a-a A-A) }
+          it { expect(/(?i)(a)-\1/.examples).to match_array %w[a-a A-A] }
         end
         context 'subexpression' do
-          it { expect(/a(?i:b)c/.examples).to match_array %w(abc aBc) }
-          it { expect(/a(?i:b(?-i:c))/.examples).to match_array %w(abc aBc) }
-          it { expect(/a(?-i:b)c/i.examples).to match_array %w(abc abC Abc AbC) }
+          it { expect(/a(?i:b)c/.examples).to match_array %w[abc aBc] }
+          it { expect(/a(?i:b(?-i:c))/.examples).to match_array %w[abc aBc] }
+          it { expect(/a(?-i:b)c/i.examples).to match_array %w[abc abC Abc AbC] }
         end
       end
     end # context 'exact examples match'
