@@ -54,6 +54,6 @@ module RegexpExamples
       'ascii'  => CharSets::Any
     }.freeze
 
-    NamedPropertyCharMap = UnicodeCharRanges.new
+    NamedPropertyCharMap = UnicodeCharRanges.instance
   end.freeze
 end
