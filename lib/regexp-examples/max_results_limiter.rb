@@ -17,11 +17,11 @@ module RegexpExamples
     end
 
     def cumulate_total(new_results_count, cumulator_method)
-      if @results_count.zero?
-        @results_count = new_results_count
-      else
-        @results_count = @results_count.public_send(cumulator_method, new_results_count)
-      end
+      @results_count = if @results_count.zero?
+                         new_results_count
+                       else
+                         @results_count.public_send(cumulator_method, new_results_count)
+                       end
     end
 
     def results_allowed_from(partial_results, limiter_method)
