@@ -1,6 +1,7 @@
 require_relative 'regexp-examples/unicode_char_ranges'
 require_relative 'regexp-examples/chargroup_parser'
-require_relative 'regexp-examples/constants'
+require_relative 'regexp-examples/config'
+require_relative 'regexp-examples/char_sets'
 require_relative 'regexp-examples/groups'
 require_relative 'regexp-examples/backreferences'
 require_relative 'regexp-examples/max_results_limiter'

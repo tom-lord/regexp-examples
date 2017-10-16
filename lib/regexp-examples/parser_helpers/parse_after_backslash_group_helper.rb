@@ -9,7 +9,7 @@ module RegexpExamples
         parse_regular_backreference_group(Regexp.last_match(1))
       elsif rest_of_string =~ /\Ak['<]([\w-]+)['>]/
         parse_named_backreference_group(Regexp.last_match(1))
-      elsif BackslashCharMap.keys.include?(next_char)
+      elsif CharSets::BackslashCharMap.keys.include?(next_char)
         parse_backslash_special_char
       elsif rest_of_string =~ /\A(c|C-)(.)/
         parse_backslash_control_char(Regexp.last_match(1), Regexp.last_match(2))
@@ -60,7 +60,7 @@ module RegexpExamples
 
     def parse_backslash_special_char
       CharGroup.new(
-        BackslashCharMap[next_char].dup,
+        CharSets::BackslashCharMap[next_char].dup,
         @ignorecase
       )
     end
@@ -97,7 +97,7 @@ module RegexpExamples
       # Beware of double negatives! E.g. /\P{^Space}/
       is_negative = (p_negation == 'P') ^ (caret_negation == '^')
       CharGroup.new(
-        negate_if(NamedPropertyCharMap[property_name.downcase], is_negative),
+        negate_if(CharSets::NamedPropertyCharMap[property_name.downcase], is_negative),
         @ignorecase
       )
     end
