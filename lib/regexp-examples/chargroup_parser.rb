@@ -67,7 +67,7 @@ module RegexpExamples
     end
 
     def parse_posix_group(negation_flag, name)
-      @charset.concat negate_if(POSIXCharMap[name], !negation_flag.empty?)
+      @charset.concat negate_if(CharSets::POSIXCharMap[name], !negation_flag.empty?)
       @current_position += (negation_flag.length + # 0 or 1, if '^' is present
                             name.length +
                             2) # Length of opening and closing colons (always 2)
@@ -84,13 +84,10 @@ module RegexpExamples
     end
 
     def parse_after_backslash
-      case next_char
-      when 'b'
+      if next_char == 'b'
         ["\b"]
-      when *BackslashCharMap.keys
-        BackslashCharMap[next_char]
       else
-        [next_char]
+        CharSets::BackslashCharMap.fetch(next_char, [next_char])
       end
     end
 
@@ -122,12 +119,11 @@ module RegexpExamples
     def parse_after_hyphen
       if regexp_string[@current_position + 1] == ']' # e.g. /[abc-]/ -- not a range!
         @charset << '-'
-        @current_position += 1
       else
         @current_position += 1
         @charset.concat((@charset.last..parse_checking_backlash.first).to_a)
-        @current_position += 1
       end
+      @current_position += 1
     end
 
     def rest_of_string
