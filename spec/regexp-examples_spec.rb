@@ -261,6 +261,10 @@ RSpec.describe Regexp, '#examples' do
       )
     end
 
+    context 'for empty regex' do
+      it { expect(//.examples).to eq [''] }
+    end
+
     context 'for comment groups' do
       examples_exist_and_match(
         /a(?#comment)b/,

@@ -29,7 +29,7 @@ module RegexpExamples
     end
 
     def parse
-      repeaters = []
+      repeaters = [PlaceHolderGroup.new]
       until end_of_regexp
         group = parse_group(repeaters)
         return [group] if group.is_a? OrGroup
