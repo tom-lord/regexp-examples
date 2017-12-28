@@ -1,3 +1,8 @@
+# Load from a separate file to avoid unrescuable SyntaxError
+if RUBY_VERSION >= '2.4.1'
+  require_relative 'regexp-examples_spec_2.4.1'
+end
+
 RSpec.describe Regexp, '#examples' do
   def self.examples_exist_and_match(*regexps)
     regexps.each do |regexp|
@@ -69,7 +74,7 @@ RSpec.describe Regexp, '#examples' do
         /[abc-e]/,
         /[^a-zA-Z]/,
         /[\w]/,
-        /[]]/, # TODO: How to suppress annoying warnings on this test?
+        /[]]/,
         /[\]]/,
         /[\\]/,
         /[\\\]]/,
