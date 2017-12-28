@@ -97,6 +97,7 @@ RSpec.describe Regexp, '#examples' do
       examples_exist_and_match(
         /(normal)/,
         /(?:nocapture)/,
+        /(?:nocapture)(normal) \1/, # Ensure the group counter is correct
         /(?<name>namedgroup)/,
         /(?<name>namedgroup) \k<name>/,
         /(?<name>namedgroup) \k'name'/
@@ -273,6 +274,7 @@ RSpec.describe Regexp, '#examples' do
     context 'for comment groups' do
       examples_exist_and_match(
         /a(?#comment)b/,
+        /(?#comment)(group1)\1/, # Ensure the group counter is correct
         /a(?#ugly backslashy\ comment\\\))b/
       )
     end
