@@ -111,6 +111,9 @@ Long answer:
   * ...and even if nested or optional, e.g. `/(even(this(works?))) \1 \2 \3/`, `/what about (this)? \1/`
   * Non-capture groups, e.g. `/(?:foo)/`
   * Comment groups, e.g. `/foo(?#comment)bar/`
+  * [Absent operator groups, e.g. `/(?~exp)/`](https://medium.com/rubyinside/the-new-absent-operator-in-ruby-s-regular-expressions-7c3ef6cd0b99)
+    This feature is available in ruby version `>= 2.4.1`.
+    However, support in this gem is [limited](https://github.com/tom-lord/regexp-examples/issues/22).
 * Control characters, e.g. `/\ca/`, `/\cZ/`, `/\C-9/`
 * Escape sequences, e.g. `/\x42/`, `/\x5word/`, `/#{"\x80".force_encoding("ASCII-8BIT")}/`
 * Unicode characters, e.g. `/\u0123/`, `/\uabcd/`, `/\u{789}/`
@@ -206,8 +209,6 @@ There are no known major bugs with this library. However, there are a few obscur
 * Conditional capture groups, e.g. `/(group1)? (?(1)yes|no)/.examples` are not yet supported. (This example *should* return: `["group1 yes", " no"]`)
 * Nested repeat operators are incorrectly parsed, e.g. `/b{2}{3}/` - which *should* be interpreted like `/b{6}/`. (However, there is probably no reason
  to ever write regexes like this!)
-* A new ["absent operator" (`/(?~exp)/`)](https://medium.com/rubyinside/the-new-absent-operator-in-ruby-s-regular-expressions-7c3ef6cd0b99)
- was added to Ruby version `2.4.1`. This gem does not yet support it (or gracefully fail when used).
 * Ideally, `regexp#examples` should always return up to `max_results_limit`. Currenty, it usually "aborts" before this limit is reached.
  (I.e. the exact number of examples generated can be hard to predict, for complex patterns.)
 
