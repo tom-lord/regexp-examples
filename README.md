@@ -204,13 +204,10 @@ All forms of configuration mentioned above **are thread safe**.
 
 ## Bugs and TODOs
 
-There are no known major bugs with this library. However, there are a few obscure issues that you *may* encounter:
+There are no known major bugs with this library. However, there are a few obscure issues that you *may* encounter.
 
-* Conditional capture groups, e.g. `/(group1)? (?(1)yes|no)/.examples` are not yet supported. (This example *should* return: `["group1 yes", " no"]`)
-* Nested repeat operators are incorrectly parsed, e.g. `/b{2}{3}/` - which *should* be interpreted like `/b{6}/`. (However, there is probably no reason
- to ever write regexes like this!)
-* Ideally, `regexp#examples` should always return up to `max_results_limit`. Currenty, it usually "aborts" before this limit is reached.
- (I.e. the exact number of examples generated can be hard to predict, for complex patterns.)
+All known bugs/missing features are [documented in GitHub](https://github.com/tom-lord/regexp-examples/issues).
+Please discuss known issues there, or raise a new issue if required. Pull requests are welcome!
 
 Some of the most obscure regexp features are not even mentioned in [the ruby docs](http://ruby-doc.org/core/Regexp.html).
 However, full documentation on all the intricate obscurities in the ruby (version 2.x) regexp parser can be found
