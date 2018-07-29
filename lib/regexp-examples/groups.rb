@@ -125,7 +125,7 @@ module RegexpExamples
     # Generates the result of each contained group
     # and adds the filled group of each result to itself
     def result
-      strings = @groups.map { |repeater| repeater.public_send(__method__) }
+      strings = @groups.map { |repeater| repeater.public_send(__callee__) }
       RegexpExamples.permutations_of_strings(strings).map do |result|
         GroupResult.new(result, group_id)
       end
