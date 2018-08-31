@@ -9,7 +9,7 @@ module RegexpExamples
         parse_regular_backreference_group(Regexp.last_match(1))
       elsif rest_of_string =~ /\Ak['<]([\w-]+)['>]/
         parse_named_backreference_group(Regexp.last_match(1))
-      elsif CharSets::BackslashCharMap.keys.include?(next_char)
+      elsif CharSets::BackslashCharMap.key?(next_char)
         parse_backslash_special_char
       elsif rest_of_string =~ /\A(c|C-)(.)/
         parse_backslash_control_char(Regexp.last_match(1), Regexp.last_match(2))
@@ -27,11 +27,11 @@ module RegexpExamples
         parse_backslash_linebreak
       elsif next_char == 'g'
         parse_backslash_subexpresion_call
-      elsif next_char =~ /[bB]/
+      elsif /[bB]/.match?(next_char)
         parse_backslash_anchor
-      elsif next_char =~ /[AG]/
+      elsif /[AG]/.match?(next_char)
         parse_backslash_start_of_string
-      elsif next_char =~ /[zZ]/
+      elsif /[zZ]/.match?(next_char)
         parse_backslash_end_of_string
       else
         parse_single_char_group(next_char)
@@ -45,7 +45,7 @@ module RegexpExamples
 
     def parse_named_backreference_group(group_name)
       @current_position += (group_name.length + 2)
-      group_id = if group_name.to_i < 0
+      group_id = if group_name.to_i.negative?
                    # RELATIVE group number, e.g. /(a)(b)(c)(d) \k<-2>/
                    @num_groups + group_name.to_i + 1
                  else
@@ -111,7 +111,7 @@ module RegexpExamples
 
     def parse_backslash_subexpresion_call
       raise IllegalSyntaxError,
-            'Subexpression calls (\\g) cannot be supported, as they are not regular'
+        'Subexpression calls (\\g) cannot be supported, as they are not regular'
     end
 
     def parse_backslash_anchor
@@ -140,7 +140,7 @@ module RegexpExamples
 
     def raise_anchors_exception!
       raise IllegalSyntaxError,
-            "Anchors ('#{next_char}') cannot be supported, as they are not regular"
+        "Anchors ('#{next_char}') cannot be supported, as they are not regular"
     end
   end
 end

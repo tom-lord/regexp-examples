@@ -16,7 +16,7 @@ module RegexpExamples
     end
 
     def parse_reluctant_or_possessive_repeater
-      if next_char =~ /[?+]/
+      if /[?+]/.match?(next_char)
         # Don't treat these repeaters any differently when generating examples
         @current_position += 1
       end

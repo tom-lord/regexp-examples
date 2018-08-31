@@ -1,7 +1,5 @@
 # Load from a separate file to avoid unrescuable SyntaxError
-if RUBY_VERSION >= '2.4.1'
-  require_relative 'regexp-examples_spec_2.4.1'
-end
+require_relative 'regexp-examples_spec_2.4.1' if RUBY_VERSION >= '2.4.1'
 
 RSpec.describe Regexp, '#examples' do
   def self.examples_exist_and_match(*regexps)
@@ -207,7 +205,7 @@ RSpec.describe Regexp, '#examples' do
           regexp_examples = /\p{#{property}}/.examples(max_group_results: 99_999)
           expect(regexp_examples)
             .not_to be_empty,
-                    "No examples were generated for regexp: /\p{#{property}}/"
+              "No examples were generated for regexp: /\p{#{property}}/"
           # Just do one big check, for test system performance (~30% faster)
           # (Otherwise, we're doing up to 128 checks on 123 properties!!!)
           expect(regexp_examples.join('')).to match(/\A\p{#{property}}+\z/)

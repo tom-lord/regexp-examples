@@ -4,7 +4,7 @@ module RegexpExamples
     protected
 
     def parse_caret
-      if @current_position == 0
+      if @current_position.zero?
         PlaceHolderGroup.new # Ignore the "illegal" character
       else
         raise_anchors_exception!

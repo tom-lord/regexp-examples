@@ -1,5 +1,19 @@
+inherit_from: .rubocop_todo.yml
+
 Metrics/LineLength:
   Max: 90
 
 Naming/FileName:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Layout/AlignParameters:
+  EnforcedStyle: with_fixed_indentation
+
+Layout/MultilineMethodCallBraceLayout:
+  EnforcedStyle: new_line
+
+Layout/MultilineMethodCallIndentation:
   Enabled: false

@@ -11,7 +11,7 @@ module RegexpExamples
   # permutations_of_strings [ [] ] #=> nil
   # (For example, ths occurs during /[^\d\D]/.examples #=> [])
   def self.permutations_of_strings(arrays_of_strings,
-                                   max_results_limiter = MaxResultsLimiterByProduct.new)
+    max_results_limiter = MaxResultsLimiterByProduct.new)
     partial_result = max_results_limiter.limit_results(arrays_of_strings.shift)
     return partial_result if arrays_of_strings.empty?
     partial_result.product(

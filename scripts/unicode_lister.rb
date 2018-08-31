@@ -9,7 +9,7 @@ require_relative '../lib/regexp-examples/unicode_char_ranges'
 
 # Taken from ruby documentation:
 # http://ruby-doc.org//core-2.2.0/Regexp.html#class-Regexp-label-Character+Properties
-NAMED_GROUPS = %w(
+NAMED_GROUPS = %w[
   Alnum Alpha Blank Cntrl Digit Graph Lower Print Punct Space Upper XDigit Word ASCII
   Any Assigned
 
@@ -24,7 +24,7 @@ NAMED_GROUPS = %w(
   Old_Italic Old_Persian Oriya Osmanya Phags_Pa Phoenician Rejang Runic Saurashtra
   Shavian Sinhala Sundanese Syloti_Nagri Syriac Tagalog Tagbanwa Tai_Le Tamil Telugu
   Thaana Thai Tibetan Tifinagh Ugaritic Vai Yi
-)
+].freeze
 
 # Note: For the range 55296..57343, these are reserved values that are not legal
 # unicode characters.
@@ -57,9 +57,10 @@ store.transaction do
     # Only generating first 128 matches, for performance...
     # (I have tried this with generating ALL examples, and it makes the ruby gem
     # painfully slow and bloated... Especially the test suite.)
-    matching_codes = [(0..55_295), (57_344..65_535)].map(&:to_a).flatten.lazy
-                     .select { |x| /\p{#{name}}/ =~ eval("?\\u{#{x.to_s(16)}}") }
-                     .first(128)
+    matching_codes = [(0..55_295), (57_344..65_535)]
+      .map(&:to_a).flatten.lazy
+      .select { |x| /\p{#{name}}/ =~ eval("?\\u{#{x.to_s(16)}}") }
+      .first(128)
     store[name.downcase] = calculate_ranges(matching_codes)
     puts "(#{count}/#{NAMED_GROUPS.length}) Finished property: #{name}"
   end

@@ -64,10 +64,10 @@ module RegexpExamples
             end
           elsif %w[! =].include?(match[2]) # e.g. /(?=lookahead)/, /(?!neglookahead)/
             raise IllegalSyntaxError,
-                  'Lookaheads are not regular; cannot generate examples'
+              'Lookaheads are not regular; cannot generate examples'
           elsif %w[! =].include?(match[3]) # e.g. /(?<=lookbehind)/, /(?<!neglookbehind)/
             raise IllegalSyntaxError,
-                  'Lookbehinds are not regular; cannot generate examples'
+              'Lookbehinds are not regular; cannot generate examples'
           else # e.g. /(?<name>namedgroup)/
             @current_position += (match[3].length + 3)
             group_id = match[3]
