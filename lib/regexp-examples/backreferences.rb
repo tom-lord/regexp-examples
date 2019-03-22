@@ -3,7 +3,7 @@ module RegexpExamples
   # In a nutshell, this works by doing the following:
   # * Given a regex that contains a capute group and backreference, e.g. `/(a|b) \1/`
   # * After generating examples, the backreference is tored as a placeholder:
-  #   `["a __1__", "b __1__"]`
+  #   `["a __BACKREF-PLACEHOLDER-1__", "b __BACKREF-PLACEHOLDER-1__"]`
   # * This class is used to fill in each placeholder accordingly:
   #   `["a a", "b b"]`
   # * Also, beware of octal groups and cases where the backref invalidates the example!!
@@ -15,7 +15,7 @@ module RegexpExamples
 
     def substitute_backreferences(full_examples)
       full_examples.map do |full_example|
-        # For instance, one "full example" from /(a|(b)) \2/: "a __2__"
+        # For instance, one "full example" from /(a|(b)) \2/: "a __BACKREF-PLACEHOLDER-2__"
         # should be rejected because the backref (\2) does not exist
         catch(:backref_not_found) do
           substitute_backrefs_one_at_a_time(full_example)

@@ -181,10 +181,10 @@ module RegexpExamples
   # We substitute backreferences with PLACEHOLDERS. These are then, later,
   # replaced by the appropriate value. (See BackReferenceReplacer)
   # The simplest example is /(a) \1/ - So, we temporarily treat the "result"
-  # of /\1/ as being "__1__". It later gets updated.
+  # of /\1/ as being "__BACKREF-PLACEHOLDER-1__". It later gets updated.
   class BackReferenceGroup
     include RandomResultBySample
-    PLACEHOLDER_FORMAT = '__%s__'.freeze
+    PLACEHOLDER_FORMAT = '__BACKREF-PLACEHOLDER-%s__'.freeze
     attr_reader :id
     def initialize(id)
       @id = id
