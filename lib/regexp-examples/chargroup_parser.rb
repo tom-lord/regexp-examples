@@ -1,4 +1,6 @@
 require_relative 'parser_helpers/charset_negation_helper'
+require_relative 'parser_helpers/parse_group_helper'
+require_relative 'parser_helpers/parse_after_backslash_group_helper'
 
 module RegexpExamples
   # A "sub-parser", for char groups in a regular expression
@@ -13,6 +15,8 @@ module RegexpExamples
   # [[^:alpha:]&&[\n]a-c] - all of the above!!!! (should match "\n")
   class ChargroupParser
     include CharsetNegationHelper
+    include ParseGroupHelper
+    include ParseAfterBackslashGroupHelper
 
     attr_reader :regexp_string, :current_position
     alias length current_position
@@ -37,7 +41,6 @@ module RegexpExamples
           parse_after_ampersand
         else
           @charset.concat parse_checking_backlash
-          @current_position += 1
         end
       end
 
@@ -79,15 +82,23 @@ module RegexpExamples
         @current_position += 1
         parse_after_backslash
       else
-        [next_char]
+        r = [next_char]
+        @current_position += 1
+        r
       end
     end
 
     def parse_after_backslash
       if next_char == 'b'
+        @current_position += 1
         ["\b"]
+      elsif rest_of_string =~ /\Au(\h{4}|\{\h{1,4}\})/
+        @current_position += 1
+        parse_backslash_unicode_sequence(Regexp.last_match(1)).result.map(&:to_s)
       else
-        CharSets::BackslashCharMap.fetch(next_char, [next_char])
+        char = CharSets::BackslashCharMap.fetch(next_char, [next_char])
+        @current_position += 1
+        char
       end
     end
 
@@ -117,13 +128,18 @@ module RegexpExamples
     end
 
     def parse_after_hyphen
-      if regexp_string[@current_position + 1] == ']' # e.g. /[abc-]/ -- not a range!
+      r = if regexp_string[@current_position + 1] == ']' # e.g. /[abc-]/ -- not a range!
+        @current_position += 1
         @charset << '-'
+      elsif rest_of_string =~ /\A-\\u(\h{4}|\{\h{1,4}\})/
+        @current_position += 3
+        char = parse_backslash_unicode_sequence(Regexp.last_match(1)).result.first.to_s
+        @charset.concat((@charset.last..char).to_a)
       else
         @current_position += 1
         @charset.concat((@charset.last..parse_checking_backlash.first).to_a)
       end
-      @current_position += 1
+      r
     end
 
     def rest_of_string
