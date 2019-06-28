@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.homepage         =
     'http://rubygems.org/gems/regexp-examples'
   s.add_development_dependency 'bundler'
-  s.add_development_dependency 'rake', '~> 10.0'
+  s.add_development_dependency 'rake', '~> 12.0'
   s.license          = 'MIT'
-  s.required_ruby_version = '>= 2.0.0'
+  s.required_ruby_version = '>= 2.4.0'
 end
