@@ -62,7 +62,7 @@ to implement backwards compatability (especially since [long-term support for MR
 
 For example, named properties (e.g. `/\p{Alpha}/`) are illegal syntax on MRI 1.9.3.
 
-MRI 2.0.0 --> 2.3.7 were supported until version `1.5.0` of this gem. Support was dropped primarily
+MRI 2.0.0 --> 2.3.x were supported until version `1.5.0` of this gem. Support was dropped primarily
 because of the need to use `RbConfig::CONFIG['UNICODE_VERSION']`, which was added to `2.4.0`.
 
 Other implementations, such as JRuby, could probably work fine -
