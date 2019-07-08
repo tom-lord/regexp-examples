@@ -72,6 +72,7 @@ RSpec.describe Regexp, '#examples' do
         /[abc]/,
         /[a-c]/,
         /[abc-e]/,
+        /[\u4e00-\u9fa5]/,
         /[^a-zA-Z]/,
         /[\w]/,
         /[]]/,
