@@ -52,21 +52,18 @@ Obviously, you will get different (random) results if you try these yourself!
 ```
 
 ## Supported ruby versions
-* MRI 2.0.x
-* MRI 2.1.x
-* MRI 2.2.x
-* MRI 2.3.x
-* MRI 2.4.x
-* MRI 2.5.x
-* MRI 2.6.x
+MRI 2.4.0 (oldest non-[EOL](https://www.ruby-lang.org/en/news/2019/03/31/support-of-ruby-2-3-has-ended/) version) --> 2.6.3 (latest stable version)
 
-MRI ≤ 1.9.3 are not supported. This is primarily because MRI 2.0.0 introduced a new
-regexp engine (`Oniguruma` was replaced by `Onigmo`). Whilst *most* of this gem could
-be made to work with MRI 1.9.x (or even 1.8.x), I feel the changes are too significant
-to implement backwards compatability (especially since [long-term support for MRI
-1.9.3 has now ended](https://www.ruby-lang.org/en/news/2014/01/10/ruby-1-9-3-will-end-on-2015/)).
+MRI 2.0.0 --> 2.3.x were supported until version `1.5.0` of this library. Support was dropped primarily
+because of the need to use `RbConfig::CONFIG['UNICODE_VERSION']`, which was added to ruby version `2.4.0`.
 
-For example, named properties (e.g. `/\p{Alpha}/`) are illegal syntax on MRI 1.9.3.
+MRI versions ≤ 1.9.3 were never supported by this library. This is primarily because MRI 2.0.0 introduced a new
+regexp engine (`Oniguruma` was replaced by `Onigmo` -- For example, named properties like `/\p{Alpha}/`
+are illegal syntax on MRI 1.9.3.). Whilst *most* of this gem could be made to work with MRI 1.9.x
+(or even 1.8.x), I considered the changes too significant to implement backwards compatability
+(especially since [long-term support for MRI 1.9.3 has long
+ended](https://www.ruby-lang.org/en/news/2014/01/10/ruby-1-9-3-will-end-on-2015/)).
+
 
 Other implementations, such as JRuby, could probably work fine -
 but I haven't fully tried/tested it. Pull requests are welcome.
