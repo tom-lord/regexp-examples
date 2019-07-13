@@ -29,5 +29,4 @@ module CoreExtensions
   end
 end
 
-# Regexp#include is private for ruby 2.0 and below
-Regexp.send(:include, CoreExtensions::Regexp::Examples)
+Regexp.include(CoreExtensions::Regexp::Examples)
