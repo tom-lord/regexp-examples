@@ -5,13 +5,13 @@ module CoreExtensions
     # No core classes are extended in any way, other than the above two methods.
     module Examples
       def examples(**config_options)
-        RegexpExamples::Config.with_configuration(config_options) do
+        RegexpExamples::Config.with_configuration(**config_options) do
           examples_by_method(:result)
         end
       end
 
       def random_example(**config_options)
-        RegexpExamples::Config.with_configuration(config_options) do
+        RegexpExamples::Config.with_configuration(**config_options) do
           examples_by_method(:random_result).sample
         end
       end

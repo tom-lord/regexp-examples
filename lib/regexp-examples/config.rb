@@ -27,10 +27,10 @@ module RegexpExamples
         original_config = config.dup
 
         begin
-          self.config = new_config
+          update_config(**new_config)
           result = yield
         ensure
-          self.config = original_config
+          update_config(**original_config)
         end
 
         result
@@ -48,7 +48,7 @@ module RegexpExamples
 
       private
 
-      def config=(**args)
+      def update_config(**args)
         Thread.current[:regexp_examples_config].merge!(args)
       end
 
