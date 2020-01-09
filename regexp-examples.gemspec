@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'bundler', '> 1.7'
   s.add_development_dependency 'rake', '~> 12.0'
   s.add_development_dependency 'pry', '~> 0.12.0'
+  s.add_development_dependency 'warning', '~> 0.10.0'
   s.license          = 'MIT'
   s.required_ruby_version = '>= 2.4.0'
 end
