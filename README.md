@@ -52,7 +52,7 @@ Obviously, you will get different (random) results if you try these yourself!
 ```
 
 ## Supported ruby versions
-MRI 2.4.0 (oldest non-[EOL](https://www.ruby-lang.org/en/news/2019/03/31/support-of-ruby-2-3-has-ended/) version) --> 2.6.3 (latest stable version)
+MRI 2.4.0 (oldest non-[EOL](https://www.ruby-lang.org/en/news/2019/03/31/support-of-ruby-2-3-has-ended/) version) --> 3.0.0 (latest stable version)
 
 MRI 2.0.0 --> 2.3.x were supported until version `1.5.0` of this library. Support was dropped primarily
 because of the need to use `RbConfig::CONFIG['UNICODE_VERSION']`, which was added to ruby version `2.4.0`.
