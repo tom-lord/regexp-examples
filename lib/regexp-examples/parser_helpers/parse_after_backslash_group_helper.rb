@@ -1,3 +1,5 @@
+require 'regexp_property_values'
+
 module RegexpExamples
   # A collection of related helper methods, utilised by the `Parser` class
   module ParseAfterBackslashGroupHelper
@@ -97,7 +99,7 @@ module RegexpExamples
       # Beware of double negatives! E.g. /\P{^Space}/
       is_negative = (p_negation == 'P') ^ (caret_negation == '^')
       CharGroup.new(
-        negate_if(CharSets::NamedPropertyCharMap[property_name.downcase], is_negative),
+        negate_if(RegexpPropertyValues[property_name.downcase].matched_characters, is_negative),
         @ignorecase
       )
     end

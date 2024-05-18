@@ -190,20 +190,8 @@ RSpec.describe Regexp, '#examples' do
         /\P{Ll}/, # Negation syntax type 2
         /\P{^Ll}/ # Double negation!! (Should cancel out)
       )
-      # An exhaustive set of tests for all named properties!!! This is useful
-      # for verifying the PStore contains correct values for all ruby versions
-      %w[
-        Alnum Alpha Blank Cntrl Digit Graph Lower Print Punct Space Upper XDigit
-        Word ASCII Any Assigned L Ll Lm Lo Lt Lu M Mn Mc Me N Nd Nl No P Pc Pd
-        Ps Pe Pi Pf Po S Sm Sc Sk So Z Zs Zl Zp C Cc Cf Cn Co Arabic Armenian
-        Balinese Bengali Bopomofo Braille Buginese Buhid Canadian_Aboriginal
-        Cham Cherokee Common Coptic Cyrillic Devanagari Ethiopic Georgian
-        Glagolitic Greek Gujarati Gurmukhi Han Hangul Hanunoo Hebrew Hiragana
-        Inherited Kannada Katakana Kayah_Li Khmer Lao Latin Lepcha Limbu Malayalam
-        Mongolian Myanmar New_Tai_Lue Nko Ogham Ol_Chiki Oriya Phags_Pa Rejang
-        Runic Saurashtra Sinhala Sundanese Syloti_Nagri Syriac Tagalog Tagbanwa
-        Tai_Le Tamil Telugu Thaana Thai Tibetan Tifinagh Vai Yi
-      ].each do |property|
+
+      RegexpPropertyValues.all_for_current_ruby.map(&:identifier).each do |property|
         it "examples for /\p{#{property}}/" do
           regexp_examples = /\p{#{property}}/.examples(max_group_results: 99_999)
           expect(regexp_examples)
@@ -213,14 +201,6 @@ RSpec.describe Regexp, '#examples' do
           # (Otherwise, we're doing up to 128 checks on 123 properties!!!)
           expect(regexp_examples.join('')).to match(/\A\p{#{property}}+\z/)
         end
-      end
-
-      # The following seem to genuinely have no matching examples (!!??!!?!)
-      %w[
-        Cs Carian Cuneiform Cypriot Deseret Gothic Kharoshthi Linear_B Lycian
-        Lydian Old_Italic Old_Persian Osmanya Phoenician Shavian Ugaritic
-      ].each do |property|
-        examples_are_empty(/\p{#{property}}/)
       end
     end
 
