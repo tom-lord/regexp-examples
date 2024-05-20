@@ -53,7 +53,5 @@ module RegexpExamples
       'word'   => Word,
       'ascii'  => Any
     }.freeze
-
-    NamedPropertyCharMap = UnicodeCharRanges.instance
   end.freeze
 end
