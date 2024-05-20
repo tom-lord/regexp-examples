@@ -14,9 +14,10 @@ Gem::Specification.new do |s|
   s.test_files       = s.files.grep(/^(test|spec|features)\//)
   s.require_paths    = ['lib']
   s.homepage         = 'http://rubygems.org/gems/regexp-examples'
-  s.add_development_dependency 'bundler', '> 1.7'
-  s.add_development_dependency 'rake', '~> 12.0'
-  s.add_development_dependency 'pry', '~> 0.12.0'
+  s.add_dependency 'regexp_property_values', '~> 1.5'
+  s.add_development_dependency 'bundler', '~> 2.4'
+  s.add_development_dependency 'rake', '~> 13.0'
+  s.add_development_dependency 'pry'
   s.add_development_dependency 'warning', '~> 0.10.0'
   s.license          = 'MIT'
   s.required_ruby_version = '>= 2.4.0'
