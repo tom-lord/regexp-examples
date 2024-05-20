@@ -204,7 +204,7 @@ RSpec.describe Regexp, '#examples' do
               .not_to be_empty,
             "No examples were generated for regexp: /\p{#{property}}/"
               # Just do one big check, for test system performance (~30% faster)
-              # (Otherwise, we're doing up to 128 checks on 123 properties!!!)
+              # (Otherwise, we're potentially doing 99999 checks on 123 properties!!!)
               expect(regexp_examples.join('')).to match(/\A\p{#{property}}+\z/)
           end
         end
