@@ -100,7 +100,7 @@ module RegexpExamples
       is_negative = (p_negation == 'P') ^ (caret_negation == '^')
       CharGroup.new(
         negate_if(
-          RegexpPropertyValues[property_name.downcase]
+          RegexpPropertyValues[property_name]
             .matched_codepoints
             .lazy
             .filter_map { |cp| cp.chr('utf-8') unless cp.between?(0xD800, 0xDFFF) },
