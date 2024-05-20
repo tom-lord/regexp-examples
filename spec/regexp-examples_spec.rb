@@ -191,15 +191,22 @@ RSpec.describe Regexp, '#examples' do
         /\P{^Ll}/ # Double negation!! (Should cancel out)
       )
 
+      expected_empty_properties = %w[surrogate inlowsurrogates inhighsurrogates inhighprivateusesurrogates]
+
       RegexpPropertyValues.all_for_current_ruby.map(&:identifier).each do |property|
-        it "examples for /\p{#{property}}/" do
-          regexp_examples = /\p{#{property}}/.examples(max_group_results: 99_999)
-          expect(regexp_examples)
-            .not_to be_empty,
-                    "No examples were generated for regexp: /\p{#{property}}/"
-          # Just do one big check, for test system performance (~30% faster)
-          # (Otherwise, we're doing up to 128 checks on 123 properties!!!)
-          expect(regexp_examples.join('')).to match(/\A\p{#{property}}+\z/)
+        if(expected_empty_properties).include?(property)
+          examples_are_empty(/\p{#{property}}/)
+        else
+          it "examples for /\p{#{property}}/" do
+            regexp_examples = /\p{#{property}}/.examples(max_group_results: 99_999)
+
+            expect(regexp_examples)
+              .not_to be_empty,
+            "No examples were generated for regexp: /\p{#{property}}/"
+              # Just do one big check, for test system performance (~30% faster)
+              # (Otherwise, we're doing up to 128 checks on 123 properties!!!)
+              expect(regexp_examples.join('')).to match(/\A\p{#{property}}+\z/)
+          end
         end
       end
     end

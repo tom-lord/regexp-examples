@@ -93,13 +93,19 @@ module RegexpExamples
     end
 
     def parse_backslash_named_property(p_negation, caret_negation, property_name)
-      @current_position += (caret_negation.length + # 0 or 1, of '^' is present
+      @current_position += (caret_negation.length + # 0 or 1, if '^' is present
                             property_name.length +
                             2) # Length of opening and closing brackets (always 2)
       # Beware of double negatives! E.g. /\P{^Space}/
       is_negative = (p_negation == 'P') ^ (caret_negation == '^')
       CharGroup.new(
-        negate_if(RegexpPropertyValues[property_name.downcase].matched_characters, is_negative),
+        negate_if(
+          RegexpPropertyValues[property_name.downcase]
+            .matched_codepoints
+            .lazy
+            .filter_map { |cp| cp.chr('utf-8') unless cp.between?(0xD800, 0xDFFF) },
+          is_negative
+        ),
         @ignorecase
       )
     end
